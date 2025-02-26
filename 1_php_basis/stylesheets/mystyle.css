@@ -57,3 +57,10 @@ ul.menu li > a {
 .input-group input {
 	width: 400px; 
 } 
+
+.error {
+	color: red;
+	padding-left: 3px;
+	text-align: left;
+	font-weight: bold;
+}

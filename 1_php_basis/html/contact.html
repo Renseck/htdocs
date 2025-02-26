@@ -1,65 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="../stylesheets/mystyle.css">
-<title>My first website</title>
+	<link rel="stylesheet" type="text/css" href="../stylesheets/mystyle.css">
+	<title>My first website</title>
 </head>
 
 <body>
 
-<h1>Hello World!</h1>
+	<h1>Hello World!</h1>
 
-<div>
-<ul class="menu">
-	<li><a href="home.html">HOME</a></li>
-	<li><a href="about.html">ABOUT</a></li>
-	<li><a href="contact.html">CONTACT</a></li>
-</ul>
-</div>
+	<div>
+	<ul class="menu">
+		<li><a href="home.html">HOME</a></li>
+		<li><a href="about.html">ABOUT</a></li>
+		<li><a href="contact.html">CONTACT</a></li>
+	</ul>
+	</div>
 
-<div class="maintext">
-<form method="POST" action="../javascript/contact.php">
-	<div class="input-group">
-		<label for="name">Name:</label><br>
-		<input type="text" id="name" name="name"><br>
-		<span id="nameErr" style="color:red;"></span>
+	<!-- Contact form -->
+	<div class="maintext">
+	<form method="POST" action="../javascript/contact.php">
+		<div class="input-group">
+			<label for="name">Name:</label><br>
+			<input type="text" id="name" name="name"><br>
+			<span id="nameErr" class = "error"></span>
+		</div>
+		<div class="input-group">
+			<label for="email">Email address:</label><br>
+			<input type="text" id="email" name="email"><br>
+			<span id="emailErr" class = "error"></span>
+		</div>
+		<div class="input-group">
+			<label for="message">Message:</label><br>
+			<input type="text" id="message" name="message"><br>
+			<span id="messageErr" class = "error"></span>
+		</div>
+		<input type="submit" value="Send">
+	</form>
 	</div>
-	<div class="input-group">
-		<label for="email">Email address:</label><br>
-		<input type="text" id="email" name="email"><br>
-		<span id="emailErr" style="color:red;"></span>
-	</div>
-	<div class="input-group">
-		<label for="message">Message:</label><br>
-		<input type="text" id="message" name="message"><br>
-		<span id="messageErr" style="color:red;"></span>
-	</div>
-	<input type="submit" value="Send">
-</form>
-</div>
 
-<script>
-	function getParams() {
-		const params = new URLSearchParams(window.location.search);
-		return {
-			name: params.get("name") || "",
-			email: params.get("email") || "",
-			message: params.get("message") || "",
-			nameErr params.get("nameErr") || "",
-			emailErr: params.get("emailErr") || "",
-			messageErr: params.get("messageErr") ||
-		};
-	}
-	
-	const {name, email, message, nameErr, emailErr, messageErr} = getParams();
-	
-	document.getElementById("name").value = name;
-	document.getElementById("email").value = email;
-	document.getElementById("message").value = message;
-	document.getElementById("nameErr").textContent = nameErr;
-	document.getElementById("emailErr").textContent = emailErr;
-	document.getElementById("messageErr").textContent = messageErr;
-</script>
+	<script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                name: params.get("name") || "",
+                email: params.get("email") || "",
+                message: params.get("message") || "",
+                nameErr: params.get("nameErr") || "",
+                emailErr: params.get("emailErr") || "",
+                messageErr: params.get("messageErr") || ""
+            };
+        }
+
+        // Fill in the form with previous values and show errors
+        const { name, email, message, nameErr, emailErr, messageErr } = getQueryParams();
+        document.getElementById("name").value = name;
+        document.getElementById("email").value = email;
+        document.getElementById("message").value = message;
+        document.getElementById("nameErr").textContent = nameErr;
+        document.getElementById("emailErr").textContent = emailErr;
+        document.getElementById("messageErr").textContent = messageErr;
+    </script>
 
 <br>
 
