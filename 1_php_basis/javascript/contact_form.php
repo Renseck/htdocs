@@ -1,7 +1,16 @@
 <?php
+session_start();
 $nameErr = $emailErr = $messageErr = "";
 $name = $email = $message = "";
 $hasError = false;
+$_SESSION["form_data"] = [
+			"name" => $name,
+			"email" => $email,
+			"message" => $message,
+			"nameErr" => $nameErr,
+			"emailErr" => $emailErr,
+			"messageErr" => $messageErr
+		];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (empty($_POST["name"])) {
@@ -29,16 +38,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$message = check_input($_POST["message"]);
 	}
 	
+	// If there is an error, refresh the session values
 	if ($hasError) {
-		$params = http_build_query([
-			"nameErr" => $nameErr,
-			"emailErr" => $emailErr,
-			"messageErr" => $messageErr,
+		$_SESSION["form_data"] = [
 			"name" => $name,
 			"email" => $email,
-			"message" => $message
-		]);
-		header("Location: ../html/contact.html?$params");
+			"message" => $message,
+			"nameErr" => $nameErr,
+			"emailErr" => $emailErr,
+			"messageErr" => $messageErr
+		];
+		
+		//echo $emailErr;
+		header("Location: ../html/contact.php");
 		exit();
 	}
 	
@@ -56,4 +68,3 @@ function check_input($data) {
 	$data = htmlspecialchars($data);
 	return $data;
 }
-?>
