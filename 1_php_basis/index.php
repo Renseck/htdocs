@@ -6,9 +6,9 @@ include("pages/functions.php");
 $page = $_GET["page"] ?? "home";
 
 // Check if the requested page is allowed and boot out otherwise
-$allowed_pages = ["home", "about", "contact"];
+$allowed_pages = ["home", "about", "contact", "login", "register", "logout"];
 if (!in_array($page, $allowed_pages)){
-	echo "<h1 style='font-size:100px; text-align:center; padding-top:20px;'>404 PAGE NOT FOUND</h1>";
+	$page = "404";
 }
 
 showHeader();
@@ -32,6 +32,26 @@ switch($page){
 		include "pages/contact.php";
 		showTitle("Contact - My first website");
 		showContactForm();
+		break;
+		
+	case "login":
+		include "pages/login.php";
+		showTitle("Login - My first website");
+		showLogin();
+		break;
+		
+	case "register":
+		include "pages/register.php";
+		showTitle("Register - My first website");
+		showRegister();
+		break;
+		
+	case "logout":
+		include "auth/logout.php";
+		break;
+		
+	case "404":
+		include  "pages/404.php";
 		break;
 }
 

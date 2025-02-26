@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 echo '<link rel="stylesheet" type="text/css" href="../stylesheets/mystyle.css">';
 
 //===================================
@@ -25,8 +29,17 @@ function showHyperlinkMenu()
 	echo '<ul class="menu">
 		<li><a href="index.php?page=home">HOME</a></li>
 		<li><a href="index.php?page=about">ABOUT</a></li>
-		<li><a href="index.php?page=contact">CONTACT</a></li>
-	</ul>';
+		<li><a href="index.php?page=contact">CONTACT</a></li>';
+		
+	// If there is a username, show logout instead of login+register
+	if (isset($_SESSION["user_name"])) {
+		echo '<li><a href="index.php?page=logout">LOGOUT ['.$_SESSION["user_name"].']</a></li>';
+	} else {
+		echo '<li><a href="index.php?page=login">LOGIN</a></li>';
+		echo '<li><a href="index.php?page=register">REGISTER</a></li>';
+	}
+	
+	echo '</ul>';
 } 
 
 //===================================
