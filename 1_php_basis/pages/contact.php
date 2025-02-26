@@ -1,5 +1,4 @@
 <?php
-require("functions.php");
 session_start();
 
 //======================================================================
@@ -17,7 +16,7 @@ function showContactForm()
 	
 	// Show the contact form
 	echo '<div class="maintext">';
-	echo '<form method="POST" action="../javascript/contact_form.php">';
+	echo '<form method="POST" action="javascript/contact_form.php">';
 	echo '	<div class="input-group">';
 	echo '		<label for="name">Name:</label><br>';
 	echo '		<input type="text" id="name" name="name" value="' . htmlspecialchars($name) . '"><br>';
@@ -52,11 +51,3 @@ function showContactForm()
 	session_unset();
 	session_destroy();
 }
-
-showTitle();
-showHeader();
-showHyperlinkMenu();
-
-showContactForm();
-
-showFooter();

@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		];
 		
 		//echo $emailErr;
-		header("Location: ../html/contact.php");
+		header("Location: ../index.php?page=contact");
 		exit();
 	}
 	
@@ -62,7 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		echo "<p><strong>Message: </strong>" . htmlspecialchars($message) . "</p>";
 	}
 }
-
+//============================
+// Check data for special chars
+//============================
 function check_input($data) {
 	$data = trim($data);
 	$data = htmlspecialchars($data);

@@ -1,10 +1,8 @@
 <?php
-require("functions.php");
-
 //===================================
 // Show /Home/ main text
 //===================================
-function showMainText()
+function showHomeMainText()
 {
 	echo '<div class="maintext">
 		<p>
@@ -14,11 +12,3 @@ function showMainText()
 		</div>
 		<br>';
 } 
-
-showTitle();
-showHeader();
-showHyperlinkMenu();
-
-showMainText();
-
-showFooter();

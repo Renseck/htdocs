@@ -1,6 +1,4 @@
 <?php
-require("functions.php");
-
 //===================================
 // Show secondary header above text
 //===================================
@@ -12,7 +10,7 @@ function showSecondaryHeader()
 //===================================
 // Show /About me/ main text
 //===================================
-function showMainText()
+function showAboutMainText()
 {
 	echo '<div class="maintext">
 		<p>
@@ -36,12 +34,3 @@ function showMainText()
 		</div>
 		<br>';
 } 
-
-showTitle();
-showHeader();
-showHyperlinkMenu();
-
-showSecondaryHeader();
-showMainText();
-
-showFooter();

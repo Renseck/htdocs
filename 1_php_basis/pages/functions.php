@@ -4,9 +4,9 @@ echo '<link rel="stylesheet" type="text/css" href="../stylesheets/mystyle.css">'
 //===================================
 // Show page title
 //===================================
-function showTitle()
+function showTitle($title)
 {
-	echo '<title>My first website</title>';
+	echo '<title>'.$title.'</title>';
 } 
 
 //===================================
@@ -23,9 +23,9 @@ function showHeader()
 function showHyperlinkMenu()
 {
 	echo '<ul class="menu">
-		<li><a href="home.php">HOME</a></li>
-		<li><a href="about.php">ABOUT</a></li>
-		<li><a href="contact.php">CONTACT</a></li>
+		<li><a href="index.php?page=home">HOME</a></li>
+		<li><a href="index.php?page=about">ABOUT</a></li>
+		<li><a href="index.php?page=contact">CONTACT</a></li>
 	</ul>';
 } 
 
