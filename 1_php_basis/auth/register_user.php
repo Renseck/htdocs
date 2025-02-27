@@ -1,21 +1,15 @@
 <?php
+include("../pages/functions.php");
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$name = trim($_POST["name"]);
-	$email = trim($_POST["email"]);
-	$password = trim($_POST["password"]);
-	$password_repeat = trim($_POST["password_repeat"]);
+	$name = check_input($_POST["name"]);
+	$email = check_input($_POST["email"]);
+	$password = check_input($_POST["password"]);
+	$password_repeat = check_input($_POST["password_repeat"]);
 	$file = "../users/users.txt";
-	
-	// Check if passwords match
-	if ($password !== $password_repeat) {
-		$_SESSION["register_error"] = "Passwords don't match!";
-		header("Location: ../index.php?page=register");
-		exit();
-	}
 	
 	// Check if email is already registered. If yes, bounce back (or to login?)
 	$users = file($file);
@@ -26,6 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			header("Location: ../index.php?page=register");
 			exit();
 		}
+	}
+	
+	// Check if passwords match. If not, bounce back
+	if ($password !== $password_repeat) {
+		$_SESSION["register_error"] = "Passwords don't match!";
+		header("Location: ../index.php?page=register");
+		exit();
+	}
+	
+	// BONUS: Check if email is in a valid format
+	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		$_SESSION["register_error"] = "Invalid email format!";
+		header("Location: ../index.php?page=register");
+		exit();
 	}
 	
 	// Finally, nothing has gone wrong, so store the user info.

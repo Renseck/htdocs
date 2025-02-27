@@ -1,4 +1,5 @@
 <?php
+include("functions.php");
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -6,14 +7,6 @@ if (session_status() === PHP_SESSION_NONE) {
 $nameErr = $emailErr = $messageErr = "";
 $name = $email = $message = "";
 $hasError = false;
-$_SESSION["form_data"] = [
-			"name" => $name,
-			"email" => $email,
-			"message" => $message,
-			"nameErr" => $nameErr,
-			"emailErr" => $emailErr,
-			"messageErr" => $messageErr
-		];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (empty($_POST["name"])) {
@@ -64,12 +57,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		echo "<p><strong>Email address: </strong>" . htmlspecialchars($email) . "</p>";
 		echo "<p><strong>Message: </strong>" . htmlspecialchars($message) . "</p>";
 	}
-}
-//============================
-// Check data for special chars
-//============================
-function check_input($data) {
-	$data = trim($data);
-	$data = htmlspecialchars($data);
-	return $data;
 }

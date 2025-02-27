@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
 	}
 	
-	// Loop through the file of users and see if the login values match any (wildly inefficient but im sure we'll improve it later
+	// Loop through the file of users and see if the login values match any (wildly inefficient but im sure we'll improve it later)
 	// Also unsafe without encoding anything but you know
 	$users = file($file, FILE_IGNORE_NEW_LINES);
 	foreach ($users as $user){

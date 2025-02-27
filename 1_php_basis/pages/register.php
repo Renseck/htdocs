@@ -4,6 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 function showRegister(){
+	if (!empty($_SESSION["register_error"])){
+		echo '<p class="error">' . $_SESSION["register_error"] . '</p>';
+		unset($_SESSION["register_error"]);
+	}
+	
 	echo '
 		<h2>Register</h2>
 		<div class="maintext">	

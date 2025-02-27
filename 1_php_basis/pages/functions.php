@@ -49,3 +49,12 @@ function showFooter()
 {
 	echo "<footer class='footer'>&copy;&nbsp;".date("Y")."&nbsp;Rens van Eck</footer>";
 }
+
+//============================
+// Check data for special chars
+//============================
+function check_input($data) {
+	$data = trim($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}

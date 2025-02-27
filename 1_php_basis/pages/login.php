@@ -8,7 +8,7 @@ function showLogin(){
 		echo '<p class="error">' . $_SESSION["login_error"] . '</p>';
 		unset($_SESSION["login_error"]);
 	}
-	
+
 	echo '
 		<h2>Login</h2>
 		<div class="maintext">	
