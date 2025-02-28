@@ -1,60 +1,45 @@
 <?php
-include("functions.php");
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
-$nameErr = $emailErr = $messageErr = "";
-$name = $email = $message = "";
-$hasError = false;
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//======================================================================
+// Processes the information of the contact form; cleans everything up and returns
+// an array with a success boolean, errors and the data entered into the form
+//======================================================================
+function processContactForm($postData) {
+	$errors = [];
+	$formData = [];
+	
+	// Validate name
 	if (empty($_POST["name"])) {
-		$nameErr = "Name is required!";
-		$hasError = true;
+		$errors["name"] = "Name is required!";
 	} else { 
-		$name = check_input($_POST["name"]);
+		$formData["name"] = check_input($postData["name"]);
 	}
 	
-	if (empty($_POST["email"])) { 
-		$emailErr = "Email is required!";
-		$hasError = true;
+	// Validate email
+	if (empty($postData["email"])) { 
+		$errors["email"] = "Email is required!";
 	} else { 
-		$email = check_input($_POST["email"]);
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$emailErr = "Invalid email format!";
-			$hasError = true;
+		$cleanEmail = check_input($postData["email"]);
+		if (!filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
+			$errors["email"] = "Invalid email format!";
+		} else {
+			$formData["email"] = $cleanEmail;
 		}
 	}
 	
-	if (empty($_POST["message"])) { 
-		$messageErr = "Message is required!";
-		$hasError = true;
+	// Validate message
+	if (empty($postData["message"])) { 
+		$errors["message"] = "Message is required!";
 	} else {
-		$message = check_input($_POST["message"]);
+		$formData["message"] = check_input($postData["message"]);
 	}
 	
-	// If there is an error, refresh the session values
-	if ($hasError) {
-		$_SESSION["form_data"] = [
-			"name" => $name,
-			"email" => $email,
-			"message" => $message,
-			"nameErr" => $nameErr,
-			"emailErr" => $emailErr,
-			"messageErr" => $messageErr
-		];
-		
-		//echo $emailErr;
-		header("Location: ../index.php?page=contact");
-		exit();
-	}
+	// Return results for handling in index.php
+	// If $errors is empty, success is true
+	return [
+		"success" => empty($errors),
+		"errors" => $errors,
+		"form_data" => $formData
+	];
 	
-	// Check if all fields have been filled
-	if (!empty($name) && !empty($email) && !empty($message)) {
-		echo "<h2>Form submitted successfully!</h2>";
-		echo "<p><strong>Name: </strong>" . htmlspecialchars($name) . "</p>";
-		echo "<p><strong>Email address: </strong>" . htmlspecialchars($email) . "</p>";
-		echo "<p><strong>Message: </strong>" . htmlspecialchars($message) . "</p>";
-	}
 }

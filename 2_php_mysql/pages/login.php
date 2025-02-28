@@ -3,16 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+//======================================================================
+// Show login form. 
+//======================================================================
 function showLogin(){
-	if (!empty($_SESSION["login_error"])){
-		echo '<p class="error">' . $_SESSION["login_error"] . '</p>';
-		unset($_SESSION["login_error"]);
-	}
-
 	echo '
 		<h2>Login</h2>
 		<div class="maintext">	
-		<form action="auth/authenticate.php" method="POST">
+		<form action="index.php?page=login" method="POST">
+			<input type="hidden" name="login" value="1">
 			<div class="input-group">
 				<label for="email">Email:</label><br>
 				<input type="text" id="email" name="email" required><br>

@@ -3,16 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+//======================================================================
+// Show registration form.
+//======================================================================
 function showRegister(){
-	if (!empty($_SESSION["register_error"])){
-		echo '<p class="error">' . $_SESSION["register_error"] . '</p>';
-		unset($_SESSION["register_error"]);
-	}
-	
 	echo '
 		<h2>Register</h2>
 		<div class="maintext">	
-		<form action="auth/register_user.php" method="POST">
+		<form action="index.php?page=register" method="POST">
+			<input type="hidden" name="register" value="1">
 			<div class="input-group">
 				<label for="name">Name:</label><br>
 				<input type="text" id="name" name="name" required><br>

@@ -1,6 +1,13 @@
 <?php
-session_start();
-session_unset();
-session_destroy();
-header("Location: /2_php_mysql/index.php");
-exit(); // Ensure script stops execution
+//===================================
+// I wonder what this function does
+//===================================
+function logoutUser() {
+	if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+	}
+	
+	session_unset();
+	session_destroy();
+	return true;
+}

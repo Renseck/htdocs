@@ -1,10 +1,4 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-echo '<link rel="stylesheet" type="text/css" href="../stylesheets/mystyle.css">';
-
 //===================================
 // Show page title
 //===================================
@@ -24,7 +18,7 @@ function showHeader()
 //===================================
 // Show hyperlinks at the top of the page
 //===================================
-function showHyperlinkMenu()
+function showHyperlinkMenu($sessionData = [])
 {
 	echo '<ul class="menu">
 		<li><a href="index.php?page=home">HOME</a></li>
@@ -33,8 +27,8 @@ function showHyperlinkMenu()
 		<li><a href="index.php?page=webshop">WEBSHOP</a></li>';
 		
 	// If there is a username, show logout instead of login+register
-	if (isset($_SESSION["user_name"])) {
-		echo '<li><a href="index.php?page=logout">LOGOUT ['.$_SESSION["user_name"].']</a></li>';
+	if (isset($sessionData["user_name"])) {
+		echo '<li><a href="index.php?page=logout">LOGOUT ['.$sessionData["user_name"].']</a></li>';
 	} else {
 		echo '<li><a href="index.php?page=login">LOGIN</a></li>';
 		echo '<li><a href="index.php?page=register">REGISTER</a></li>';

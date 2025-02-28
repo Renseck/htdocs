@@ -1,14 +1,12 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Connect to database of users
-require "../pages/db.php";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$email = trim($_POST["email"]);
-	$password = trim($_POST["password"]);
+//===================================
+// Processes a login request by checking the given email and password against the stored values in the database.
+// Returns success true and user data when the login info is correct, otherwise success false and an error
+//===================================
+function processLogin($postData, $conn) {
+	
+	$email = trim($postData["email"]);
+	$password = trim($postData["password"]);
 	
 	$sql = "SELECT name, email, password FROM users WHERE email=?";
 	$select_statement = mysqli_prepare($conn, $sql);
@@ -19,24 +17,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$result = mysqli_stmt_get_result($select_statement);
 	
 	// Check if we've gotten a result by seeing if the result has a length; if not, throw the unknown email error
-	// If yes, check password validity and log in.
+	// If yes, check password validity. Return success messages and user info as needed
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$stored_email = $row["email"];
 		$stored_name = $row["name"];
 		$stored_password = $row["password"];
+		
 		if ($email == $stored_email && $password == $stored_password) {
-			$_SESSION["user_name"] = $stored_name;
-			$_SESSION["user_email"] = $stored_email;
-			header("Location: ../index.php");
-			exit();
+			return [
+				"success" => true,
+				"user_name" => $stored_name,
+				"user_email" => $stored_email
+			];
+		} else {
+			return [
+				"success" => false,
+				"error" => "Invalid email or password"
+			];
 		}
 		
 	} else {
-		$_SESSION["login_error"] = "Invalid email or password.";
-		header("Location: ../index.php?page=login");
-		mysqli_close($conn);
-		exit();
+		return [
+				"success" => false,
+				"error" => "Invalid email or password"
+			];
 	}
-}
+	
+	mysqli_stmt_close($select_statement);
+	mysqli_close();
 
+}
