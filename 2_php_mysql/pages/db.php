@@ -2,14 +2,13 @@
 //===================================
 // Connects to the SQL database specified.
 //===================================
-function connectDatabase($dbname = "users") {
+function connectDatabase($dbhost, $dbname = "users", $dbuser, $dbpass) {
 	// This can't be safe, can it?
-	$servername = "localhost";
-	$username = "root";
-	$password = "Jz37!hs8dbEx6Erm";
+	// Also, I realise this isn't a problem when this code is constantly run on  the same device, but these credentials will not be the same
+	// and the database won't be present when I give this code to somebody else for feedback. Should I build in stuff to deal with that?
 
 	// Connect to database
-	$conn = mysqli_connect($servername, $username, $password, $dbname);
+	$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
 	// Check connection
 	if ($conn->connect_error){

@@ -64,3 +64,100 @@ ul.menu li > a {
 	text-align: left;
 	font-weight: bold;
 }
+
+.webshop {
+	display:grid;
+	grid-template-columns: auto auto auto; /* Responsive grid */
+	gap: 15x;
+	padding: 10px;
+}
+
+.product {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 240px;
+}
+
+.order-form {
+    display: flex;
+    align-items: center; 
+    gap: 10px; /* Adds space between number input and button */
+}
+
+.img_highlight {
+	max-width: 100%;
+	height: auto;
+}
+
+.product img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 5px;
+	margin-top: 5px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.product img:hover {
+    transform: scale(1.05); /* Zoom in slightly on hover */
+}
+
+.product:hover {
+	background-color: #e3e3e3;	
+	transition: background-color 0.2s ease;
+}
+
+.product p {
+    margin: 10px;
+    font-size: 1.1em;
+    color: grey;
+}
+
+.product a {
+	text-decoration: none;
+}
+
+.product .price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #e74c3c; /* Red color for price */
+}
+
+.product input[type="number"] {
+	width: 80px;
+	padding: 5px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+	item-align: right;
+    transition: border-color 0.3s;
+}
+
+.product input[type="number"]:focus {
+    border-color: #007bff; /* Highlight color */
+    outline: none;
+}
+
+.add-to-cart-btn {
+    background-color: #2ecc71; /* Green color */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #27ae60; /* Darker green on hover */
+}

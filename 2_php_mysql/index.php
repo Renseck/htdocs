@@ -2,6 +2,7 @@
 echo '<link rel="stylesheet" type="text/css" href="stylesheets/mystyle.css">';
 require_once "pages/functions.php";
 require_once 'pages/db.php'; // Make sure $conn is available
+require_once __DIR__ . '/config/config.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -12,11 +13,13 @@ if (session_status() === PHP_SESSION_NONE) {
 // 1. Determine what is being requested via $_GET
 // Get page from GET, set to home if none is found
 $page = $_GET["page"] ?? "home";
+$id = $_GET["id"] ?? 1;
 
 // 2. Process any POST requests (so login, registration and the contact form)
 // Here, data will be written to $_SESSION so as to be usable in the different scope of step 3
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-	$conn = connectDatabase("users");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$userCreds = getUsersCreds();
+	$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
 	// Handle login
 	if (isset($_POST["login"])) {
 		require_once "auth/authenticate.php";
@@ -55,12 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$_SESSION["form_data"] = $contactResult["form_data"];
 		}
 	}
-	
 }
+
 
 // 3. Display the result
 // Check if the requested page is allowed and boot out otherwise
-$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout"];
+$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product"];
 if (!in_array($page, $allowed_pages)){
 	$page = "404";
 }
@@ -69,7 +72,8 @@ showHeader();
 showHyperlinkMenu($_SESSION);
 
 // This could be consolidated by doing a sort of include pages/$page type thing, and then having all functions be run directly in their respective files. Easier to expand the webpage, but also more uncontrolled.
-switch($page){
+switch($page)
+{
 	case "home":
 		include "pages/home.php";
 		showTitle("Home - My first website");
@@ -97,7 +101,8 @@ switch($page){
 		$errorData = [];
 		
 		// If there was an error with filling the contact form, set the contact and error data (override as needed)
-		if (!empty($_SESSION["contact_error"])){
+		if (!empty($_SESSION["contact_error"]))
+		{
 			$contactData = $_SESSION["form_data"];
 			$errorData = $_SESSION["contact_error"];
 			unset($_SESSION["contact_error"]);
@@ -109,14 +114,38 @@ switch($page){
 	case "webshop":
 		include "pages/webshop.php";
 		showTitle("Webshop - My first website");
-		showWebshop();
+		
+		$userCreds = getUsersCreds();
+		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
+		
+		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
+		
+		showWebshop($conn, $isLoggedIn);
 		break;
 		
+	case "product":
+		require_once "pages/webshop.php";
+		
+		$userCreds = getUsersCreds();
+		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
+		
+		$sql = "SELECT * FROM products WHERE id=?";
+		$stmt = mysqli_prepare($conn, $sql);
+		mysqli_stmt_bind_param($stmt, "i", $id);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);
+		$row = mysqli_fetch_assoc($result);
+		
+		showItemSingle($row);
+		
+		break;
+	
 	case "login":
 		include "pages/login.php";
 		showTitle("Login - My first website");
 		
-		if (!empty($_SESSION["login_error"])){
+		if (!empty($_SESSION["login_error"]))
+		{
 			echo '<p class="error">' . $_SESSION["login_error"] . '</p>';
 			unset($_SESSION["login_error"]);
 		}
@@ -128,7 +157,8 @@ switch($page){
 		include "pages/register.php";
 		showTitle("Register - My first website");
 		
-		if (!empty($_SESSION["register_error"])){
+		if (!empty($_SESSION["register_error"]))
+		{
 			echo '<p class="error">' . $_SESSION["register_error"] . '</p>';
 			unset($_SESSION["register_error"]);
 		}
@@ -148,6 +178,7 @@ switch($page){
 		include  "pages/404.php";
 		showPage404();
 		break;
+		
 }
 
 showFooter();

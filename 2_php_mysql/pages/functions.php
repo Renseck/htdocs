@@ -45,6 +45,13 @@ function showFooter()
 	echo "<footer class='footer'>&copy;&nbsp;".date("Y")."&nbsp;Rens van Eck</footer>";
 }
 
+//===================================
+// Show placeholder page
+//===================================
+function showPlaceholder(){
+	echo '<h1 style="color:red">BIG PLACEHOLDER</h1>';
+}
+
 //============================
 // Check data for special chars
 //============================
