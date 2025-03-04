@@ -3,7 +3,7 @@
 // Processes the information of the registration form; cleans everything up and returns
 // an array with a success boolean, errors and the username + email entered into the form
 //======================================================================
-function processRegistration($postData, $conn) {
+function processRegistration($conn, $postData) {
 	$name = check_input($postData["name"]);
 	$email = check_input($postData["email"]);
 	$password = check_input($postData["password"]);

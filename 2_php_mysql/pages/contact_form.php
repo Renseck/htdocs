@@ -9,7 +9,7 @@ function processContactForm($postData) {
 	$formData = [];
 	
 	// Validate name
-	if (empty($_POST["name"])) {
+	if (empty($postData["name"])) {
 		$errors["name"] = "Name is required!";
 	} else { 
 		$formData["name"] = check_input($postData["name"]);

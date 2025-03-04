@@ -30,13 +30,13 @@ function showItemInWebshop($item, $isLoggedIn) {
 	echo '	<a href="?page=product&id=' . $item["id"] . '">';	
 	echo '	<img src="images/' . $item["image"] . '?v=' . filemtime('images/' . $item["image"]) . '">';
 	echo '  <p>' . $item["name"] . '<p>';
-	echo '  <p class="price">€' . $item["price"] . '<p>';
+	echo '  <p class="price">€' . number_format($item["price"], 2) . '<p>';
 	echo '  </a>';
 	if ($isLoggedIn) {
             echo '<form method="post" class="order-form">';
-            echo '<input type="hidden" name="product_id" value="' . $item['id'] . '">';
-            echo '<input type="number" name="quantity" value="1" min="1" max="20">';
-            echo '<button type="submit" name="add_to_cart" class="add-to-cart-btn">Add to Cart</button>';
+            echo '	<input type="hidden" name="product_id" value="' . $item['id'] . '">';
+            echo '	<input type="number" name="quantity" value="1" min="1" max="20">';
+            echo '	<button type="submit" name="add_to_cart" class="add-to-cart-btn">Add to Cart</button>';
             echo '</form>';
         }
 	echo '</div>';
@@ -45,9 +45,28 @@ function showItemInWebshop($item, $isLoggedIn) {
 //=========================================
 // Shows a single item in its own page
 //=========================================
-function showItemSingle($item) {
-	echo '<div class="img_highlight">';
-	echo '	<img src="images/' . $item["image"] . '?v=' . filemtime('images/' . $item["image"]) . '">';
-	echo '  <h2>' . $item["name"] . '</h2>';
+function showItemSingle($item, $isLoggedIn) {
+	echo '<div class="product_container">';
+
+	// Image + description
+	echo '	<div class="img_highlight">';
+	echo '		<img src="images/' . $item["image"] . '?v=' . filemtime('images/' . $item["image"]) . '">';
+	echo '  	<h2>' . $item["name"] . '</h2>';
+	echo '  	<p>' . $item["description"] . '</p>';
+	echo '	</div>';
+
+	// Order card
+	echo '	<div class="order_card">';
+	echo '		<h3>Order now</h3>';
+	echo '		<p class="price">€' . number_format($item["price"], 2) . '</p>';
+	if ($isLoggedIn) {
+		echo '<form method="post" class="order-form">';
+		echo '	<input type="hidden" name="product_id" value="' . $item['id'] . '">';
+		echo '	<input type="number" name="quantity" value="1" min="1" max="20">';
+		echo '	<button type="submit" name="add_to_cart" class="add-to-cart-btn">Add to Cart</button>';
+		echo '</form>';
+	}
+	echo '	</div>';
+
 	echo '</div>';
 }

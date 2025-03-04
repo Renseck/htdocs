@@ -3,7 +3,7 @@
 // Processes a login request by checking the given email and password against the stored values in the database.
 // Returns success true and user data when the login info is correct, otherwise success false and an error
 //===================================
-function processLogin($postData, $conn) {
+function processLogin($conn, $postData) {
 	
 	$email = trim($postData["email"]);
 	$password = trim($postData["password"]);

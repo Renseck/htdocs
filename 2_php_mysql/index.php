@@ -1,4 +1,5 @@
 <?php
+echo '<!DOCTYPE html>';
 echo '<link rel="stylesheet" type="text/css" href="stylesheets/mystyle.css">';
 require_once "pages/functions.php";
 require_once 'pages/db.php'; // Make sure $conn is available
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	// Handle login
 	if (isset($_POST["login"])) {
 		require_once "auth/authenticate.php";
-		$loginResult = processLogin($_POST, $conn);
+		$loginResult = processLogin($conn, $_POST);
 		if ($loginResult["success"]) {
 			$_SESSION["user_name"] = $loginResult["user_name"];
 			$_SESSION["user_email"] = $loginResult["user_email"];
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	// Handle registration
 	if (isset($_POST["register"])) {
 		require_once "auth/register_user.php";
-		$registerResult = processRegistration($_POST, $conn);
+		$registerResult = processRegistration($conn, $_POST);
 		if ($registerResult["success"]) {
 			// Automatically logs the user in - doesn't need to be done this way
 			$_SESSION["user_name"] = $registerResult["user_name"];
@@ -58,12 +59,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$_SESSION["form_data"] = $contactResult["form_data"];
 		}
 	}
+
+	// Handle adding items to cart
+	if (isset($_POST["add_to_cart"])) {
+		$product_id = $_POST["product_id"];
+		$quantity = $_POST["quantity"];
+
+		// Check if the product actually exists
+		$product = getItemFromProducts($conn, $product_id);
+		if ($product){
+			addToCart($product_id, $quantity);
+		}
+	}
+
+	// Handle updating item quantities from within the cart
+	if (isset($_POST["update_cart"])) {
+		$product_id = $_POST["product_id"];
+		$quantity = $_POST["quantity"];
+
+		updateCart($product_id, $quantity);
+	}
 }
 
 
 // 3. Display the result
 // Check if the requested page is allowed and boot out otherwise
-$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product"];
+$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product", "cart"];
 if (!in_array($page, $allowed_pages)){
 	$page = "404";
 }
@@ -117,7 +138,6 @@ switch($page)
 		
 		$userCreds = getUsersCreds();
 		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
-		
 		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
 		
 		showWebshop($conn, $isLoggedIn);
@@ -126,20 +146,34 @@ switch($page)
 	case "product":
 		require_once "pages/webshop.php";
 		
+		
 		$userCreds = getUsersCreds();
 		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
+		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
 		
 		$sql = "SELECT * FROM products WHERE id=?";
 		$stmt = mysqli_prepare($conn, $sql);
 		mysqli_stmt_bind_param($stmt, "i", $id);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
-		$row = mysqli_fetch_assoc($result);
+		$item = mysqli_fetch_assoc($result);
 		
-		showItemSingle($row);
+		showTitle($item["name"] . " - My first website");
+		showItemSingle($item, $isLoggedIn);
 		
 		break;
-	
+		
+	case "cart":
+		include "pages/shopping_cart.php";
+		showTitle("Shopping Cart - My first website");
+
+		$userCreds = getUsersCreds();
+		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
+		
+		showShoppingCart($conn, $_SESSION);
+
+		break;
+
 	case "login":
 		include "pages/login.php";
 		showTitle("Login - My first website");
