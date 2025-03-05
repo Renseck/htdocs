@@ -194,14 +194,19 @@ switch($page)
 
 		// If user is not logged in, tell em to log in or get lost
 		if (!$isLoggedIn) {
-			echo '<p>You have to be logged in to put items in your cart :(.</p>';
+			echo '<h3 style="text-align: center;">You have to be logged in to put items in your cart &#128533;.</h3>';
+			echo '<div style="display: flex; align-items: center; justify-content: center;">';
 			showLoginPleaseBtn();
+			echo '</div>';
 		}
 		
-		showShoppingCart($conn);
+		
 
-		if ($isLoggedIn && !empty($cart)) {
-			showCheckoutButton($isLoggedIn);
+		if ($isLoggedIn) {
+			showShoppingCart($conn);
+			if (!empty($cart)) {
+				showCheckoutButton($isLoggedIn);
+			}
 		}
 
 		break;

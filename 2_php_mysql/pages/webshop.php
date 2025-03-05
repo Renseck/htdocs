@@ -78,11 +78,3 @@ function showAddToCartBtn($item){
 	echo '</form>';
 }
 
-//===================================
-// Show the general login to order button
-//===================================
-function showLoginPleaseBtn(){
-	echo '<form method="post" action="index.php?page=login">';
-	echo '	<button type="submit" class="login-pls-btn">Login to order</button>';
-	echo '</form>';
-}
