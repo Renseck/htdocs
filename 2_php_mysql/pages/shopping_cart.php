@@ -1,5 +1,8 @@
 <?php
 
+//============================
+// Show the contents of the cart session
+//============================
 function showShoppingCart($conn) {
     $cart = $_SESSION["cart"] ?? [];
     echo '<h1>Shopping cart</h1>';
@@ -59,6 +62,9 @@ function showShoppingCart($conn) {
     echo '</form>';
 }
 
+//============================
+// Show the checkout button conditional on login status
+//============================
 function showCheckoutButton($isLoggedIn){
     if ($isLoggedIn){
         echo '<div class="cart-checkout">';
@@ -67,5 +73,7 @@ function showCheckoutButton($isLoggedIn){
         echo '  <button type="submit" name="checkout" class="checkout-btn" value="checkout">Checkout</button>';
         echo '  </form>';
         echo '</div>';
+    } else {
+        return;
     }
 }

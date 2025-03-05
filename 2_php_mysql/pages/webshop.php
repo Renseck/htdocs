@@ -67,6 +67,9 @@ function showItemSingle($item, $isLoggedIn) {
 	echo '</div>';
 }
 
+//===================================
+// Show the general add-to-cart button
+//===================================
 function showAddToCartBtn($item){
 	echo '<form method="post" class="order-form">';
 	echo '	<input type="hidden" name="product_id" value="' . $item['product_id'] . '">';
@@ -75,6 +78,9 @@ function showAddToCartBtn($item){
 	echo '</form>';
 }
 
+//===================================
+// Show the general login to order button
+//===================================
 function showLoginPleaseBtn(){
 	echo '<form method="post" action="index.php?page=login">';
 	echo '	<button type="submit" class="login-pls-btn">Login to order</button>';
