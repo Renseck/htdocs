@@ -195,7 +195,7 @@ switch($page)
 		// If user is not logged in, tell em to log in or get lost
 		if (!$isLoggedIn) {
 			echo '<p>You have to be logged in to put items in your cart :(.</p>';
-			echo '<a href="?page=login" class="button">Log in here</a>';
+			showLoginPleaseBtn();
 		}
 		
 		showShoppingCart($conn);

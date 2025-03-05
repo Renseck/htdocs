@@ -64,6 +64,15 @@ function check_input($data) {
 	return $data;
 }
 
+//===================================
+// Show the general login to order button
+//===================================
+function showLoginPleaseBtn(){
+	echo '<form method="post" action="index.php?page=login">';
+	echo '	<button type="submit" class="login-pls-btn">Login to order</button>';
+	echo '</form>';
+}
+
 //============================
 // Get product/item information from the `products` table
 //============================
