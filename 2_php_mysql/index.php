@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // 1. Determine what is being requested via $_GET
 // Get page from GET, set to home if none is found
 $page = $_GET["page"] ?? "home";
-$id = $_GET["id"] ?? 1;
+$id = $_GET["id"] ?? 2;
 
 // 2. Process any POST requests (so login, registration and the contact form)
 // Here, data will be written to $_SESSION so as to be usable in the different scope of step 3
@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		if ($loginResult["success"]) {
 			$_SESSION["user_name"] = $loginResult["user_name"];
 			$_SESSION["user_email"] = $loginResult["user_email"];
+			$_SESSION["user_id"] = $loginResult["user_id"];
 		} else {
 			$_SESSION["login_error"] = $loginResult["error"];
 		}
@@ -77,15 +78,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$product_id = $_POST["product_id"];
 		$quantity = $_POST["quantity"];
 
-		updateCart($product_id, $quantity);
+		foreach ($quantity as $id => $qty){
+			updateCart($id, $qty);
+		}
+		
+	}
+
+	// Handle removing items from the cart completely 
+	if (isset($_POST["remove_from_cart"])) {
+		$product_id = $_POST["remove_id"];
+		removeItemfromCart($product_id);
+	}
+
+	// Handle checkouts
+	if (isset($_POST["checkout"])) {
+		if (isset($_SESSION["user_name"])) {
+			// Write stuff to the database
+			processCheckout($conn);
+			// Facilitate the switch to the checkout page
+			$page = $_POST["page"];
+		}
+		
 	}
 }
 
 
 // 3. Display the result
 // Check if the requested page is allowed and boot out otherwise
-$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product", "cart"];
-if (!in_array($page, $allowed_pages)){
+$allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product", "cart", "checkout"];
+if (!in_array($page, $allowed_pages) || $id < 2){
 	$page = "404";
 }
 
@@ -146,32 +167,48 @@ switch($page)
 	case "product":
 		require_once "pages/webshop.php";
 		
-		
 		$userCreds = getUsersCreds();
 		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
 		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
 		
-		$sql = "SELECT * FROM products WHERE id=?";
-		$stmt = mysqli_prepare($conn, $sql);
-		mysqli_stmt_bind_param($stmt, "i", $id);
-		mysqli_stmt_execute($stmt);
-		$result = mysqli_stmt_get_result($stmt);
-		$item = mysqli_fetch_assoc($result);
+		$item = getItemFromProducts($conn, $id);
 		
-		showTitle($item["name"] . " - My first website");
-		showItemSingle($item, $isLoggedIn);
+		if ($item){
+			showTitle($item["name"] . " - My first website");
+			showItemSingle($item, $isLoggedIn);
+		} else {
+			echo "<h1>Product not found</h1>";
+		}
+		
 		
 		break;
 		
 	case "cart":
 		include "pages/shopping_cart.php";
-		showTitle("Shopping Cart - My first website");
+		showTitle("Shopping cart - My first website");
 
 		$userCreds = getUsersCreds();
 		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
-		
-		showShoppingCart($conn, $_SESSION);
+		$cart = $_SESSION["cart"] ?? [];
+		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
 
+		// If user is not logged in, tell em to log in or get lost
+		if (!$isLoggedIn) {
+			echo '<p>You have to be logged in to put items in your cart :(.</p>';
+			echo '<a href="?page=login" class="button">Log in here</a>';
+		}
+		
+		showShoppingCart($conn);
+
+		if ($isLoggedIn && !empty($cart)) {
+			showCheckoutButton($isLoggedIn);
+		}
+
+		break;
+	
+	case "checkout":
+		include "pages/checkout.php";
+		showCheckoutPage();
 		break;
 
 	case "login":

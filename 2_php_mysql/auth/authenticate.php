@@ -8,7 +8,7 @@ function processLogin($conn, $postData) {
 	$email = trim($postData["email"]);
 	$password = trim($postData["password"]);
 	
-	$sql = "SELECT name, email, password FROM users WHERE email=?";
+	$sql = "SELECT * FROM users WHERE email=?";
 	$select_statement = mysqli_prepare($conn, $sql);
 	mysqli_stmt_bind_param($select_statement, "s", $email);
 	mysqli_stmt_execute($select_statement);
@@ -23,12 +23,14 @@ function processLogin($conn, $postData) {
 		$stored_email = $row["email"];
 		$stored_name = $row["name"];
 		$stored_password = $row["password"];
+		$stored_id = $row["id"];
 		
 		if ($email == $stored_email && $password == $stored_password) {
 			return [
 				"success" => true,
 				"user_name" => $stored_name,
-				"user_email" => $stored_email
+				"user_email" => $stored_email,
+				"user_id" => $stored_id
 			];
 		} else {
 			return [

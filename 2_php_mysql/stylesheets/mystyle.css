@@ -14,14 +14,17 @@ h1 {
 ul.menu li {
     list-style:none;
 	border-style: solid;
+	background-color: lightblue;
 	border-width: 2px;
+	border-radius: 8px;
 	text-align: center;
+	padding: 3px;
 }
 
 ul.menu li > a {
 	text-decoration: none;
-	background-color: lightblue;
 	color: white;
+	padding: 3px;
 }
 
 .menu {
@@ -72,7 +75,7 @@ ul.menu li > a {
 .webshop {
 	display:grid;
 	grid-template-columns: auto auto auto; /* Responsive grid */
-	gap: 15x;
+	gap: 15px 0px;
 	padding: 10px;
 }
 
@@ -137,7 +140,7 @@ ul.menu li > a {
     border: 2px solid #ccc;
     border-radius: 5px;
     text-align: center;
-	item-align: right;
+	align-items: right;
     transition: border-color 0.3s;
 }
 
@@ -170,7 +173,10 @@ ul.menu li > a {
 }
 
 .order_card {
-	flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures everything inside is centered */
+    justify-content: center;
     max-width: 300px;
     padding: 20px;
     background: #fff;
@@ -194,7 +200,7 @@ ul.menu li > a {
     border: 2px solid #ccc;
     border-radius: 5px;
     text-align: center;
-	item-align: right;
+	align-items: right;
     transition: border-color 0.3s;
 }
 
@@ -207,6 +213,22 @@ ul.menu li > a {
 .img_highlight p {
 	color: grey;
 	font-size: 1.1em;
+}
+
+.login-pls-btn {
+    background-color: #2eb2cc;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+	margin-top: 0;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.login-pls-btn:hover {
+	background-color: #2ca6bf;
 }
 
 /* Shopping cart */
@@ -236,7 +258,7 @@ ul.menu li > a {
 	border-radius: 5px;
 }
 
-.shopping_cart button {
+.shopping_cart .update-btn {
 	padding: 5px 10px;
 	background-color: #007bff;
 	color: white;
@@ -246,8 +268,22 @@ ul.menu li > a {
 	transition: 0.3s ease;
 }
 
-.shopping_cart button:hover {
+.update-btn:hover {
 	background-color: #006bdd
+}
+
+.shopping_cart .remove-btn {
+	font-weight: bold;
+	font-size: 18px;
+	color: #ff4d4d;
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+	color: #cc0000;
 }
 
 .shopping_cart th,
@@ -257,9 +293,19 @@ ul.menu li > a {
     border-bottom: 1px solid #ddd;
 }
 
-.cart-table th {
-    background: #f4f4f4;
+.shopping_cart th {
+    background: #e9faff;
     font-weight: bold;
+}
+
+.shopping_cart .item {
+    background-color: white;
+    font-weight: bold;	
+}
+
+.shopping_cart .item:hover td {
+	background-color: #e3e3e3;
+	transition: background-color 0.25s ease;
 }
 
 .cart-checkout {
