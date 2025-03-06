@@ -3,16 +3,7 @@
 //======================================================================
 // Show contact form. Retains pre-filled fields and shows eror messages.
 //======================================================================
-function showContactForm($formData = [], $errorData = []) {
-	// Retrieve the session values, to show pre-filled fields and error messages. This structure with ? : works like if-elseif-else statements
-	// BONUS: pre-fill the username and email adress when opening the contact form when the user is logged in
-	//$name = isset($_SESSION["user_name"]) ? $_SESSION["user_name"] : (isset($_SESSION["form_data"]["name"]) ? $_SESSION["form_data"]["name"] : "");
-	//$email = isset($_SESSION["user_email"]) ? $_SESSION["user_email"] : (isset($_SESSION["form_data"]["email"]) ? $_SESSION["form_data"]["email"] : "");
-	//$message = isset($_SESSION["form_data"]["message"]) ? $_SESSION["form_data"]["message"] : "";
-	//$nameErr = isset($_SESSION["form_data"]["nameErr"]) ? $_SESSION["form_data"]["nameErr"] : "";
-	//$emailErr = isset($_SESSION["form_data"]["emailErr"]) ? $_SESSION["form_data"]["emailErr"] : "";
-	//$messageErr = isset($_SESSION["form_data"]["messageErr"]) ? $_SESSION["form_data"]["messageErr"] : "";
-	
+function showContactForm($formData = [], $errorData = []) {	
 	$name = $formData["name"] ?? "";
 	$email = $formData["email"] ?? "";
 	$message = $formData["message"] ?? "";

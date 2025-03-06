@@ -66,14 +66,10 @@ function showShoppingCart($conn) {
 // Show the checkout button conditional on login status
 //============================
 function showCheckoutButton($isLoggedIn){
-    if ($isLoggedIn){
-        echo '<div class="cart-checkout">';
-        echo '  <form method="post">';
-        echo '  <input type="hidden" name="page" value="checkout">';
-        echo '  <button type="submit" name="checkout" class="checkout-btn" value="checkout">Checkout</button>';
-        echo '  </form>';
-        echo '</div>';
-    } else {
-        return;
-    }
+    echo '<div class="cart-checkout">';
+    echo '  <form method="post">';
+    echo '  <input type="hidden" name="page" value="checkout">';
+    echo '  <button type="submit" name="checkout" class="checkout-btn" value="checkout">Checkout</button>';
+    echo '  </form>';
+    echo '</div>';
 }

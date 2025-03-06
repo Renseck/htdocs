@@ -38,11 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (isset($_POST["register"])) {
 		require_once "auth/register_user.php";
 		$registerResult = processRegistration($conn, $_POST);
-		if ($registerResult["success"]) {
-			// Automatically logs the user in - doesn't need to be done this way
-			$_SESSION["user_name"] = $registerResult["user_name"];
-			$_SESSION["user_email"] = $registerResult["user_email"];
-		} else {
+		if (!$registerResult["success"]) {
 			$_SESSION["register_error"] = $registerResult["error"];
 		}
 	}
@@ -106,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // 3. Display the result
 // Check if the requested page is allowed and boot out otherwise
 $allowed_pages = ["home", "about", "contact", "webshop", "login", "register", "logout", "product", "cart", "checkout"];
-if (!in_array($page, $allowed_pages) || $id < 2){
+if (!in_array($page, $allowed_pages)){
 	$page = "404";
 }
 
@@ -189,8 +185,8 @@ switch($page)
 
 		$userCreds = getUsersCreds();
 		$conn = connectDatabase($userCreds["db_host"], $userCreds["db_name"], $userCreds["db_user"], $userCreds["db_pass"]);
-		$cart = $_SESSION["cart"] ?? [];
 		$isLoggedIn = isset($_SESSION["user_name"]) ? : false;
+		$cart = $_SESSION["cart"] ?? [];
 
 		// If user is not logged in, tell em to log in or get lost
 		if (!$isLoggedIn) {
@@ -200,8 +196,6 @@ switch($page)
 			echo '</div>';
 		}
 		
-		
-
 		if ($isLoggedIn) {
 			showShoppingCart($conn);
 			if (!empty($cart)) {
@@ -213,6 +207,7 @@ switch($page)
 	
 	case "checkout":
 		include "pages/checkout.php";
+		showTitle("Checkout - My first website");
 		showCheckoutPage();
 		break;
 
@@ -252,6 +247,7 @@ switch($page)
 		
 	case "404":
 		include  "pages/404.php";
+		showTitle("Page not found - My first website");
 		showPage404();
 		break;
 		
