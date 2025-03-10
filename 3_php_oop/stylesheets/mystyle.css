@@ -47,6 +47,18 @@ ul.menu li > a {
 
 /* Contact form */
 
+.contact-form {
+	display: block;
+	text-align: center;
+}
+
+.contact-form form {
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+
 .input-group {
 	margin-bottom: 15px;
 	display: flex;
@@ -62,6 +74,10 @@ ul.menu li > a {
 .input-group input {
 	width: 400px; 
 } 
+
+.input-group textarea {
+	width: 400px;
+}
 
 .error {
 	color: red;
