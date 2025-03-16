@@ -1,5 +1,7 @@
 <?php
+
 namespace view;
+
 require_once 'classes/view/htmldocument.php';
 
 class registerPage extends \view\htmlDoc 

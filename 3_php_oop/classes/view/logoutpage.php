@@ -1,6 +1,9 @@
 <?php
+
 namespace view;
+
 require_once 'classes/view/htmldocument.php';
+
 use controller\sessionController;
 
 class logoutPage extends \view\htmlDoc 

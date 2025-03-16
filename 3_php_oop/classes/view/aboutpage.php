@@ -1,25 +1,27 @@
 <?php
+
 namespace view;
+
 require_once 'classes/view/htmldocument.php';
 
-class aboutPage extends \view\htmlDoc 
+class aboutPage extends \view\htmlDoc
 {
 	// =====================================================================
-    public function __construct($pages)
+	public function __construct($pages)
 	{
-        parent::__construct("About", $pages);
-    }
+		parent::__construct("About", $pages);
+	}
 	// =====================================================================
-    public function showHeader()
+	public function showHeader()
 	{
-        echo '<h2>About me</h2>';
-    }
+		echo '<h2>About me</h2>';
+	}
 	// =====================================================================
-    public function bodyContent()
+	public function bodyContent()
 	{
-        parent::bodyContent();
-        $this->showHeader();
-        echo '<div class="maintext">
+		parent::bodyContent();
+		$this->showHeader();
+		echo '<div class="maintext">
 		<p>
 		Rens is a scientist with a background in physics and climate science.
 		With a passion for understanding complex system, he has worked on research ranging
@@ -39,6 +41,6 @@ class aboutPage extends \view\htmlDoc
 		engage with the ever-evolving landscapes of science and technology.
 		</p>
 		</div>';
-    }
+	}
 	// =====================================================================
 }

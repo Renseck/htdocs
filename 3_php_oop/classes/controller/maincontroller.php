@@ -1,15 +1,17 @@
 <?php
+
 namespace controller;
 
 use config\pageConfig;
 use controller\sessionController;
+use view\homePage;
 
-class mainController 
+class mainController
 {
     // =====================================================================
     private $pages;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->pages = pageConfig::getPages();
     }
