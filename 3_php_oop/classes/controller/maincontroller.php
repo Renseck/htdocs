@@ -83,7 +83,7 @@ class mainController
 
     private function handleLogin()
     {
-
+        echo "<h1>Handling login</h1>";
     }
     // =============================================================================================
 

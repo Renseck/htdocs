@@ -19,7 +19,7 @@ class loginPage extends \view\htmlDoc
         parent::bodyContent();
         echo '<div class="contact-form">'
             .PHP_EOL
-                .'<form method="POST" acton="index.php?page=login">'
+                .'<form method="POST" action="index.php?page=login&action=login">'
                 .PHP_EOL
                     .'<div class="input-group">'
                     .PHP_EOL
@@ -44,6 +44,6 @@ class loginPage extends \view\htmlDoc
             .'</div>'
             .PHP_EOL;
     }
-    
+
     // =====================================================================
 }
