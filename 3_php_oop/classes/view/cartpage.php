@@ -14,6 +14,7 @@ class cartPage extends \view\htmlDoc
         parent::__construct("Shopping cart", $pages);
         $this->setPageHeaderText("Shopping cart");
     }
+
     // =====================================================================
     public function bodyContent()
     {
@@ -21,4 +22,6 @@ class cartPage extends \view\htmlDoc
         echo '<p> this is going to show the contents of the shopping cart at some point'
             . PHP_EOL;
     }
+
+    // =============================================================================================
 }

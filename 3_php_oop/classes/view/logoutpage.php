@@ -13,6 +13,7 @@ class logoutPage extends \view\htmlDoc
     {
         parent::__construct("Logout", $pages);
     }
+
     // =====================================================================
     public function bodyContent() 
     {
@@ -21,5 +22,6 @@ class logoutPage extends \view\htmlDoc
         echo '<p>You have been logged out.</p>'
             .PHP_EOL;
     }
+    
     // =====================================================================
 }

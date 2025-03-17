@@ -12,6 +12,7 @@ class contactPage extends \view\htmlDoc
         parent::__construct("Contact", $pages);
         $this->setPageHeaderText("Contact us");
     }
+
     // =====================================================================
     public function bodyContent()
     {
@@ -53,5 +54,6 @@ class contactPage extends \view\htmlDoc
             . '</div>'
             . PHP_EOL;
     }
+    
     // =====================================================================
 }

@@ -11,11 +11,13 @@ class aboutPage extends \view\htmlDoc
 	{
 		parent::__construct("About", $pages);
 	}
+	
 	// =====================================================================
 	public function showHeader()
 	{
 		echo '<h2>About me</h2>';
 	}
+
 	// =====================================================================
 	public function bodyContent()
 	{
@@ -42,5 +44,6 @@ class aboutPage extends \view\htmlDoc
 		</p>
 		</div>';
 	}
+	
 	// =====================================================================
 }

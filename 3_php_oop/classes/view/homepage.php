@@ -11,6 +11,7 @@ class homePage extends \view\htmlDoc
     {
         parent::__construct("Home", $pages);
     }
+    
     // =====================================================================
     public function bodyContent()
     {
@@ -22,5 +23,6 @@ class homePage extends \view\htmlDoc
             . '</div>'
             . PHP_EOL;
     }
+
     // =====================================================================
 }

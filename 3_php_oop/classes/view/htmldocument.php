@@ -22,6 +22,7 @@ class htmlDoc
 			$this->pages = $pages;
 		}
 	}
+
 	// =====================================================================
 	protected function beginDoc()
 	{
@@ -30,12 +31,14 @@ class htmlDoc
 			. '<html>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function beginHeader()
 	{
 		echo '<head>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function headerContent()
 	{
@@ -46,36 +49,42 @@ class htmlDoc
 				. PHP_EOL;
 		}
 	}
+
 	// =====================================================================
 	protected function endHeader()
 	{
 		echo '</head>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function beginBody()
 	{
 		echo '<body>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function showMainHeader()
 	{
 		echo '<h1>Hello world!</h1>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function showPageSubheader()
 	{
 		echo '<h2 style="text-align:center;">' . $this->pageHeaderText . '</h2>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function bodyContent()
 	{
 		$this->showHyperlinkMenu();
 		$this->showPageSubheader();
 	}
+
 	// =====================================================================
 	protected function showHyperlinkMenu()
 	{
@@ -98,6 +107,7 @@ class htmlDoc
 		echo '</ul>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function showFooter()
 	{
@@ -106,28 +116,33 @@ class htmlDoc
 			. '<footer class="footer">&copy;&nbsp;' . date("Y") . '&nbsp;Rens van Eck</footer>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function endBody()
 	{
 		echo '</body>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	protected function endDoc()
 	{
 		echo '</html>'
 			. PHP_EOL;
 	}
+
 	// =====================================================================
 	public function addCSS($cssFile)
 	{
 		$this->cssFiles[] = $cssFile;
 	}
+
 	// =====================================================================
 	public function setPageHeaderText($text = "")
 	{
 		$this->pageHeaderText = $text;
 	}
+
 	// =====================================================================
 	public function show()
 	{
@@ -142,5 +157,6 @@ class htmlDoc
 		$this->endBody();
 		$this->endDoc();
 	}
+	
 	// =====================================================================
 }

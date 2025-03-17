@@ -12,6 +12,7 @@ class webshopPage extends \view\htmlDoc
         parent::__construct("Webshop", $pages);
         $this->setPageHeaderText("Webshop");
     }
+
     // =====================================================================
     public function bodyContent()
     {
@@ -23,5 +24,6 @@ class webshopPage extends \view\htmlDoc
             . '</div>'
             . PHP_EOL;
     }
+    
     // =====================================================================
 }

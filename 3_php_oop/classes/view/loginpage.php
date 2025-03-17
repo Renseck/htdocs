@@ -12,6 +12,7 @@ class loginPage extends \view\htmlDoc
         parent::__construct("Login", $pages);
         $this->setPageHeaderText("Login");
     }
+
     // =====================================================================
     public function bodyContent()
     {
@@ -43,5 +44,6 @@ class loginPage extends \view\htmlDoc
             .'</div>'
             .PHP_EOL;
     }
+    
     // =====================================================================
 }
