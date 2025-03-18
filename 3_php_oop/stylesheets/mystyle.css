@@ -1,4 +1,4 @@
-/* Main body portion, hyperlink menu at the top */
+/* ======================== Main body portion, hyperlink menu at the top ======================== */
 
 body {
   width: 800px;
@@ -19,6 +19,11 @@ ul.menu li {
   border-radius: 8px;
   text-align: center;
   padding: 3px;
+  transition: background-color 0.2s ease;
+}
+
+ul.menu li:hover {
+  background-color: rgb(112, 199, 227);
 }
 
 ul.menu li > a {
@@ -45,7 +50,35 @@ ul.menu li > a {
   text-align: right;
 }
 
-/* Contact form */
+.messages {
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px;
+}
+
+.message {
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  text-align: center;
+  font-weight: bold;
+}
+
+.message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ======================================== Contact form ======================================== */
 
 .contact-form {
   display: block;
@@ -79,14 +112,7 @@ ul.menu li > a {
   width: 400px;
 }
 
-.error {
-  color: red;
-  padding-left: 3px;
-  text-align: left;
-  font-weight: bold;
-}
-
-/* Webshop */
+/* =========================================== Webshop ========================================== */
 
 .webshop {
   display: grid;
@@ -165,6 +191,41 @@ ul.menu li > a {
   outline: none;
 }
 
+.search-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.search-input {
+  padding: 8px;
+  width: 300px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+.search-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #45a049;
+}
+
 .add-to-cart-btn {
   background-color: #2ecc71; /* Green color */
   color: #fff;
@@ -180,7 +241,7 @@ ul.menu li > a {
   background-color: #27ae60; /* Darker green on hover */
 }
 
-/* Product info page */
+/* ====================================== Product info page ===================================== */
 
 .product_container {
   display: flex;
@@ -247,7 +308,7 @@ ul.menu li > a {
   background-color: #2ca6bf;
 }
 
-/* Shopping cart */
+/* ======================================== Shopping cart ======================================= */
 
 .shopping_cart {
   width: 100%;

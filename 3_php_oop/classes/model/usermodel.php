@@ -53,7 +53,7 @@ class userModel
      */
     public function emailExists($email)
     {
-        $result = $this->crud->readOne(['email' => $email], 'COUNT(*) as count');
-        return isset($result[0]["count"]) && $result[0]["count"] > 0;
+        $result = $this->crud->read('*', ['email' => $email]);
+        return !empty($result);
     }
 }

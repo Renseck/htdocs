@@ -76,4 +76,6 @@ class authController
 
         return ['success' => false, 'message' => 'Registration failed - please try again'];
     }
+
+    // =============================================================================================
 }

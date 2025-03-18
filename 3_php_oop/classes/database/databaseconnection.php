@@ -16,7 +16,7 @@ class databaseConnection
         try 
         {
             $this->conn = new \PDO(
-                "mysql:host=" . $creds['db_host'] . ";dbname=" . $creds['db_name'],
+                "mysql:host={$creds['db_host']};dbname={$creds['db_name']}",
                 $creds['db_user'],
                 $creds['db_pass'],
                 [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]

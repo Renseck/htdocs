@@ -9,8 +9,8 @@ class registerPage extends \view\htmlDoc
     // =====================================================================
     public function __construct($pages)
     {
-        parent::__construct("Login", $pages);
-        $this->setPageHeaderText("Login");
+        parent::__construct("Register", $pages);
+        $this->setPageHeaderText("Register");
     }
 
     // =====================================================================
@@ -19,7 +19,7 @@ class registerPage extends \view\htmlDoc
         parent::bodyContent();
         echo '<div class="contact-form">'
             .PHP_EOL
-                .'<form method="POST" acton="index.php?page=register">'
+                .'<form method="POST" action="index.php?page=register&action=register">'
                 .PHP_EOL
                     .'<div class="input-group">'
                     .PHP_EOL
