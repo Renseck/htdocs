@@ -51,4 +51,26 @@ class sessionController
     }
 
     // =============================================================================================
+    public static function parseResult($result, $successPage, $errorPage)
+    {
+        if ($result["success"])
+        {
+            sessionController::setMessage("success", $result["message"]);
+            
+            if (!empty($successPage))
+            {
+                $_GET["page"] = $successPage;
+            }
+            
+        } 
+        else 
+        {
+            sessionController::setMessage("error", $result["message"]);
+            if (!empty($errorPage))
+            {
+                $_GET["page"] = $errorPage;
+            }
+            
+        }
+    }
 }

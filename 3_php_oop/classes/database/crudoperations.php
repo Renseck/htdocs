@@ -185,4 +185,14 @@ class crudOperations
         $stmt->execute($params);
         return $stmt;
     }
+
+    // =============================================================================================
+    /**
+     * Get the last PDO error info
+     * @return array Error information
+     */
+    public function getLastErrorInfo()
+    {
+        return $this->db->errorInfo();
+    }
 }

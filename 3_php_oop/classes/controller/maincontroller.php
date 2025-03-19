@@ -5,18 +5,21 @@ namespace controller;
 use config\pageConfig;
 use controller\sessionController;
 use controller\authController;
+use controller\cartController;
 use view\homePage;
 
 class mainController
 {
     private $pages;
     private $authController;
+    private $cartController;
 
     // =============================================================================================
     public function __construct()
     {
         $this->pages = pageConfig::getPages();
         $this->authController = new authController();
+        $this->cartController = new cartController();
         sessionController::startSession();
     }
 
@@ -59,6 +62,22 @@ class mainController
 
             case 'addtocart':
                 $this->handleAddToCart();
+                break;
+
+            case 'updatecart':
+                $this->handleUpdateCart();
+                break;
+
+            case 'removefromcart':
+                $this->handleRemoveFromCart();
+                break;
+
+            case 'clearcart':
+                $this->handleClearCart();
+                break;
+
+            case 'checkout':
+                $this->handleCheckout();
                 break;
                 
             default:
@@ -106,18 +125,8 @@ class mainController
         // Let the authController do the actual logging in
         $result = $this->authController->login($email, $password);
 
-        if ($result["success"])
-        {
-            sessionController::setMessage("success", "Login successful");
-            // Redirect to the home page - could take the user anywhere
-            $_GET["page"] = "home";
-        } 
-        else 
-        {
-            sessionController::setMessage("error", $result["message"]);
-            // Reload the login page for the user to try again
-            $_GET["page"] = "login";
-        }
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "home", $errorPage = "login");
     }
     // =============================================================================================
 
@@ -138,18 +147,8 @@ class mainController
 
         $result = $this->authController->register($name, $email, $password, $passwordRepeat);
 
-        if ($result["success"])
-        {
-            sessionController::setMessage("success", "Registration successful");
-            // Redirect to the login page - could take the user anywhere
-            $_GET["page"] = "login";
-        } 
-        else 
-        {
-            sessionController::setMessage("error", $result["message"]);
-            // Reload the register page for the user to try again
-            $_GET["page"] = "register";
-        }
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "login", $errorPage = "register");
     }
     // =============================================================================================
 
@@ -183,7 +182,6 @@ class mainController
     }
     // =============================================================================================
 
-    
     private function handleAddToCart()
     {
         // Check if the user is somehow trying to put items into the cart without being logged in
@@ -197,32 +195,83 @@ class mainController
         $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
         $quantity = isset($_POST["quantity"]) ? (int)$_POST["quantity"] : 0;
 
-        // Check if the product id and quantity are allowable
-        if ($productId <= 0 || $quantity <= 0)
+        $result = $this->cartController->addToCart($productId, $quantity);
+
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "webshop", $errorPage = "webshop");
+    }
+    // =============================================================================================
+
+    private function handleUpdateCart()
+    {
+        if (!sessionController::isLoggedIn())
         {
-            sessionController::setMessage("error", "Invalid product or quantity");
-            $_GET["page"] = "webshop";
-            exit;
+            sessionController::setMessage("error", "Please log in to update your cart");
+            $_GET["page"] = "login";
+            return;
         }
 
-        // ? Should some of the processes here be delegated to a cartController or a cartModel? // 
-        // Initialize cart session if it doesn't exist yet
-        if (!isset($_SESSION["cart"]))
+        $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
+        $quantity = isset($_POST["quantity"]) ? (int)$_POST["quantity"] : 0;
+
+        $result = $this->cartController->updateCartItem($productId, $quantity);
+
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
+    }
+    // =============================================================================================
+
+    private function handleRemoveFromCart()
+    {
+        if (!sessionController::isLoggedIn())
         {
-            $_SESSION["cart"] = [];
+            sessionController::setMessage("error", "Please log in to update your cart");
+            $_GET["page"] = "login";
+            return;
         }
 
-        // Add or update number of items in the cart
-        if (isset($_SESSION["cart"][$productId]))
+        $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
+
+        $result = $this->cartController->removeFromCart($productId);
+
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
+    }
+    // =============================================================================================
+
+    private function handleClearCart()
+    {
+        if (!sessionController::isLoggedIn())
         {
-            $_SESSION["cart"][$productId] += $quantity;
-        }
-        else
-        {
-            $_SESSION["cart"][$productId] = $quantity;
+            sessionController::setMessage("error", "Please log in to update your cart");
+            $_GET["page"] = "login";
+            return;
         }
 
-        // sessionController::setMessage("success", "Product added to cart");
-        $_GET["page"] = "webshop";
+        $result = $this->cartController->clearCart();
+
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
+    }
+    // =============================================================================================
+
+    private function handleCheckout()
+    {
+        if (!sessionController::isLoggedIn())
+        {
+            sessionController::setMessage("error", "Please log in to update your cart");
+            $_GET["page"] = "login";
+            return;
+        }
+
+        $result = $this->cartController->checkout();
+
+        if ($result["success"])
+        {
+            $_SESSION["last_order_id"] = $result["order_id"];
+        }
+
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = "confirmation", $errorPage = "cart");
     }
 }

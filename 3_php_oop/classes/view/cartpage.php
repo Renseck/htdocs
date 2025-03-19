@@ -3,16 +3,14 @@
 namespace view;
 
 require_once 'classes/view/htmldocument.php';
-require_once 'classes/model/productmodel.php';
 
 use controller\sessionController;
-use model\productModel;
+use controller\cartController;
 
 class cartPage extends \view\htmlDoc
 {
-    private $productModel;
-    private $cart;
-    private $products = [];
+    private $cartController;
+    private $cartData;
 
     // =====================================================================
     public function __construct($pages)
@@ -20,22 +18,11 @@ class cartPage extends \view\htmlDoc
         parent::__construct("Shopping cart", $pages);
         $this->setPageHeaderText("Shopping cart");
 
-        // Init cart data
-        $this->productModel = new productModel();
-        $this->cart = $_SESSION["cart"] ?? [];
-
-        // Get product info for every item in the cart
-        if (!empty($this->cart))
-        {
-            foreach(array_keys($this->cart) as $productId)
-            {
-                $product = $this->productModel->getProductById($productId);
-                if ($product)
-                {
-                    $this->products[$productId] = $product;
-                }
-            }
-        }
+        // Initialize cart controller
+        $this->cartController = new cartController();
+        
+        // Get cart data
+        $this->cartData = $this->cartController->getCartWithDetails();
     }
 
     // =====================================================================
@@ -43,7 +30,18 @@ class cartPage extends \view\htmlDoc
     {
         parent::bodyContent();
 
-        if (empty($this->cart)) {
+        // Check if the user is logged in
+        if (!sessionController::isLoggedIn())
+        {
+            echo '<div class="not-logged-in">';
+            echo '<p>Please <a href="index.php?page=login">log in</a> to view your cart.</p>';
+            echo '</div>';
+            return;
+        }
+
+        // Check if the cart is empty
+        if (empty($this->cartData["items"])) 
+        {
             echo '<div class="empty-cart">';
             echo '<p>Your cart is empty.</p>';
             echo '<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>';
@@ -69,36 +67,33 @@ class cartPage extends \view\htmlDoc
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
-        
-        $totalPrice = 0;
 
-        foreach ($this->products as $productId => $product) {
-            $quantity = $this->cart[$productId];
+        foreach ($this->cartData['items'] as $item) {
+            $product = $item['product'];
+            $productId = $item['product_id'];
+            $quantity = $item['quantity'];
             $price = $product['price'];
-            $itemTotal = $quantity * $price;
-            $totalPrice += $itemTotal;
+            $itemTotal = $item['item_total'];
             
-            $imagePath = "assets/images/" . htmlspecialchars($product['image']);
-            if (!file_exists($imagePath)) {
-                $imagePath = "assets/images/placeholder.png";
-            }
+            $productName = htmlspecialchars($product['name']);
+            $productImage = !empty($product['image']) ? htmlspecialchars($product['image']) : 'placeholder.png';
             
-            echo '<tr class="item">';
-            echo '<td><img src="' . $imagePath . '" alt="' . htmlspecialchars($product['name']) . '"></td>';
-            echo '<td>' . htmlspecialchars($product['name']) . '</td>';
-            echo '<td>€' . number_format($price, 2) . '</td>';
-            echo '<td>';
+            echo '<tr>';
+            echo '<td class="product-image"><img src="assets/images/' . $productImage . '" alt="' . $productName . '"></td>';
+            echo '<td class="product-name">' . $productName . '</td>';
+            echo '<td class="product-price">€' . number_format($price, 2) . '</td>';
+            echo '<td class="product-quantity">';
             echo '<form method="POST" action="index.php?page=cart&action=updatecart">';
             echo '<input type="hidden" name="product_id" value="' . $productId . '">';
-            echo '<input type="number" name="quantity" value="' . $quantity . '" min="1" max="99">';
+            echo '<input type="number" name="quantity" value="' . $quantity . '" min="1" max="99" class="quantity-input">';
             echo '<button type="submit" class="update-btn">Update</button>';
             echo '</form>';
             echo '</td>';
-            echo '<td>€' . number_format($itemTotal, 2) . '</td>';
-            echo '<td>';
+            echo '<td class="product-total">€' . number_format($itemTotal, 2) . '</td>';
+            echo '<td class="product-action">';
             echo '<form method="POST" action="index.php?page=cart&action=removefromcart">';
             echo '<input type="hidden" name="product_id" value="' . $productId . '">';
-            echo '<button type="submit" class="remove-btn">×</button>';
+            echo '<button type="submit" class="remove-btn">Remove</button>';
             echo '</form>';
             echo '</td>';
             echo '</tr>';
@@ -107,14 +102,20 @@ class cartPage extends \view\htmlDoc
         echo '</tbody>';
         echo '<tfoot>';
         echo '<tr>';
-        echo '<td colspan="4" style="text-align: right;"><strong>Total:</strong></td>';
-        echo '<td colspan="2">€' . number_format($totalPrice, 2) . '</td>';
+        echo '<td colspan="4" class="cart-total-label">Total:</td>';
+        echo '<td colspan="2" class="cart-total-value">€' . number_format($this->cartData['total_price'], 2) . '</td>';
         echo '</tr>';
         echo '</tfoot>';
         echo '</table>';
         
-        echo '<div class="cart-checkout">';
-        echo '<a href="index.php?page=cart&action=checkout" class="checkout-btn">Checkout</a>';
+        echo '<div class="cart-actions">';
+        echo '<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>';
+        echo '<form method="POST" action="index.php?page=cart&action=clearcart" class="clear-cart-form">';
+        echo '<button type="submit" class="clear-cart-btn">Clear Cart</button>';
+        echo '</form>';
+        echo '<form method="POST" action="index.php?page=cart&action=checkout" class="checkout-form">';
+        echo '<button type="submit" class="checkout-btn">Proceed to Checkout</button>';
+        echo '</form>';
         echo '</div>';
     }
 

@@ -3,6 +3,7 @@
 namespace view;
 
 use controller\sessionController;
+use controller\cartController;
 
 class htmlDoc
 {
@@ -10,6 +11,7 @@ class htmlDoc
 	protected $cssFiles = ["stylesheets/mystyle.css"];
 	protected $pages = ["Home"];
 	protected $pageHeaderText = "";
+	private $cartController;
 
 	// ================================================================================================
 	protected function __construct($title = null, $pages = [])
@@ -21,6 +23,8 @@ class htmlDoc
 		if ($pages) {
 			$this->pages = $pages;
 		}
+
+		$this->cartController = new cartController();
 	}
 
 	// ================================================================================================
@@ -93,21 +97,36 @@ class htmlDoc
 			. PHP_EOL;
 		foreach ($this->pages as $key => $class) {
 			// Hide "Register" and "Login" if the user is logged in 
-			if (sessionController::isLoggedIn() && in_array($key, ["register", "login"])) {
+			if (sessionController::isLoggedIn() && in_array($key, ["register", "login"]))
+			{
 				continue;
 			}
 
 			// Hide "Logout" if the user is NOT logged in
-			if (!sessionController::isLoggedIn() && in_array($key, ["logout", "cart"])) {
+			if (!sessionController::isLoggedIn() && in_array($key, ["logout", "cart"]))
+			{
+				continue;
+			}
+
+			// Don't show the confirmation page at all
+			if ($key === "confirmation")
+			{
 				continue;
 			}
 
 			// For logout, show the username in the buttton
-			if ($key === "logout" && sessionController::isLoggedIn()){
+			if ($key === "logout" && sessionController::isLoggedIn())
+			{
 				$currentUser = sessionController::getCurrentuser();
 				$userName = htmlspecialchars($currentUser['name'] ?? 'User');
 				$firstName = explode(" ", $userName)[0];
 				echo '<li><a href="?page=' . $key . '">' . strtoupper($key) . ' [' . strtoupper($firstName) . ']</a></li>'
+				. PHP_EOL;
+			}
+			elseif ($key === "cart" && sessionController::isLoggedIn())
+			{
+				$itemCount = $this->cartController->getItemCount();
+				echo '<li><a href="?page=' . $key . '">' . strtoupper($key) . ' [' . number_format($itemCount) . ']</a></li>'
 				. PHP_EOL;
 			}
 			else
