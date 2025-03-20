@@ -15,7 +15,8 @@ class pageConfig
             "register" => "view\\registerPage",
             "logout" => "view\\logoutPage",
             "cart" => "view\\cartPage",
-            "confirmation" => "view\\confirmationPage"
+            "confirmation" => "view\\confirmationPage",
+            "product" => "view\\productPage"
         ];
     }
     

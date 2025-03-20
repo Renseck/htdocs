@@ -29,7 +29,6 @@ class mainController
         // First, handle any POST actions (form submissions)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handlePostRequest();
-            // return; // POST handling includes redirection, so we don't continue to GET handling
         }
         
         // Then handle GET requests (page display)
@@ -37,7 +36,6 @@ class mainController
     }
 
     // =============================================================================================
-
     private function handlePostRequest()
     {
         // Determine which form was submitted based on URL parameters
@@ -90,7 +88,6 @@ class mainController
     }
 
     // =============================================================================================
-
     private function handleGetRequest()
     {
         // Get the requested page from URL parameter, default to home
@@ -108,7 +105,6 @@ class mainController
     }
 
     // =============================================================================================
-
     private function handleLogin()
     {
         $email = isset($_POST["email"]) ? $_POST["email"] : "";
@@ -128,8 +124,8 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "home", $errorPage = "login");
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleRegistration()
     {
         $name = isset($_POST["name"]) ? $_POST["name"] : "";
@@ -150,8 +146,8 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "login", $errorPage = "register");
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleLogout()
     {   
         sessionController::logout();
@@ -159,8 +155,8 @@ class mainController
         // Redirect to home
         $_GET["page"] = "home";
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleContactSubmission()
     {
         $name = isset($_POST["name"]) ? $_POST["name"] : "";
@@ -180,8 +176,8 @@ class mainController
         sessionController::setMessage("success", "Thank you for contacting us");
         $_GET["page"] = "contact";
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleAddToCart()
     {
         // Check if the user is somehow trying to put items into the cart without being logged in
@@ -197,11 +193,20 @@ class mainController
 
         $result = $this->cartController->addToCart($productId, $quantity);
 
-        // Parse the result 
-        sessionController::parseResult($result, $successPage = "webshop", $errorPage = "webshop");
-    }
-    // =============================================================================================
+        // Check where the user is adding the item to the cart from
+        $returnPage = $_GET["page"];
+    
+        // For product pages, include the ID in the return page
+        if ($returnPage === "product" && isset($_GET["id"]))
+        {
+            $returnPage = "product&id=" . $_GET["id"];
+        }
 
+        // Parse the result 
+        sessionController::parseResult($result, $successPage = $returnPage, $errorPage = $returnPage);
+    }
+
+    // =============================================================================================
     private function handleUpdateCart()
     {
         if (!sessionController::isLoggedIn())
@@ -219,8 +224,8 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleRemoveFromCart()
     {
         if (!sessionController::isLoggedIn())
@@ -237,8 +242,8 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleClearCart()
     {
         if (!sessionController::isLoggedIn())
@@ -253,8 +258,8 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "cart", $errorPage = "cart");
     }
-    // =============================================================================================
 
+    // =============================================================================================
     private function handleCheckout()
     {
         if (!sessionController::isLoggedIn())

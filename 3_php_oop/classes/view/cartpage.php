@@ -42,7 +42,7 @@ class cartPage extends \view\htmlDoc
         // Check if the cart is empty
         if (empty($this->cartData["items"])) 
         {
-            echo '<div class="empty-cart">';
+            echo '<div class="empty-cart-message">';
             echo '<p>Your cart is empty.</p>';
             echo '<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>';
             echo '</div>';
@@ -93,7 +93,7 @@ class cartPage extends \view\htmlDoc
             echo '<td class="product-action">';
             echo '<form method="POST" action="index.php?page=cart&action=removefromcart">';
             echo '<input type="hidden" name="product_id" value="' . $productId . '">';
-            echo '<button type="submit" class="remove-btn">Remove</button>';
+            echo '<button type="submit" class="remove-btn">❌</button>';
             echo '</form>';
             echo '</td>';
             echo '</tr>';
@@ -102,8 +102,8 @@ class cartPage extends \view\htmlDoc
         echo '</tbody>';
         echo '<tfoot>';
         echo '<tr>';
-        echo '<td colspan="4" class="cart-total-label">Total:</td>';
-        echo '<td colspan="2" class="cart-total-value">€' . number_format($this->cartData['total_price'], 2) . '</td>';
+        echo '<td></td><td class="cart-total-label">Total:</td>';
+        echo '<td></td><td></td><td class="cart-total-value">€' . number_format($this->cartData['total_price'], 2) . '</td>';
         echo '</tr>';
         echo '</tfoot>';
         echo '</table>';

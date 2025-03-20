@@ -17,48 +17,21 @@ class registerPage extends \view\htmlDoc
     public function bodyContent()
     {
         parent::bodyContent();
-        echo '<div class="contact-form">'
-            .PHP_EOL
-                .'<form method="POST" action="index.php?page=register&action=register">'
-                .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="name">Name:</label><br>'
-                        .PHP_EOL
-                        .'<input type="name" id="name" name="name" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="email">Email:</label><br>'
-                        .PHP_EOL
-                        .'<input type="email" id="email" name="email" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="password">Password:</label><br>'
-                        .PHP_EOL
-                        .'<input type="password" id="password" name="password" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="password">Password repeat:</label><br>'
-                        .PHP_EOL
-                        .'<input type="password" id="password" name="password_repeat" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<input type="submit" value="Register">'
-                    .PHP_EOL
-                .'</form>'
-                .PHP_EOL
-            .'</div>'
-            .PHP_EOL;
+
+        $formInfo = [
+            "action" => "register",
+            "page" => "register",
+            "fields" => [
+                ["type" => "name", "name" => "name", "required" => true],
+                ["type" => "email", "name" => "email", "required" => true],
+                ["type" => "password", "name" => "password", "required" => true],
+                ["type" => "password", "name" => "password_repeat", "label" => "Password repeat", "required" => true],
+            ],
+            "submitText" => "Register",
+            "extraHtml" => '<p>Already have an account? <a href="index.php?page=login">Login here</a></p>'
+        ];
+
+        $this->showForm($formInfo);
     }
     
     // =====================================================================

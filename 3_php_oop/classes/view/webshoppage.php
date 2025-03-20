@@ -106,9 +106,11 @@ class webshopPage extends \view\htmlDoc
 
         echo '<div class="product">'
             . PHP_EOL
+            . '<a href="index.php?page=product&id=' . $productId . '">'
             . '<img src="assets/images/' . $productImage . '" alt="' . $productName . '">'
+            . '</a>'
             . PHP_EOL
-            . '<h3>' . $productName . '</h3>'
+            . '<h3><a href="index.php?page=product&id=' . $productId . '">' . $productName . '</a></h3>'
             . PHP_EOL
             . '<p class="price">€' . $productPrice . '</p>'
             . PHP_EOL;

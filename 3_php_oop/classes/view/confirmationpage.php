@@ -99,7 +99,7 @@ class confirmationPage extends \view\htmlDoc
         echo '</tbody>';
         echo '<tfoot>';
         echo '<tr>';
-        echo '<td colspan="4" style="text-align: right;"><strong>Total:</strong></td>';
+        echo '<td colspan="3" style="text-align: right;"><strong>Total:</strong></td>';
         echo '<td>€' . number_format($totalAmount, 2) . '</td>';
         echo '</tr>';
         echo '</tfoot>';

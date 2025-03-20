@@ -53,7 +53,6 @@ class userModel
      */
     public function emailExists($email)
     {
-        $result = $this->crud->read('*', ['email' => $email]);
-        return !empty($result);
+        return $this->crud->exists(["email" => $email]);
     }
 }

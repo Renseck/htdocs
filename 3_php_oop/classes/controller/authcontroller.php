@@ -3,6 +3,7 @@
 namespace controller;
 
 use model\userModel;
+use utils\validator;
 
 class authController 
 {
@@ -43,19 +44,19 @@ class authController
     public function register ($name, $email, $password, $passwordRepeat) 
     {
         // Validate input
-        if (empty($name) || empty($email) || empty($password) || empty($passwordRepeat))
+        if (!validator::validateRequired(["name" => $name, "email" => $email, "password" => $password, "passwordRepeat" => $passwordRepeat]))
         {
             return ['success' => false, 'message' => 'All fields are required'];
         }
 
         // Valid email format
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        if (!validator::validateEmail($email))
         {
             return ['success' => false, 'message' => 'Invalid email format'];
         }
 
         // Check if passwords match
-        if ($password !== $passwordRepeat)
+        if (!validator::validatePasswordMatch($password, $passwordRepeat))
         {
             return ['success' => false, 'message' => 'Passwords do not match'];
         }

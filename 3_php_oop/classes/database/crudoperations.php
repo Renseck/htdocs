@@ -195,4 +195,17 @@ class crudOperations
     {
         return $this->db->errorInfo();
     }
+
+    // =============================================================================================
+    public function count(array $conditions = [])
+    {
+        $result = $this->read("COUNT(*) as count", $conditions);
+        return isset($result[0]["count"]) ? (int)$result[0]["count"] : 0;
+    }
+
+    // =============================================================================================
+    public function exists(array $conditions)
+    {
+        return $this->count($conditions) > 0;
+    }
 }

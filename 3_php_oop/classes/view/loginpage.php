@@ -17,32 +17,19 @@ class loginPage extends \view\htmlDoc
     public function bodyContent()
     {
         parent::bodyContent();
-        echo '<div class="contact-form">'
-            .PHP_EOL
-                .'<form method="POST" action="index.php?page=login&action=login">'
-                .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="email">Email:</label><br>'
-                        .PHP_EOL
-                        .'<input type="email" id="email" name="email" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<div class="input-group">'
-                    .PHP_EOL
-                        .'<label for="password">Password:</label><br>'
-                        .PHP_EOL
-                        .'<input type="password" id="password" name="password" required><br>'
-                        .PHP_EOL
-                    .'</div>'
-                    .PHP_EOL
-                    .'<input type="submit" value="Login">'
-                    .PHP_EOL
-                .'</form>'
-                .PHP_EOL
-            .'</div>'
-            .PHP_EOL;
+
+        $formInfo = [
+            "action" => "login",
+            "page" => "login",
+            "fields" => [
+                ["type" => "email", "name" => "email", "required" => true],
+                ["type" => "password", "name" => "password", "required" => true],
+            ],
+            "submitText" => "Login",
+            "extraHtml" => '<p>Don\'t have an account? <a href="index.php?page=register">Register here</a></p>'
+        ];
+
+        $this->showForm($formInfo);
     }
 
     // =====================================================================

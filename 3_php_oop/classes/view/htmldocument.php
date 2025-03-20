@@ -109,7 +109,7 @@ class htmlDoc
 			}
 
 			// Don't show the confirmation page at all
-			if ($key === "confirmation")
+			if (in_array($key, ["confirmation", "product"]))
 			{
 				continue;
 			}
@@ -191,6 +191,86 @@ class htmlDoc
         	echo '</div>';
 		}
 	}
+
+	// ================================================================================================
+	/**
+	 * Generate forms generally
+	 * @param array $formInfo Contains the information to generate the form
+	 * 				MUST HAVE keys "action", "page", "fields", "submitText",
+	 * 				MAY HAVE key "extraHtml"
+	 * @param array FIELDS can have keys "type", "name",  "required", "value", ["id"], ["label"]
+	 * 					labels enclosed in [] are generated when not specified
+	 */
+	protected function showForm(array $formInfo)
+	{
+		$this->openForm($formInfo["action"], $formInfo["page"]);
+		$this->showFields($formInfo["fields"]);
+		$this->closeForm($formInfo["submitText"], $formInfo["extraHtml"]);
+	}
+
+	// ================================================================================================
+
+	protected function openForm(string $action, string $page)
+	{
+		echo '<div class="contact-form">' 
+			. PHP_EOL
+    		.'<form method="POST" action=index.php?page=' . $page . '&action=' . $action . '>' 
+			. PHP_EOL
+			.'<input type="hidden" name="' . $page . '" value="1">'
+			. PHP_EOL;
+	}
+	// ================================================================================================
+
+	protected function showFields(array $fields)
+	{
+		foreach ($fields as $field)
+		{
+			$type = $field["type"] ?? "text";
+			$name = $field["name"] ?? "";
+			$id = $field["id"] ?? $name;
+			$label = $field["label"] ?? ucfirst($name);
+			$required = isset($field["required"]) && $field["required"] ? "required" : "";
+			$value = $field["value"] ?? "";
+
+			echo '<div class="input-group">'
+				. PHP_EOL
+				.'<label for="' . $id . '">' . $label . ':</label><br>'
+				. PHP_EOL;
+				switch ($type)
+				{
+					case 'textarea':
+						echo '<textarea id="' . $id . '" name="' . $name . '" ' . $required . '></textarea><br>'
+							. PHP_EOL
+							.'</div>'
+							. PHP_EOL;
+						break;
+
+					default:
+						echo '<input type="' . $type . '" id="' . $id . '" name="' . $name . '" value="' . $value . '" ' . $required . '><br>'
+							. PHP_EOL
+							.'</div>'
+							. PHP_EOL;
+				}
+
+				
+		}
+	}
+	// ================================================================================================
+
+	protected function closeForm(string $submitText, string $extraHtml)
+	{
+		echo '<input type="submit" value="' . $submitText . '">' 
+			. PHP_EOL
+    		.'</form>' 
+			. PHP_EOL;
+    
+    	if (!empty($extraHtml)) {
+        	echo $extraHtml . PHP_EOL;
+    	}
+    
+    	echo '</div>' . PHP_EOL;
+	}
+	// ================================================================================================
 
 	// ================================================================================================
 	public function show()
