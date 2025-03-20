@@ -96,12 +96,16 @@ class orderModel
     public function getOrderById($orderId)
     {
         // Get basic order info 
+        $orderId = (int)$orderId;
+
         $order = $this->orderCrud->readOne(["order_id" => $orderId]);
 
         if (!$order)
         {
             return false;
         }
+
+        $order['user_id'] = (int)$order['user_id'];
 
         // Get the items related to the order as well
         $sql = "SELECT oi.*, p.name, p.price, p.image
@@ -134,6 +138,8 @@ class orderModel
      */
     public function getUserOrders($userId)
     {
+        $userId = (int)$userId;
+
         $orders = $this->orderCrud->read("*", ["user_id" => $userId], 'order_date DESC');
 
         if (empty($orders))
@@ -142,8 +148,11 @@ class orderModel
         }
 
         // Calculate the total amount of money spent
+        $result = [];
         foreach ($orders as $order)
         {
+            $order["user_id"] = (int)$order["user_id"];
+
             $sql = "SELECT SUM(p.price * oi.quantity) as total
                     FROM order_items oi
                     JOIN products p ON oi.product_id = p.product_id
@@ -153,9 +162,10 @@ class orderModel
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
             
             $order['total_amount'] = $result['total'] ?? 0;
+            $result[] = $order;
         }
 
-        return $orders;
+        return $result;
     }
     
     // =============================================================================================
