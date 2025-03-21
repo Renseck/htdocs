@@ -1,0 +1,7 @@
+config/
+dashboard/
+img/
+xampp/
+xampp-training/
+index.php
+
