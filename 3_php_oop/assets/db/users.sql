@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2025 at 02:39 PM
+-- Generation Time: Mar 21, 2025 at 02:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,15 @@ CREATE TABLE `orders` (
   `order_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`) VALUES
+(8, 4, '2025-03-20 11:19:41'),
+(23, 4, '2025-03-21 08:20:35'),
+(34, 4, '2025-03-21 13:23:24');
+
 -- --------------------------------------------------------
 
 --
@@ -44,6 +53,24 @@ CREATE TABLE `order_items` (
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`order_id`, `product_id`, `quantity`) VALUES
+(8, 1, 1),
+(8, 2, 1),
+(8, 4, 1),
+(8, 5, 1),
+(23, 1, 1),
+(23, 2, 1),
+(23, 5, 1),
+(34, 1, 1),
+(34, 2, 1),
+(34, 3, 1),
+(34, 4, 1),
+(34, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -64,12 +91,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `image`) VALUES
-(2, 'Stoel', 'Om op te zitten', 10.95, 'placeholder.png'),
-(3, 'Tafel', 'Om aan te zitten', 20.50, 'placeholder.png'),
-(4, 'Mok', 'Om uit te drinken', 5.99, 'placeholder.png'),
-(5, 'Bord', 'Om van te eten', 6.99, 'placeholder.png'),
-(6, 'Mes', 'Om mee te snijden', 2.99, 'placeholder.png'),
-(7, 'Vork', 'Om mee te prikken', 2.99, 'placeholder.png');
+(1, 'Stoel', 'Om op te zitten.', 15.95, 'placeholder.png'),
+(2, 'Tafel', 'Om aan te zitten.', 50.95, 'placeholder.png'),
+(3, 'Bord', 'Om van te eten.', 8.99, 'placeholder.png'),
+(4, 'Mok', 'Om uit te drinken.', 5.99, 'placeholder.png'),
+(5, 'Mes', 'Om mee te snijden.', 3.99, 'placeholder.png'),
+(6, 'Vork', 'Om mee te prikken.', 3.99, 'placeholder.png');
 
 -- --------------------------------------------------------
 
@@ -89,7 +116,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
-(2, 'Rens van Eck', 'rens@gmail.com', '$2y$10$AqnrCADhSXghO4drNd3.1Of34mjBxQQS6Yefj/2BuNWSrFexrwHcC');
+(4, 'Rens van Eck', 'rens@gmail.com', '$2y$10$x2R4YSj7oBlQEllC0WqLmOnJFZ7.WOWNEkGPYZsN9ryJg1OMQ28Ce'),
+(5, 'Karel de Grote', 'charlemagne@rex.fr', '$2y$10$aQSQiwhq/e0Rir.5C9ZXweQN0NHO19UepfuhaEmhc4s9qKELHU0vS');
 
 --
 -- Indexes for dumped tables
@@ -129,13 +157,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- Constraints for dumped tables

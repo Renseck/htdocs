@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../testConfig.php';
 
-class contactPageTest
+class registerPageTest
 {
     private $testResult;
 
@@ -15,7 +15,7 @@ class contactPageTest
     // =============================================================================================
     public function runTests()
     {
-        echo "\nRunning contactPage tests...\n";
+        echo "\nRunning registerPage tests...\n";
 
         $this->testPageRendering();
 
@@ -31,22 +31,27 @@ class contactPageTest
         try
         {
             $pages = \config\pageConfig::getPages();
-            $contactPage = new \view\contactPage($pages);
-            $contactPage->show();
+            $registerPage = new \view\registerPage($pages);
+            $registerPage->show();
 
             $output = ob_get_contents();
 
             // Check if the key elements are present
-            assertTrue(strpos($output, '<title>Contact</title>') !== false, "Page should have the correct title", $this->testResult);
-            assertTrue(strpos($output, 'Contact') !== false, "Page should contain contact heading", $this->testResult);
+            assertTrue(strpos($output, '<title>Register</title>') !== false, "Page should have the correct title", $this->testResult);
+            assertTrue(strpos($output, 'Register') !== false, "Page should contain login heading", $this->testResult);
 
             // Check form elements
             assertTrue(strpos($output, '<form method="POST"') !== false, "Page should contain a form", $this->testResult);
-            assertTrue(strpos($output, 'action=index.php?page=contact&action=contact') !== false, "Form should have correct action", $this->testResult);
+            assertTrue(strpos($output, 'action=index.php?page=register&action=register') !== false, "Form should have correct action", $this->testResult);
             assertTrue(strpos($output, 'name="name"') !== false, "Form should have a name field", $this->testResult);
             assertTrue(strpos($output, 'name="email"') !== false, "Form should have an email field", $this->testResult);
-            assertTrue(strpos($output, 'name="message"') !== false, "Form should have a message field", $this->testResult);
+            assertTrue(strpos($output, 'name="password"') !== false, "Form should have a password field", $this->testResult);
+            assertTrue(strpos($output, 'name="password_repeat"') !== false, "Form should have a password confirmation field", $this->testResult);
             assertTrue(strpos($output, 'type="submit"') !== false, "Form should have a submit button", $this->testResult);
+
+            // Check for login link
+            assertTrue(strpos($output, "Already have an account") !== false, "Page should ask if user already has an account", $this->testResult);
+            assertTrue(strpos($output, "Login here") !== false, "Page should have a login link", $this->testResult);
 
         }
         catch (Exception $e)
@@ -63,5 +68,5 @@ class contactPageTest
 
 }
 
-$test = new contactPageTest();
+$test = new registerPageTest();
 $test->runTests();

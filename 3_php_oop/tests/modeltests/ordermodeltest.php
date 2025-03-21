@@ -1,7 +1,5 @@
 <?php
 
-use model\productModel;
-
 require_once __DIR__ . '/../testconfig.php';
 
 class orderModelTest

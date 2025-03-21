@@ -5,6 +5,35 @@ require_once __DIR__ . '/../includes/autoload.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+class testSessionHandler
+{
+    private static $initialized = false;
+
+    // =============================================================================================
+    public static function init()
+    {
+        if (!self::$initialized)
+        {
+            if (session_status() === PHP_SESSION_NONE)
+            {
+                session_start();
+            }
+            self::$initialized = true;
+        }
+    }
+
+    // =============================================================================================
+    public static function reset()
+    {
+        if (session_status() === PHP_SESSION_ACTIVE)
+        {
+            session_unset();
+            session_destroy();
+        }
+        self::$initialized = false;
+    }
+}
+
 class testResult 
 {
     public $passed = 0;
@@ -117,7 +146,9 @@ function assertNotNull($value, $message = '', &$testResult) {
     if ($value !== null) {
         $testResult->addSuccess();
         echo ".";
-    } else {
+    } 
+    else 
+    {
         $errorMsg = $message ? $message : "Expected non-null value but got null";
         $testResult->addFailure($errorMsg);
         echo "F";

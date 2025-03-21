@@ -4,11 +4,24 @@ namespace controller;
 
 class sessionController
 {
+    private static $initialized = false;
+
     // =============================================================================================
     public static function startSession()
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (self::$initialized)
+        {
+            return;
+        }
+
+        if (!headers_sent() && session_status() === PHP_SESSION_NONE)
+        {
             session_start();
+            self::$initialized = true;
+        }
+        elseif (session_status() === PHP_SESSION_ACTIVE)
+        {
+            self::$initialized = true;
         }
     }
 
