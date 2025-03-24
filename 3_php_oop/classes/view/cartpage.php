@@ -83,18 +83,24 @@ class cartPage extends \view\htmlDoc
             echo '<td class="product-name">' . $productName . '</td>';
             echo '<td class="product-price">€' . number_format($price, 2) . '</td>';
             echo '<td class="product-quantity">';
-            echo '<form method="POST" action="index.php?page=cart&action=updatecart">';
+
+            echo '<form method="POST" action="index.php">';
+            echo '<input type="hidden" name="form_action" value="updatecart">';
             echo '<input type="hidden" name="product_id" value="' . $productId . '">';
             echo '<input type="number" name="quantity" value="' . $quantity . '" min="1" max="99" class="quantity-input">';
             echo '<button type="submit" class="update-btn">Update</button>';
             echo '</form>';
+
             echo '</td>';
             echo '<td class="product-total">€' . number_format($itemTotal, 2) . '</td>';
             echo '<td class="product-action">';
-            echo '<form method="POST" action="index.php?page=cart&action=removefromcart">';
+
+            echo '<form method="POST" action="index.php">';
+            echo '<input type="hidden" name="form_action" value="removefromcart">';
             echo '<input type="hidden" name="product_id" value="' . $productId . '">';
             echo '<button type="submit" class="remove-btn">❌</button>';
             echo '</form>';
+
             echo '</td>';
             echo '</tr>';
         }
@@ -110,10 +116,13 @@ class cartPage extends \view\htmlDoc
         
         echo '<div class="cart-actions">';
         echo '<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>';
-        echo '<form method="POST" action="index.php?page=cart&action=clearcart" class="clear-cart-form">';
+        echo '<form method="POST" action="index.php" class="clear-cart-form">';
+        echo '<input type="hidden" name="form_action" value="clearcart">';
         echo '<button type="submit" class="clear-cart-btn">Clear Cart</button>';
         echo '</form>';
-        echo '<form method="POST" action="index.php?page=cart&action=checkout" class="checkout-form">';
+
+        echo '<form method="POST" action="index.php" class="checkout-form">';
+        echo '<input type="hidden" name="form_action" value="checkout">';
         echo '<button type="submit" class="checkout-btn">Proceed to Checkout</button>';
         echo '</form>';
         echo '</div>';

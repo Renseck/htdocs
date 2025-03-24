@@ -46,13 +46,5 @@ class userModel
     }
 
     // =============================================================================================
-    /**
-     * Check if email exists
-     * @param string $email Email to check
-     * @return bool True if email exists, false otherwise
-     */
-    public function emailExists($email)
-    {
-        return $this->crud->exists(["email" => $email]);
-    }
+    
 }

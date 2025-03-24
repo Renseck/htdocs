@@ -19,7 +19,7 @@ class loginPage extends \view\htmlDoc
         parent::bodyContent();
 
         $formInfo = [
-            "action" => "login",
+            "action" => "index.php",
             "page" => "login",
             "fields" => [
                 ["type" => "email", "name" => "email", "required" => true],

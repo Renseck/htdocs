@@ -118,7 +118,11 @@ class webshopPage extends \view\htmlDoc
         // If the user is logged in, show the add to cart button - log in please otherwise
         if ($isLoggedIn)
         {
-            echo '<form method="POST" action="index.php?page=webshop&action=addtocart" class="order-form">'
+            echo '<form method="POST" action="index.php" class="order-form">'
+                . PHP_EOL
+                . '<input type="hidden" name="form_action" value="addtocart">'
+                . PHP_EOL
+                . '<input type="hidden" name="return_to" value="webshop">'
                 . PHP_EOL
                 . '<input type="hidden" name="product_id" value="' . $productId . '">'
                 . PHP_EOL

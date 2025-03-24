@@ -62,7 +62,7 @@ class authController
         }
 
         // Check if email is already taken
-        if ($this->userModel->emailExists($email))
+        if ($this->userModel->getUserByEmail($email))
         {
             return ['success' => false, 'message' => 'Email already taken'];
         }

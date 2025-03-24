@@ -31,7 +31,7 @@ class contactPage extends \view\htmlDoc
         $userEmail = isset($this->userData["email"]) ? htmlspecialchars($this->userData["email"]) : '';
         
         $formInfo = [
-            "action" => "contact",
+            "action" => "index.php",
             "page" => "contact",
             "fields" => [
                 ["type" => "text", "name" => "name", "value" => $userName, "required" => true],

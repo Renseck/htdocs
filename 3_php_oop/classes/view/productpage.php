@@ -99,7 +99,11 @@ class productPage extends \view\htmlDoc
          
      // Show add to cart form if logged in
      if ($isLoggedIn) {
-         echo '<form method="POST" action="index.php?page=product&action=addtocart&id=' . $productId . '" class="order-form">'
+         echo '<form method="POST" action="index.php" class="order-form">'
+             . PHP_EOL
+             . '<input type="hidden" name="form_action" value="addtocart">'
+             . PHP_EOL
+             . '<input type="hidden" name="return_to" value="product">'
              . PHP_EOL
              . '<input type="hidden" name="product_id" value="' . $productId . '">'
              . PHP_EOL

@@ -19,7 +19,7 @@ class registerPage extends \view\htmlDoc
         parent::bodyContent();
 
         $formInfo = [
-            "action" => "register",
+            "action" => "index.php",
             "page" => "register",
             "fields" => [
                 ["type" => "name", "name" => "name", "required" => true],

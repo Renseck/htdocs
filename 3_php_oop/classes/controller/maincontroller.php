@@ -18,8 +18,6 @@ class mainController
     public function __construct()
     {
         $this->pages = pageConfig::getPages();
-        $this->authController = new authController();
-        $this->cartController = new cartController();
         sessionController::startSession();
     }
 
@@ -39,7 +37,7 @@ class mainController
     private function handlePostRequest()
     {
         // Determine which form was submitted based on URL parameters
-        $action = $_GET['action'] ?? '';
+        $action = $_POST['form_action'] ?? '';
         
         switch ($action) {
             case 'login':
@@ -82,7 +80,7 @@ class mainController
                 // Unknown action, return to the home page
                 sessionController::setMessage('error', 'Unknown action');
                 $_GET['page'] = 'home';
-                exit;
+                return;
         }
 
     }
@@ -91,7 +89,7 @@ class mainController
     private function handleGetRequest()
     {
         // Get the requested page from URL parameter, default to home
-        $pageName = isset($_GET['page']) ? $_GET['page'] : 'home';
+        $pageName = $_GET['page'] ?? 'home';
         
         // Check if the requested page is allowed
         if (!isset($this->pages[$pageName])) {
@@ -107,8 +105,8 @@ class mainController
     // =============================================================================================
     private function handleLogin()
     {
-        $email = isset($_POST["email"]) ? $_POST["email"] : "";
-        $password = isset($_POST["password"]) ? $_POST["password"] : "";
+        $email = $_POST["email"] ?? "";
+        $password = $_POST["password"] ?? "";
 
         if (empty($email) || empty($password))
         {
@@ -118,6 +116,7 @@ class mainController
             return;
         }
 
+        $this->authController = new authController();
         // Let the authController do the actual logging in
         $result = $this->authController->login($email, $password);
 
@@ -128,10 +127,10 @@ class mainController
     // =============================================================================================
     private function handleRegistration()
     {
-        $name = isset($_POST["name"]) ? $_POST["name"] : "";
-        $email = isset($_POST["email"]) ? $_POST["email"] : "";
-        $password = isset($_POST["password"]) ? $_POST["password"] : "";
-        $passwordRepeat = isset($_POST["password_repeat"]) ? $_POST["password_repeat"] : "";
+        $name = $_POST["name"] ?? "";
+        $email = $_POST["email"] ?? "";
+        $password = $_POST["password"] ?? "";
+        $passwordRepeat = $_POST["password_repeat"] ?? "";
 
         if (empty($name) || empty($email) || empty($password) || empty($passwordRepeat))
         {
@@ -141,6 +140,7 @@ class mainController
             return;
         }
 
+        $this->authController = new authController();
         $result = $this->authController->register($name, $email, $password, $passwordRepeat);
 
         // Parse the result 
@@ -159,15 +159,15 @@ class mainController
     // =============================================================================================
     private function handleContactSubmission()
     {
-        $name = isset($_POST["name"]) ? $_POST["name"] : "";
-        $email = isset($_POST["email"]) ? $_POST["email"] : "";
-        $message = isset($_POST["message"]) ? $_POST["message"] : "";
+        $name = $_POST["name"] ?? "";
+        $email = $_POST["email"] ?? "";
+        $message = $_POST["message"] ?? "";
 
         if (empty($name) || empty($email) || empty($message)) 
         {
             sessionController::setMessage("error", "Please fill in all fields");
             $_GET["page"] = "contact";
-            exit;
+            return;
         }
 
         // I could in principal do some kind of input sanitisation and then yeet the message into a 
@@ -185,22 +185,20 @@ class mainController
         {
             sessionController::setMessage("error", "Please log in to add items to the cart");
             $_GET["page"] = "login";
-            exit;
+            return;
         }
 
         $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
         $quantity = isset($_POST["quantity"]) ? (int)$_POST["quantity"] : 0;
 
-        $result = $this->cartController->addToCart($productId, $quantity);
-
-        // Check where the user is adding the item to the cart from
-        $returnPage = $_GET["page"];
-    
-        // For product pages, include the ID in the return page
-        if ($returnPage === "product" && isset($_GET["id"]))
+        $returnPage = $_POST["return_to"] ?? "webshop";
+        if ($returnPage === "product" && isset($_POST["product_id"]))
         {
-            $returnPage = "product&id=" . $_GET["id"];
+            $_GET["id"] = $_POST["product_id"];
         }
+
+        $this->cartController = new cartController();
+        $result = $this->cartController->addToCart($productId, $quantity);
 
         // Parse the result 
         sessionController::parseResult($result, $successPage = $returnPage, $errorPage = $returnPage);
@@ -219,6 +217,7 @@ class mainController
         $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
         $quantity = isset($_POST["quantity"]) ? (int)$_POST["quantity"] : 0;
 
+        $this->cartController = new cartController();
         $result = $this->cartController->updateCartItem($productId, $quantity);
 
         // Parse the result 
@@ -237,6 +236,7 @@ class mainController
 
         $productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
 
+        $this->cartController = new cartController();
         $result = $this->cartController->removeFromCart($productId);
 
         // Parse the result 
@@ -253,6 +253,7 @@ class mainController
             return;
         }
 
+        $this->cartController = new cartController();
         $result = $this->cartController->clearCart();
 
         // Parse the result 
@@ -269,6 +270,7 @@ class mainController
             return;
         }
 
+        $this->cartController = new cartController();
         $result = $this->cartController->checkout();
 
         if ($result["success"])

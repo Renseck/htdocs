@@ -214,9 +214,9 @@ class htmlDoc
 	{
 		echo '<div class="contact-form">' 
 			. PHP_EOL
-    		.'<form method="POST" action=index.php?page=' . $page . '&action=' . $action . '>' 
+    		.'<form method="POST" action=' . $action . '>' 
 			. PHP_EOL
-			.'<input type="hidden" name="' . $page . '" value="1">'
+			.'<input type="hidden" name="form_action" value="'. $page . '">'
 			. PHP_EOL;
 	}
 	// ================================================================================================
@@ -225,38 +225,40 @@ class htmlDoc
 	{
 		foreach ($fields as $field)
 		{
-			$type = $field["type"] ?? "text";
-			$name = $field["name"] ?? "";
-			$id = $field["id"] ?? $name;
-			$label = $field["label"] ?? ucfirst($name);
-			$required = isset($field["required"]) && $field["required"] ? "required" : "";
-			$value = $field["value"] ?? "";
-
-			echo '<div class="input-group">'
-				. PHP_EOL
-				.'<label for="' . $id . '">' . $label . ':</label><br>'
-				. PHP_EOL;
-				switch ($type)
-				{
-					case 'textarea':
-						echo '<textarea id="' . $id . '" name="' . $name . '" ' . $required . '></textarea><br>'
-							. PHP_EOL
-							.'</div>'
-							. PHP_EOL;
-						break;
-
-					default:
-						echo '<input type="' . $type . '" id="' . $id . '" name="' . $name . '" value="' . $value . '" ' . $required . '><br>'
-							. PHP_EOL
-							.'</div>'
-							. PHP_EOL;
-				}
-
-				
+			$this->showField($field);				
 		}
 	}
-	// ================================================================================================
 
+	// ================================================================================================
+	protected function showField(array $field)
+{
+    $type = $field["type"] ?? "text";
+    $name = $field["name"] ?? "";
+    $id = $field["id"] ?? $name;
+    $label = $field["label"] ?? ucfirst($name);
+    $required = isset($field["required"]) && $field["required"] ? "required" : "";
+    $value = $field["value"] ?? "";
+
+    echo '<div class="input-group">'
+        . PHP_EOL
+        . '<label for="' . $id . '">' . $label . ':</label><br>'
+        . PHP_EOL;
+        
+    switch ($type) {
+        case 'textarea':
+            echo '<textarea id="' . $id . '" name="' . $name . '" ' . $required . '></textarea><br>'
+                . PHP_EOL;
+            break;
+
+        default:
+            echo '<input type="' . $type . '" id="' . $id . '" name="' . $name . '" value="' . $value . '" ' . $required . '><br>'
+                . PHP_EOL;
+    }
+    
+    echo '</div>' . PHP_EOL;
+}
+
+	// ================================================================================================
 	protected function closeForm(string $submitText, string $extraHtml)
 	{
 		echo '<input type="submit" value="' . $submitText . '">' 

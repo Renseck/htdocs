@@ -27,7 +27,6 @@ class userModelTest
 
         // Run all test methods
         $this->testCreateUser();
-        $this->testEmailExists();
         $this->testGetUserByEmail();
         $this->testCleanup();
 
@@ -39,7 +38,7 @@ class userModelTest
     private function testCreateUser()
     {
         // If the test email already exists, delete it from the db
-        if ($this->userModel->emailExists($this->testEmail))
+        if ($this->userModel->getUserByEmail($this->testEmail))
         {
             $db = \database\databaseConnection::getInstance()->getConnection();
             $stmt = $db->prepare("DELETE FROM users WHERE email = ?");
@@ -54,17 +53,6 @@ class userModelTest
         );
 
         assertTrue($this->createdUserId !== false, "Failed to create user", $this->testResult);
-    }
-
-    // =============================================================================================
-    private function testEmailExists()
-    {
-        $exists = $this->userModel->emailExists($this->testEmail);
-        assertTrue($exists, "Email should exist", $this->testResult);
-
-        $nonExistentEmail = "nonexistent" . time() . "@example.com";
-        $exists = $this->userModel->emailExists($nonExistentEmail);
-        assertFalse($exists, "Non-existent email should not exist", $this->testResult);
     }
 
     // =============================================================================================
