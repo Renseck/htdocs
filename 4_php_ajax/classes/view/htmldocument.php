@@ -8,7 +8,7 @@ use controller\cartController;
 class htmlDoc
 {
 	protected $title = "Default Title";
-	protected $cssFiles = ["stylesheets/mystyle.css"];
+	protected $cssFiles = ["assets/css/mystyle.css"];
 	protected $pages = ["Home"];
 	protected $pageHeaderText = "";
 	private $cartController;
