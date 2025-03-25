@@ -216,7 +216,7 @@ class htmlDoc
 			. PHP_EOL
     		.'<form method="POST" action=' . $action . '>' 
 			. PHP_EOL
-			.'<input type="hidden" name="form_action" value="'. $page . '">'
+			.'<input type="hidden" name="page" value="'. $page . '">'
 			. PHP_EOL;
 	}
 	// ================================================================================================
@@ -239,10 +239,8 @@ class htmlDoc
     $required = isset($field["required"]) && $field["required"] ? "required" : "";
     $value = $field["value"] ?? "";
 
-    echo '<div class="input-group">'
-        . PHP_EOL
-        . '<label for="' . $id . '">' . $label . ':</label><br>'
-        . PHP_EOL;
+    echo '<div class="input-group">' . PHP_EOL
+        . '<label for="' . $id . '">' . $label . ':</label><br>' . PHP_EOL;
         
     switch ($type) {
         case 'textarea':
@@ -261,10 +259,8 @@ class htmlDoc
 	// ================================================================================================
 	protected function closeForm(string $submitText, string $extraHtml)
 	{
-		echo '<input type="submit" value="' . $submitText . '">' 
-			. PHP_EOL
-    		.'</form>' 
-			. PHP_EOL;
+		echo '<input type="submit" value="' . $submitText . '">' . PHP_EOL
+    		.'</form>' . PHP_EOL;
     
     	if (!empty($extraHtml)) {
         	echo $extraHtml . PHP_EOL;

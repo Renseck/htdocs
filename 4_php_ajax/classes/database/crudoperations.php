@@ -20,7 +20,7 @@ class crudOperations
      * @param array $data Associative array of column names and values
      * @return int|bool Last inserted ID or false on failure
      */
-    public function create(array $data)
+    public function create(array $data) : int|bool
     {
         $columns = implode(", ", array_keys($data));
         $placeholders = ":" . implode(", :", array_keys($data));
@@ -43,7 +43,8 @@ class crudOperations
      * @param int $offset Optional OFFSET
      * @return array Results
      */
-    public function read(string $fields = "*", array $conditions = [], string $order = "", int $limit = 0, int $offset = 0)
+    public function read(string $fields = "*", array $conditions = [],
+                         string $order = "", int $limit = 0, int $offset = 0) : array
     {
         $sql = "SELECT {$fields} FROM {$this->table}";
 
@@ -91,9 +92,9 @@ class crudOperations
      * Read a single record by ID or custom condition
      * @param mixed $id ID value or array of conditions
      * @param string $fields Fields to select
-     * @return array|false Result row or false if not found
+     * @return array|bool Result row or false if not found
      */
-    public function readOne($id, string $fields = "*")
+    public function readOne($id, string $fields = "*") : array|bool
     {
         $conditions = is_array($id) ? $id : ['id' => $id];
         $result = $this->read($fields, $conditions);
@@ -108,7 +109,7 @@ class crudOperations
      * @param array $conditions WHERE conditions
      * @return int|bool Number of affected rows or false on failure
      */
-    public function update(array $data, array $conditions)
+    public function update(array $data, array $conditions) : int|bool
     {
         $sql = "UPDATE {$this->table} SET ";
 
@@ -152,7 +153,7 @@ class crudOperations
      * @param array $conditions WHERE conditions
      * @return int|bool Number of affected rows or false on failure
      */
-    public function delete(array $conditions)
+    public function delete(array $conditions) : int|bool
     {
         $sql = "DELETE FROM {$this->table}";
 
@@ -179,7 +180,13 @@ class crudOperations
     }
 
     // =============================================================================================
-    public function customQuery(string $sql, array $params = [])
+    /**
+     * Execute custom SQL query
+     * @param string $sql SQL statment
+     * @param array $params Array of parameters
+     * @return \PDOStatement Resulting statement
+     */
+    public function customQuery(string $sql, array $params = []) : \PDOStatement
     {
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -191,13 +198,18 @@ class crudOperations
      * Get the last PDO error info
      * @return array Error information
      */
-    public function getLastErrorInfo()
+    public function getLastErrorInfo() : array
     {
         return $this->db->errorInfo();
     }
 
     // =============================================================================================
-    public function count(array $conditions = [])
+    /**
+     * Get count of items in table
+     * @param array $conditions Things to count
+     * @return array|int Number of items
+     */
+    public function count(array $conditions = []) : array|int
     {
         $result = $this->read("COUNT(*) as count", $conditions);
         return isset($result[0]["count"]) ? (int)$result[0]["count"] : 0;

@@ -19,8 +19,7 @@ class logoutPage extends \view\htmlDoc
     {
         sessionController::logout();
         parent::bodyContent();
-        echo '<p>You have been logged out.</p>'
-            .PHP_EOL;
+        echo '<p>You have been logged out.</p>' . PHP_EOL;
     }
     
     // =====================================================================

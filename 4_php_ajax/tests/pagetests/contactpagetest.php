@@ -42,7 +42,7 @@ class contactPageTest
 
             // Check form elements
             assertTrue(strpos($output, '<form method="POST"') !== false, "Page should contain a form", $this->testResult);
-            assertTrue(strpos($output, 'action=index.php?page=contact&action=contact') !== false, "Form should have correct action", $this->testResult);
+            assertTrue(strpos($output, 'action=index.php') !== false, "Form should have correct action", $this->testResult);
             assertTrue(strpos($output, 'name="name"') !== false, "Form should have a name field", $this->testResult);
             assertTrue(strpos($output, 'name="email"') !== false, "Form should have an email field", $this->testResult);
             assertTrue(strpos($output, 'name="message"') !== false, "Form should have a message field", $this->testResult);

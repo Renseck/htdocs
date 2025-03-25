@@ -37,9 +37,9 @@ class mainController
     private function handlePostRequest()
     {
         // Determine which form was submitted based on URL parameters
-        $action = $_POST['form_action'] ?? '';
+        $page = $_POST['page'] ?? '';
         
-        switch ($action) {
+        switch ($page) {
             case 'login':
                 $this->handleLogin();
                 break;
@@ -194,6 +194,7 @@ class mainController
         $returnPage = $_POST["return_to"] ?? "webshop";
         if ($returnPage === "product" && isset($_POST["product_id"]))
         {
+            // Pass the product ID from POST to GET to ensure proper rerouting
             $_GET["id"] = $_POST["product_id"];
         }
 

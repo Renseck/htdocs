@@ -22,7 +22,7 @@ class orderModel
      * @param array $cartItems
      * @return array
      */
-    public function createOrder($userId, $cartItems)
+    public function createOrder(int $userId, array $cartItems) : array
     {
         // Start a transaction - this is a safe method of committing to the DB and rolling back in
         // case something goes wrong.
@@ -91,9 +91,9 @@ class orderModel
     /**
      * Get order information by order ID
      * @param int $orderId The order ID
-     * @return bool|array
+     * @return array|bool Order information or false if not found
      */
-    public function getOrderById($orderId)
+    public function getOrderById(int $orderId) : array|bool
     {
         // Get basic order info 
         $orderId = (int)$orderId;
@@ -136,7 +136,7 @@ class orderModel
      * @param int $userId The user ID
      * @return array
      */
-    public function getUserOrders($userId)
+    public function getUserOrders(int $userId) : array
     {
         $userId = (int)$userId;
 

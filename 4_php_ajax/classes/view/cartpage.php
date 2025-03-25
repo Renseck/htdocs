@@ -33,19 +33,19 @@ class cartPage extends \view\htmlDoc
         // Check if the user is logged in
         if (!sessionController::isLoggedIn())
         {
-            echo '<div class="not-logged-in">';
-            echo '<p>Please <a href="index.php?page=login">log in</a> to view your cart.</p>';
-            echo '</div>';
+            echo '<div class="not-logged-in">' . PHP_EOL
+                .'<p>Please <a href="index.php?page=login">log in</a> to view your cart.</p>' . PHP_EOL
+                .'</div>' . PHP_EOL;
             return;
         }
 
         // Check if the cart is empty
         if (empty($this->cartData["items"])) 
         {
-            echo '<div class="empty-cart-message">';
-            echo '<p>Your cart is empty.</p>';
-            echo '<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>';
-            echo '</div>';
+            echo '<div class="empty-cart-message">' . PHP_EOL
+                .'<p>Your cart is empty.</p>' . PHP_EOL
+                .'<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>' . PHP_EOL
+                .'</div>' . PHP_EOL;
             return;
         }
         
@@ -55,18 +55,18 @@ class cartPage extends \view\htmlDoc
     // =============================================================================================
     private function displayCartContents()
     {
-        echo '<table class="shopping_cart">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>Product</th>';
-        echo '<th>Name</th>';
-        echo '<th>Price</th>';
-        echo '<th>Quantity</th>';
-        echo '<th>Total</th>';
-        echo '<th>Action</th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
+        echo '<table class="shopping_cart">' . PHP_EOL
+            .'<thead>' . PHP_EOL
+            .'<tr>' . PHP_EOL
+            .'<th>Product</th>'
+            .'<th>Name</th>'
+            .'<th>Price</th>'
+            .'<th>Quantity</th>'
+            .'<th>Total</th>'
+            .'<th>Action</th>'
+            .'</tr>' . PHP_EOL
+            .'</thead>' . PHP_EOL
+            .'<tbody>' . PHP_EOL;
 
         foreach ($this->cartData['items'] as $item) {
             $product = $item['product'];
@@ -78,54 +78,54 @@ class cartPage extends \view\htmlDoc
             $productName = htmlspecialchars($product['name']);
             $productImage = !empty($product['image']) ? htmlspecialchars($product['image']) : 'placeholder.png';
             
-            echo '<tr>';
-            echo '<td class="product-image"><img src="assets/images/' . $productImage . '" alt="' . $productName . '"></td>';
-            echo '<td class="product-name">' . $productName . '</td>';
-            echo '<td class="product-price">€' . number_format($price, 2) . '</td>';
-            echo '<td class="product-quantity">';
+            echo '<tr>' . PHP_EOL
+                .'<td class="product-image"><img src="assets/images/' . $productImage . '" alt="' . $productName . '"></td>' . PHP_EOL
+                .'<td class="product-name">' . $productName . '</td>' . PHP_EOL
+                .'<td class="product-price">€' . number_format($price, 2) . '</td>' . PHP_EOL
+                .'<td class="product-quantity">' . PHP_EOL
 
-            echo '<form method="POST" action="index.php">';
-            echo '<input type="hidden" name="form_action" value="updatecart">';
-            echo '<input type="hidden" name="product_id" value="' . $productId . '">';
-            echo '<input type="number" name="quantity" value="' . $quantity . '" min="1" max="99" class="quantity-input">';
-            echo '<button type="submit" class="update-btn">Update</button>';
-            echo '</form>';
+                .'<form method="POST" action="index.php">' . PHP_EOL
+                .'<input type="hidden" name="page" value="updatecart">' . PHP_EOL
+                .'<input type="hidden" name="product_id" value="' . $productId . '">' . PHP_EOL
+                .'<input type="number" name="quantity" value="' . $quantity . '" min="1" max="99" class="quantity-input">' . PHP_EOL
+                .'<button type="submit" class="update-btn">Update</button>' . PHP_EOL
+                .'</form>' . PHP_EOL
 
-            echo '</td>';
-            echo '<td class="product-total">€' . number_format($itemTotal, 2) . '</td>';
-            echo '<td class="product-action">';
+                .'</td>' . PHP_EOL
+                .'<td class="product-total">€' . number_format($itemTotal, 2) . '</td>' . PHP_EOL
+                .'<td class="product-action">' . PHP_EOL
 
-            echo '<form method="POST" action="index.php">';
-            echo '<input type="hidden" name="form_action" value="removefromcart">';
-            echo '<input type="hidden" name="product_id" value="' . $productId . '">';
-            echo '<button type="submit" class="remove-btn">❌</button>';
-            echo '</form>';
+                .'<form method="POST" action="index.php">' . PHP_EOL
+                .'<input type="hidden" name="page" value="removefromcart">' . PHP_EOL
+                .'<input type="hidden" name="product_id" value="' . $productId . '">' . PHP_EOL
+                .'<button type="submit" class="remove-btn">❌</button>' . PHP_EOL
+                .'</form>' . PHP_EOL
 
-            echo '</td>';
-            echo '</tr>';
+                .'</td>' . PHP_EOL
+                .'</tr>' . PHP_EOL;
         }
         
-        echo '</tbody>';
-        echo '<tfoot>';
-        echo '<tr>';
-        echo '<td></td><td class="cart-total-label">Total:</td>';
-        echo '<td></td><td></td><td class="cart-total-value">€' . number_format($this->cartData['total_price'], 2) . '</td>';
-        echo '</tr>';
-        echo '</tfoot>';
-        echo '</table>';
+        echo '</tbody>' . PHP_EOL
+            .'<tfoot>' . PHP_EOL
+            .'<tr>' . PHP_EOL
+            .'<td></td><td class="cart-total-label">Total:</td>' . PHP_EOL
+            .'<td></td><td></td><td class="cart-total-value">€' . number_format($this->cartData['total_price'], 2) . '</td>' . PHP_EOL
+            .'</tr>' . PHP_EOL
+            .'</tfoot>' . PHP_EOL
+            .'</table>' . PHP_EOL
         
-        echo '<div class="cart-actions">';
-        echo '<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>';
-        echo '<form method="POST" action="index.php" class="clear-cart-form">';
-        echo '<input type="hidden" name="form_action" value="clearcart">';
-        echo '<button type="submit" class="clear-cart-btn">Clear Cart</button>';
-        echo '</form>';
+            .'<div class="cart-actions">' . PHP_EOL
+            .'<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>' . PHP_EOL
+            .'<form method="POST" action="index.php" class="clear-cart-form">' . PHP_EOL
+            .'<input type="hidden" name="page" value="clearcart">' . PHP_EOL
+            .'<button type="submit" class="clear-cart-btn">Clear Cart</button>' . PHP_EOL
+            .'</form>' . PHP_EOL
 
-        echo '<form method="POST" action="index.php" class="checkout-form">';
-        echo '<input type="hidden" name="form_action" value="checkout">';
-        echo '<button type="submit" class="checkout-btn">Proceed to Checkout</button>';
-        echo '</form>';
-        echo '</div>';
+            .'<form method="POST" action="index.php" class="checkout-form">' . PHP_EOL
+            .'<input type="hidden" name="page" value="checkout">' . PHP_EOL
+            .'<button type="submit" class="checkout-btn">Proceed to Checkout</button>' . PHP_EOL
+            .'</form>' . PHP_EOL
+            .'</div>' . PHP_EOL;
     }
 
     // =============================================================================================

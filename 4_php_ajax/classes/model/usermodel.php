@@ -18,9 +18,9 @@ class userModel
     /**
      * Get user by email
      * @param string $email User email
-     * @return array|false User data or false if not found
+     * @return array|bool User data or false if not found
      */
-    public function getUserByEmail($email)
+    public function getUserByEmail(string $email) : array|bool
     {
         $user = $this->crud->readOne(["email" => $email]);
         return $user;
@@ -34,7 +34,7 @@ class userModel
      * @param string $password User password (will be hashed)
      * @return int|bool ID of created user or false on failure
      */
-    public function createUser($name, $email, $password)
+    public function createUser(string $name, string $email, string $password) : int|bool
     {
         $userData = [
             "name" => $name,

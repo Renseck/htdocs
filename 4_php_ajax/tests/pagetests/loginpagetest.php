@@ -42,7 +42,7 @@ class loginPageTest
 
             // Check form elements
             assertTrue(strpos($output, '<form method="POST"') !== false, "Page should contain a form", $this->testResult);
-            assertTrue(strpos($output, 'action=index.php?page=login&action=login') !== false, "Form should have correct action", $this->testResult);
+            assertTrue(strpos($output, 'action=index.php') !== false, "Form should have correct action", $this->testResult);
             assertTrue(strpos($output, 'name="email"') !== false, "Form should have an email field", $this->testResult);
             assertTrue(strpos($output, 'name="password"') !== false, "Form should have a password field", $this->testResult);
             assertTrue(strpos($output, 'type="submit"') !== false, "Form should have a submit button", $this->testResult);

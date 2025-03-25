@@ -26,7 +26,7 @@ class sessionController
     }
 
     // =============================================================================================
-    public static function isLoggedIn()
+    public static function isLoggedIn() : bool
     {
         self::startSession();
         return isset($_SESSION["user"]);
@@ -41,7 +41,7 @@ class sessionController
     }
 
     // =============================================================================================
-    public static function getCurrentuser()
+    public static function getCurrentuser() : array
     {
         self::startSession();
         return $_SESSION["user"] ?? null;
@@ -54,7 +54,7 @@ class sessionController
     }
     
     // =============================================================================================
-    public static function getMessages() 
+    public static function getMessages()  : array
     {
         $messages = $_SESSION["messages"] ?? [];
 

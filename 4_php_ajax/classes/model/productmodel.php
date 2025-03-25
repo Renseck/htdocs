@@ -21,7 +21,7 @@ class productModel
      * @param string $direction Sort direction (ASC or DESC)
      * @return array Array of products
      */
-    public function getAllProducts($orderBy = 'name', $direction = 'ASC')
+    public function getAllProducts(string $orderBy = 'name', string $direction = 'ASC') : array
     {
         return $this->crud->read("*", [], "{$orderBy} {$direction}");
     }
@@ -30,9 +30,9 @@ class productModel
     /**
      * Get product by ID
      * @param int $id Product ID
-     * @return array|false Product data or false if not found
+     * @return array|bool Product data or false if not found
      */
-    public function getProductById($id)
+    public function getProductById(int $id) : array|bool
     {
         return $this->crud->readOne(["product_id" => $id]);
     }
@@ -43,7 +43,7 @@ class productModel
      * @param string $keyword Search term
      * @return array Array of matching products
      */
-    public function searchProducts($keyword)
+    public function searchProducts(string $keyword) : array
     {
         $sql = "SELECT * FROM products WHERE name LIKE :keyword OR description LIKE :keyword";
         $params = [':keyword' => "%{$keyword}%"];

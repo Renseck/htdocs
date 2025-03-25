@@ -25,7 +25,7 @@ class cartController
      * @param int $quantity The quantity to add
      * @return array Result with success status and message
      */
-    public function addToCart($productId, $quantity)
+    public function addToCart($productId, $quantity) : array
     {
         // Validate product exists
         $product = $this->productModel->getProductById($productId);
@@ -64,9 +64,9 @@ class cartController
      * Update the quantity of an item in the cart
      * @param int $productId The product ID
      * @param int $quantity The quantity to update
-     * @return array
+     * @return array Result with success status and message
      */
-    public function updateCartItem($productId, $quantity)
+    public function updateCartItem($productId, $quantity) : array
     {
         // Check if a product is in the cart
         if (!$this->isItemInCart($productId))
@@ -90,9 +90,9 @@ class cartController
     /**
      * Remove an item from the cart
      * @param int $productId The product ID
-     * @return array
+     * @return array Result with success status and message
      */
-    public function removeFromCart($productId)
+    public function removeFromCart($productId) : array
     {
         // Check if item is in the cart
         if (!$this->isItemInCart($productId))
@@ -107,7 +107,11 @@ class cartController
     }
 
     // =============================================================================================
-    public function getCartWithDetails()
+    /**
+     * Get full cart information
+     * @return array Result with keys items, total_price and item_count
+     */
+    public function getCartWithDetails() : array
     {
         $cart = $_SESSION["cart"] ?? [];
         $cartItems = [];
@@ -140,9 +144,9 @@ class cartController
     // =============================================================================================
     /**
      * Get the total number of unique items in the cart
-     * @return int
+     * @return int Number of items in cart
      */
-    public function getItemCount()
+    public function getItemCount() : int
     {
         return isset($_SESSION["cart"]) ? count($_SESSION["cart"]) : 0;
     }
@@ -151,9 +155,9 @@ class cartController
     /**
      * See if an item is in the cart
      * @param int $productId The product Id
-     * @return bool
+     * @return bool True if in cart, false otherwise
      */
-    public function isItemInCart($productId)
+    public function isItemInCart($productId) : bool
     {
         return isset($_SESSION["cart"][$productId]);
     }
@@ -161,9 +165,9 @@ class cartController
     // =============================================================================================
     /**
      * Clear the cart of all items
-     * @return array
+     * @return array Result with success status and message
      */
-    public function clearCart()
+    public function clearCart() : array
     {
         $_SESSION["cart"] = [];
 
@@ -171,7 +175,11 @@ class cartController
     }
 
     // =============================================================================================
-    public function checkout()
+    /**
+     * Check out the items in the cart
+     * @return array Result with success status and message
+     */
+    public function checkout() : array
     {
         // Ensure the user is logged in
         if (!sessionController::isLoggedIn())

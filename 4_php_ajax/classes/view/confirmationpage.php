@@ -34,18 +34,18 @@ class confirmationPage extends \view\htmlDoc
 
         // Check if user is logged in
         if (!sessionController::isLoggedIn()) {
-            echo '<div class="not-logged-in">';
-            echo '<p>Please <a href="index.php?page=login">log in</a> to view your orders.</p>';
-            echo '</div>';
+            echo '<div class="not-logged-in">' . PHP_EOL
+                .'<p>Please <a href="index.php?page=login">log in</a> to view your orders.</p>' . PHP_EOL
+                .'</div>' . PHP_EOL;
             return;
         }
         
         // Check if we have order details
         if (empty($this->orderDetails)) {
-            echo '<div class="no-order">';
-            echo '<p>No order details available.</p>';
-            echo '<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>';
-            echo '</div>';
+            echo '<div class="no-order">' . PHP_EOL
+                .'<p>No order details available.</p>' . PHP_EOL
+                .'<p><a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a></p>' . PHP_EOL
+                .'</div>' . PHP_EOL;
             return;
         }
         
@@ -59,25 +59,26 @@ class confirmationPage extends \view\htmlDoc
         $items = $this->orderDetails["items"];
         $totalAmount = $this->orderDetails["total_amount"];
 
-        echo '<div class="confirmation">';
-        echo '<div class="confirmation-header">';
-        echo '<h3>Thank you for your order!</h3>';
-        echo '<p>Order #' . htmlspecialchars($order['order_id']) . ' placed on ' . date('F j, Y, g:i a', strtotime($order['order_date'])) . '</p>';
-        echo '</div>';
+        echo '<div class="confirmation">' . PHP_EOL
+            .'<div class="confirmation-header">' . PHP_EOL
+            .'<h3>Thank you for your order!</h3>' . PHP_EOL
+            .'<p>Order #' . htmlspecialchars($order['order_id']) .
+             ' placed on ' . date('F j, Y, g:i a', strtotime($order['order_date'])) . '</p>' . PHP_EOL
+            .'</div>' . PHP_EOL
         
-        echo '<div class="order-summary">';
-        echo '<h3>Order Summary</h3>';
-        echo '<table class="order-items">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>Product</th>';
-        echo '<th>Name</th>';
-        echo '<th>Price</th>';
-        echo '<th>Quantity</th>';
-        echo '<th>Total</th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
+            .'<div class="order-summary">' . PHP_EOL
+            .'<h3>Order Summary</h3>' . PHP_EOL
+            .'<table class="order-items">' . PHP_EOL
+            .'<thead>' . PHP_EOL
+            .'<tr>' . PHP_EOL
+            .'<th>Product</th>'
+            .'<th>Name</th>'
+            .'<th>Price</th>'
+            .'<th>Quantity</th>'
+            .'<th>Total</th>'
+            .'</tr>' . PHP_EOL
+            .'</thead>' . PHP_EOL
+            .'<tbody>' . PHP_EOL;
         
         foreach ($items as $item) {
             $itemTotal = $item['price'] * $item['quantity'];
@@ -87,28 +88,28 @@ class confirmationPage extends \view\htmlDoc
                 $imagePath = "assets/images/placeholder.png";
             }
             
-            echo '<tr class="item">';
-            echo '<td><img src="' . $imagePath . '" alt="' . htmlspecialchars($item['name']) . '"></td>';
-            echo '<td>' . htmlspecialchars($item['name']) . '</td>';
-            echo '<td>€' . number_format($item['price'], 2) . '</td>';
-            echo '<td>' . $item['quantity'] . '</td>';
-            echo '<td>€' . number_format($itemTotal, 2) . '</td>';
-            echo '</tr>';
+            echo '<tr class="item">' . PHP_EOL
+                .'<td><img src="' . $imagePath . '" alt="' . htmlspecialchars($item['name']) . '"></td>'. PHP_EOL
+                .'<td>' . htmlspecialchars($item['name']) . '</td>'. PHP_EOL
+                .'<td>€' . number_format($item['price'], 2) . '</td>'. PHP_EOL
+                .'<td>' . $item['quantity'] . '</td>'. PHP_EOL
+                .'<td>€' . number_format($itemTotal, 2) . '</td>'. PHP_EOL
+                .'</tr>'. PHP_EOL;
         }
         
-        echo '</tbody>';
-        echo '<tfoot>';
-        echo '<tr>';
-        echo '<td colspan="3" style="text-align: right;"><strong>Total:</strong></td>';
-        echo '<td>€' . number_format($totalAmount, 2) . '</td>';
-        echo '</tr>';
-        echo '</tfoot>';
-        echo '</table>';
-        echo '</div>';
+        echo '</tbody>'. PHP_EOL
+            .'<tfoot>'. PHP_EOL
+            .'<tr>'. PHP_EOL
+            .'<td colspan="3" style="text-align: right. PHP_EOL"><strong>Total:</strong></td>'. PHP_EOL
+            .'<td>€' . number_format($totalAmount, 2) . '</td>'. PHP_EOL
+            .'</tr>'. PHP_EOL
+            .'</tfoot>'. PHP_EOL
+            .'</table>'. PHP_EOL
+            .'</div>'. PHP_EOL
         
-        echo '<div class="confirmation-actions">';
-        echo '<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>';
-        echo '</div>';
-        echo '</div>';
+            .'<div class="confirmation-actions">'. PHP_EOL
+            .'<a href="index.php?page=webshop" class="continue-shopping">Continue Shopping</a>'. PHP_EOL
+            .'</div>'. PHP_EOL
+            .'</div>'. PHP_EOL;
     }
 }

@@ -43,7 +43,7 @@ class webshopPage extends \view\htmlDoc
         
         // Check if we have products
         if (empty($this->products)) {
-            echo '<p class="no-results">No products found.</p>';
+            echo '<p class="no-results">No products found.</p>' . PHP_EOL;
             return;
         }
         
@@ -51,40 +51,31 @@ class webshopPage extends \view\htmlDoc
         $this->displayProductGrid();
     }
     
-    // =====================================================================
+    // =============================================================================================
     private function displaySearchForm()
     {
-        echo '<div class="search-container">'
-            . PHP_EOL
-            . '<form method="GET" action="index.php">'
-            . PHP_EOL
-            . '<input type="hidden" name="page" value="webshop">'
-            . PHP_EOL
+        echo '<div class="search-container">' . PHP_EOL
+            . '<form method="GET" action="index.php">' . PHP_EOL
+            . '<input type="hidden" name="page" value="webshop">'. PHP_EOL
             . '<input type="text" name="search" class="search-input" placeholder="Search products..." '
-            . PHP_EOL
-            . 'value="' . (isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '') . '">'
-            . PHP_EOL
-            . '<button type="submit" class="search-button">Search</button>'
-            . PHP_EOL
-            . '</form>'
-            . PHP_EOL
-            . '</div>'
-            . PHP_EOL;
+            . 'value="' . (isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '') . '">' . PHP_EOL
+            . '<button type="submit" class="search-button">Search</button>' . PHP_EOL
+            . '</form>' . PHP_EOL
+            . '</div>' . PHP_EOL;
     }
 
     // =============================================================================================
 
     private function displayProductGrid()
     {
-        echo '<div class="webshop">'
-            . PHP_EOL;
+        echo '<div class="webshop">' . PHP_EOL;
 
         foreach ($this->products as $product)
         {
             $this->displayProductCard($product);
         }
         
-        echo "</div>";
+        echo "</div>" . PHP_EOL ;
     }
 
     // =============================================================================================
@@ -104,41 +95,29 @@ class webshopPage extends \view\htmlDoc
             $productImage = "placeholder.png";
         }
 
-        echo '<div class="product">'
-            . PHP_EOL
-            . '<a href="index.php?page=product&id=' . $productId . '">'
+        echo '<div class="product">' . PHP_EOL
+            . '<a href="index.php?page=product&id=' . $productId . '">' 
             . '<img src="assets/images/' . $productImage . '" alt="' . $productName . '">'
-            . '</a>'
-            . PHP_EOL
-            . '<h3><a href="index.php?page=product&id=' . $productId . '">' . $productName . '</a></h3>'
-            . PHP_EOL
-            . '<p class="price">€' . $productPrice . '</p>'
-            . PHP_EOL;
+            . '</a>' . PHP_EOL
+            . '<h3><a href="index.php?page=product&id=' . $productId . '">' . $productName . '</a></h3>' . PHP_EOL
+            . '<p class="price">€' . $productPrice . '</p>' . PHP_EOL;
 
         // If the user is logged in, show the add to cart button - log in please otherwise
         if ($isLoggedIn)
         {
-            echo '<form method="POST" action="index.php" class="order-form">'
-                . PHP_EOL
-                . '<input type="hidden" name="form_action" value="addtocart">'
-                . PHP_EOL
-                . '<input type="hidden" name="return_to" value="webshop">'
-                . PHP_EOL
-                . '<input type="hidden" name="product_id" value="' . $productId . '">'
-                . PHP_EOL
-                . '<input type="number" name="quantity" min="1" max="99" value="1">'
-                . PHP_EOL
-                . '<button type="submit" class="add-to-cart-btn">Add to Cart</button>'
-                . PHP_EOL
-                . '</form>'
-                . PHP_EOL;
+            echo '<form method="POST" action="index.php" class="order-form">' . PHP_EOL
+                . '<input type="hidden" name="page" value="addtocart">' . PHP_EOL
+                . '<input type="hidden" name="return_to" value="webshop">' . PHP_EOL
+                . '<input type="hidden" name="product_id" value="' . $productId . '">' . PHP_EOL
+                . '<input type="number" name="quantity" min="1" max="99" value="1">' . PHP_EOL
+                . '<button type="submit" class="add-to-cart-btn">Add to Cart</button>' . PHP_EOL
+                . '</form>' . PHP_EOL;
         } 
         else 
         {
-            echo '<a href="index.php?page=login" class="login-pls-btn">Login to order</a>'
-            . PHP_EOL;
+            echo '<a href="index.php?page=login" class="login-pls-btn">Login to order</a>' . PHP_EOL;
         }
 
-        echo '</div>';
+        echo '</div>' . PHP_EOL;
     }
 }

@@ -22,7 +22,7 @@ class ratingModel
      * @param int $rating The rating of the product
      * @return int|bool
      */
-    public function rateProduct(int $productId, int $userId, int $rating)
+    public function rateProduct(int $productId, int $userId, int $rating) : int|bool
     {
         // Validate rating value
         if ($rating < 1 || $rating > 5)
@@ -61,7 +61,7 @@ class ratingModel
      * @param int $userId The user ID
      * @return array|null
      */
-    public function getUserRating(int $productId, int $userId)
+    public function getUserRating(int $productId, int $userId) : array|null
     {
         $result = $this->crud->read("rating", [
             "product_id" => $productId,
@@ -74,10 +74,10 @@ class ratingModel
     // =============================================================================================
     /**
      * Get the average rating for a product
-     * @param mixed $productId The product ID
+     * @param  int $productId The product ID
      * @return array
      */
-    public function getAverageRating($productId)
+    public function getAverageRating(int $productId) : array
     {
         // Use a custom query to calculate the average
         $sql = "SELECT AVG(rating) as average,
@@ -102,10 +102,10 @@ class ratingModel
     // =============================================================================================    
     /**
      * Get all ratings for a product
-     * @param mixed $productId The product ID
+     * @param int $productId The product ID
      * @return array
      */
-    public function getProductRatings($productId)
+    public function getProductRatings(int $productId) : array
     {
         return $this->crud->read("*", ["product_id" => $productId], "created_at DESC");
     }
@@ -113,10 +113,10 @@ class ratingModel
     // =============================================================================================
     /**
      * Get all ratings made by a user
-     * @param mixed $userId The user ID
+     * @param int $userId The user ID
      * @return array
      */
-    public function getUSerRatings($userId)
+    public function getUSerRatings(int $userId) : array
     {
         // Custom query for all orders made by a user
         $sql = "SELECT pr.*, p.name  as product_name
@@ -126,17 +126,18 @@ class ratingModel
                 ORDER BY pr.created_at DESC";
 
         $params = [":user_id" => $userId];
-        return $this->crud->customQuery($sql, $params);
+        $result = $this->crud->customQuery($sql, $params);
+        return $result ? $result : [];
     }
 
     // =============================================================================================
     /**
      * Delete a rating from the record
-     * @param mixed $productId The product ID
-     * @param mixed $userId The user ID
+     * @param int $productId The product ID
+     * @param int $userId The user ID
      * @return int|bool
      */
-    public function deleteRating($productId, $userId)
+    public function deleteRating(int $productId, int $userId) : int|bool
     {
         return $this->crud->delete(["product_id" => $productId, "user_id" => $userId]);
     }

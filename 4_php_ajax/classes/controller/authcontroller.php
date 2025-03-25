@@ -17,7 +17,13 @@ class authController
     }
 
     // =============================================================================================
-    public function login ($email, $password) 
+    /**
+     * Log the user in
+     * @param string $email User email
+     * @param string $password User password (unhashed)
+     * @return array Result with success status and message
+     */
+    public function login(string $email, string $password) : array
     {
         // Validate input
         if (empty($email) || empty($password))
@@ -41,10 +47,19 @@ class authController
     }
 
     // =============================================================================================
-    public function register ($name, $email, $password, $passwordRepeat) 
+    /**
+     * Register a new user
+     * @param string $name User name
+     * @param string $email User email
+     * @param string $password User password
+     * @param string $passwordRepeat User password confirmation
+     * @return array Result with success status and message
+     */
+    public function register(string $name, string $email, string $password, string $passwordRepeat) : array
     {
         // Validate input
-        if (!validator::validateRequired(["name" => $name, "email" => $email, "password" => $password, "passwordRepeat" => $passwordRepeat]))
+        if (!validator::validateRequired(["name" => $name, "email" => $email,
+                                         "password" => $password, "passwordRepeat" => $passwordRepeat]))
         {
             return ['success' => false, 'message' => 'All fields are required'];
         }
