@@ -1,0 +1,17 @@
+{
+    "name": "rens/4_php_ajax",
+    "autoload": {
+        "psr-4": {
+            "Rens\\4PhpAjax\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Renseck",
+            "email": "77611329+Renseck@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

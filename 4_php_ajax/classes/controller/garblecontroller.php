@@ -12,7 +12,7 @@ class garbleController
         $this->garbleKey = "1AS^&DXko..!";
     }
 
-    // =============================================================================================
+    // =========================== Credit to M@nkind - Geert Weggemans =============================
     public function garble(string $str) : string
     {
         $ky = str_replace(chr(32), '', $this->garbleKey);
