@@ -6,6 +6,7 @@ use config\pageConfig;
 use controller\sessionController;
 use controller\authController;
 use controller\cartController;
+use controller\ajaxController;
 use view\homePage;
 
 class mainController
@@ -24,7 +25,14 @@ class mainController
     // =============================================================================================
     public function handleRequest()
     {
-        // First, handle any POST actions (form submissions)
+        // Check if this is an AJAX request
+        if (ajaxController::isAjaxRequest())
+        {
+            $this->handleAjaxRequest();
+            return;
+        }
+
+        // Then handle any POST actions (form submissions)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handlePostRequest();
         }
@@ -39,7 +47,8 @@ class mainController
         // Determine which form was submitted based on URL parameters
         $page = $_POST['page'] ?? '';
         
-        switch ($page) {
+        switch ($page) 
+        {
             case 'login':
                 $this->handleLogin();
                 break;
@@ -100,6 +109,46 @@ class mainController
         $pageClass = $this->pages[$pageName];
         $page = new $pageClass($this->pages);
         $page->show();
+    }
+
+    // =============================================================================================
+    private function handleAjaxRequest()
+    {
+        // Finally we can use my beloved "action" keyword
+        $action = $_GET["action"] ?? "";
+
+        $ajaxController = new ajaxController();
+
+        switch($action)
+        {
+            case "rateProduct":
+                $ajaxController->rateProduct();
+                break;
+
+            case "getAvgProductRating":
+                $ajaxController->getAvgProductRating();
+                break;
+
+            case "addToCart":
+                $ajaxController->addToCart();
+                break;
+
+            case "updateCartItem":
+                $ajaxController->updateCartItem();
+                break;
+            
+            case "removeFromCart":
+                $ajaxController->removeFromCart();
+                break;
+
+            default:
+                // Unknown AJAX action
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Unknown AJAX action " . $action
+                ]);
+                return;
+        }
     }
 
     // =============================================================================================
@@ -282,4 +331,6 @@ class mainController
         // Parse the result 
         sessionController::parseResult($result, $successPage = "confirmation", $errorPage = "cart");
     }
+
+    // =============================================================================================
 }

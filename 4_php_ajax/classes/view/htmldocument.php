@@ -9,6 +9,7 @@ class htmlDoc
 {
 	protected $title = "Default Title";
 	protected $cssFiles = ["assets/css/mystyle.css"];
+	protected $jsFiles = [];
 	protected $pages = ["Home"];
 	protected $pageHeaderText = "";
 	private $cartController;
@@ -48,8 +49,15 @@ class htmlDoc
 	{
 		echo '<title>' . $this->title . '</title>'
 			. PHP_EOL;
-		foreach ($this->cssFiles as $cssFile) {
+		foreach ($this->cssFiles as $cssFile)
+		{
 			echo '<link rel="stylesheet" type="text/css" href="' . $cssFile . '">'
+				. PHP_EOL;
+		}
+
+		foreach ($this->jsFiles as $jsFile)
+		{
+			echo '<script src="' . $jsFile . '"></script>'
 				. PHP_EOL;
 		}
 	}
@@ -167,6 +175,12 @@ class htmlDoc
 	public function addCSS($cssFile)
 	{
 		$this->cssFiles[] = $cssFile;
+	}
+
+	// ================================================================================================
+	public function addJs($jsFile)
+	{
+		$this->jsFiles[] = $jsFile;
 	}
 
 	// ================================================================================================

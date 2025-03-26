@@ -19,7 +19,7 @@ class ratingModel
      * Rate a product
      * @param int $productId The product ID
      * @param int $userId The user ID
-     * @param int $rating The rating of the product
+     * @param int $rating The rating of the product (1-5)
      * @return int|bool
      */
     public function rateProduct(int $productId, int $userId, int $rating) : int|bool
@@ -116,7 +116,7 @@ class ratingModel
      * @param int $userId The user ID
      * @return array
      */
-    public function getUSerRatings(int $userId) : array
+    public function getUserRatings(int $userId) : array
     {
         // Custom query for all orders made by a user
         $sql = "SELECT pr.*, p.name  as product_name

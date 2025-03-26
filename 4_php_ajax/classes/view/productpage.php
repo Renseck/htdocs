@@ -17,6 +17,10 @@ class productPage extends \view\htmlDoc
     public function __construct($pages)
     {
         parent::__construct("Product details", $pages);
+
+        // Add JavaScript files
+        $this->addJs("https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js");
+        $this->addJs("assets/js/rating.js");
         
         $this->productId = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 
@@ -79,8 +83,37 @@ class productPage extends \view\htmlDoc
             .'<img src="' . $imagePath . '" alt="' . $productName . '">' . PHP_EOL
             .'<h3>' . $productName . '</h3>' . PHP_EOL
             .'<p>' . $productDesc . '</p>' . PHP_EOL
+            .'<hr class="solid">' . PHP_EOL;
+
+        // Rating stars
+        echo '<div class="rating-container" data-product-id="' . $productId . '">' . PHP_EOL
+            .'<h4>Product Rating:</h4>' . PHP_EOL
+            .'<div class="stars">' . PHP_EOL
+            .'<span class="star" title="1 star">★</span>' . PHP_EOL
+            .'<span class="star" title="2 stars">★</span>' . PHP_EOL
+            .'<span class="star" title="3 stars">★</span>' . PHP_EOL
+            .'<span class="star" title="4 stars">★</span>' . PHP_EOL
+            .'<span class="star" title="5 stars">★</span>' . PHP_EOL
             .'</div>' . PHP_EOL
-            .'<div class="order_card">' . PHP_EOL
+            .'<span class="rating-text">Loading...</span>' . PHP_EOL;
+
+        // Display different messages based on login status
+        echo '<div class="rating-summary">' . PHP_EOL;
+        if ($isLoggedIn)
+        {
+            echo '<p>Click on a star to rate this product</p>' . PHP_EOL;
+        }
+        else
+        {
+            echo '<p>Please <a href="index.php?page=login">log in</a> to rate this product</p>' . PHP_EOL;
+        }
+
+        echo '</div>' . PHP_EOL
+            .'</div>' . PHP_EOL
+            .'</div>' . PHP_EOL;
+
+        // Rest of description and stuff
+        echo '<div class="order_card">' . PHP_EOL
             .'<h3>Order now</h3>' . PHP_EOL
             .'<p class="price">€' . number_format((float)$productPrice, 2) . '</p>' . PHP_EOL;
          
