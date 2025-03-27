@@ -2,7 +2,6 @@ dashboard/
 img/
 xampp/
 xampp-training/
-index.php
 favicon.ico
 *.md
 .env

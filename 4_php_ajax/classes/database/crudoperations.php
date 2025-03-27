@@ -124,8 +124,9 @@ class crudOperations
             $params[":{$updateKey}"] = $value;
         }
 
-        // WHERE clause
+        $sql .= implode(", ", $updates);
 
+        // WHERE clause
         if (!empty($conditions))
         {
             $sql .= " WHERE ";

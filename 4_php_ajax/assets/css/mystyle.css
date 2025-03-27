@@ -255,7 +255,15 @@ ul.menu li > a {
 .product_container {
   display: flex;
   gap: 40px;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.right-column {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .order_card {
@@ -263,12 +271,13 @@ ul.menu li > a {
   flex-direction: column;
   align-items: center; /* Ensures everything inside is centered */
   justify-content: flex-start;
-  max-width: 300px;
+  width: 300px;
   padding: 20px;
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;
 }
 
 /* Solid border */
@@ -334,38 +343,44 @@ hr.solid {
   display: inline-block;
   padding: 10px 0;
   margin-bottom: 15px;
+  position: relative; 
 }
 
-.stars { 
-  font-size: 24px;
-  cursor: pointer;
+.star-rating {
+  position: relative;
   display: inline-block;
-  margin-right: 10px;
+  font-size: 40px;
+  font-family: Arial, sans-serif;
 }
 
-.star {
-  color: #ddd;
-  display: inline-block;
-  transition: color 0.2s eawse;
+.stars-backdrop {
+  color: #ddd; /* Grey background stars */
+}
+
+.stars-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #FFD700;
+  white-space: nowrap;
+  width: 0; /* This will be dynamically set via JS */
+  overflow: hidden;
 }
 
 .star.active {
   color: #FFD700;
+  text-shadow: 0 0 1px #FFD700;
 }
 
-.star.half-active {
-  position: relative;
-  color: #ddd;
+.rating-text {
+  margin-left: 5px;
+  font-weight: bold;
 }
 
-.star.half-active:after {
-  content: "★";
-  color: #ffcc00;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%;
-  overflow: hidden;
+.rating-summary {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #666;
 }
 
 .message {
@@ -563,6 +578,17 @@ hr.solid {
   padding: 2px 2px;
   min-width: 100px;
   text-align: right;
+}
+
+/* Animation for cart updates */
+@keyframes highlight {
+  0% { background-color: transparent; }
+  30% { background-color: rgba(60, 120, 231, 0.2); }
+  100% { background-color: transparent; }
+}
+
+.item-updated {
+  animation: highlight 1.5s ease-out;
 }
 
 /* ===================================== Order confirmation ===================================== */

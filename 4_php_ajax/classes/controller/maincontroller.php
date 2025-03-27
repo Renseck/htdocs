@@ -141,6 +141,14 @@ class mainController
                 $ajaxController->removeFromCart();
                 break;
 
+            case "clearCart":
+                $ajaxController->clearCart();
+                break;
+
+            case "getCartContents":
+                $ajaxController->getCartContents();
+                break;
+
             default:
                 // Unknown AJAX action
                 echo json_encode([

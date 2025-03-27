@@ -35,11 +35,14 @@ class ratingModel
 
         if (!empty($existingRating))
         {
-            // Update existing rating
-            return $this->crud->update(
-                ["rating" => $rating],
-                ["product_id" => $productId, "user_id" => $userId]
-            );
+            // Prevent user from rating more than once
+            return false;
+            
+            // Use this code if you DO want the user to update their rating
+            // return $this->crud->update(
+            //     ["rating" => $rating],
+            //     ["product_id" => $productId, "user_id" => $userId]
+            // );
         }
         else 
         {
@@ -59,9 +62,9 @@ class ratingModel
      * Get a user's rating for a product
      * @param int $productId The product ID
      * @param int $userId The user ID
-     * @return array|null
+     * @return int|null
      */
-    public function getUserRating(int $productId, int $userId) : array|null
+    public function getUserRating(int $productId, int $userId) : int|null
     {
         $result = $this->crud->read("rating", [
             "product_id" => $productId,
@@ -86,7 +89,9 @@ class ratingModel
                 WHERE product_id = :product_id";
 
         $params = [":product_id" => $productId];
-        $result = $this->crud->customQuery($sql, $params);
+        $stmt = $this->crud->customQuery($sql, $params);
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if ($result && isset($result[0]))
         {

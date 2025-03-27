@@ -84,6 +84,7 @@ class cartPageTest
             $cartPage->show();
 
             $output = ob_get_contents();
+            
 
             // Test basic page structure
             assertTrue(strpos($output, '<title>Shopping cart</title>') !== false, 
@@ -91,7 +92,7 @@ class cartPageTest
             
             // Test for empty cart message or cart table
             $containsEmptyMessage = strpos($output, 'Your cart is empty') !== false;
-            $containsCartTable = strpos($output, 'shopping_cart') !== false;
+            $containsCartTable = strpos($output, '<table class="shopping_cart">') !== false;
             
             assertTrue($containsEmptyMessage || $containsCartTable, 
                       "Page should either show empty cart message or cart table", $this->testResult);

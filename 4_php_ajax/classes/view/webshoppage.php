@@ -19,6 +19,10 @@ class webshopPage extends \view\htmlDoc
         parent::__construct("Webshop", $pages);
         $this->setPageHeaderText("Webshop");
 
+        // Add JS files
+        $this->addJs("https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js");
+        $this->addJs("assets/js/cart.js");
+
         $this->productModel = new productModel();
 
         // Check if we have a search query

@@ -14,38 +14,57 @@ function initRatingSystem()
     {
         const container = $(this);
         const productId = container.data("productId");
-        const stars = container.find(".star");
-
-        loadProductRating(productId, container);
-
-        // Add event listeners to stars
-        stars.each(function(index) 
+        const starRating = container.find(".star-rating");
+        const starsOverlay = container.find(".stars-overlay");
+        
+        // Calculate the width of each star for interaction
+        const totalStars = 5;
+        const starRatingWidth = starRating.width();
+        const starWidth = starRatingWidth / totalStars;
+        
+        // Handle mouse movement over the star rating area
+        starRating.on("mousemove", function(e) 
         {
-            const star = $(this);
-
-            // Hover effects
-            star.on("mouseenter", function () 
+            // Get the relative mouse position
+            const relativeX = e.pageX - $(this).offset().left;
+            
+            // Determine which star is being hovered
+            const starIndex = Math.floor(relativeX / starWidth);
+            if (starIndex >= 0 && starIndex < totalStars) 
             {
-                highLightStars(stars, index);
-            });
-
-            // Click to confirm rating
-            star.on("click", function() 
-            { 
-                submitRating(productId, index+1, container);
-            });
+                // Set width to show the correct number of stars
+                const newWidth = ((starIndex + 1) * 100 / totalStars) + '%';
+                starsOverlay.css('width', newWidth);
+            }
         });
-
-        // Reset when mouse leaves the container
-        container.on("mouseleave", function() 
+        
+        // Handle clicking on stars
+        starRating.on("click", function(e) 
         {
+            // Get the relative mouse position
+            const relativeX = e.pageX - $(this).offset().left;
+            
+            // Determine which star was clicked (0-4)
+            const starIndex = Math.floor(relativeX / starWidth);
+            
+            if (starIndex >= 0 && starIndex < totalStars) {
+                // Submit rating (adding 1 since ratings are 1-5)
+                submitRating(productId, starIndex + 1, container);
+            }
+        });
+        
+        // Reset when mouse leaves the container
+        container.on("mouseleave", function() {
             resetStars(container);
         });
+        
+        // Load initial rating
+        loadProductRating(productId, container);
     });
 }
 
 /* ============================================================================================== */
-function loadProductRating(productId, container) 
+function loadProductRating(productId, container)
 {
     $.ajax({
         url: `index.php?action=getAvgProductRating&id=${productId}`,
@@ -67,6 +86,7 @@ function loadProductRating(productId, container)
         },
         error: function(xhr, status, error) {
             console.error("Error fetching rating data", error);
+            console.error("Response text:", xhr.responseText);
         }
     });
 }
@@ -74,6 +94,8 @@ function loadProductRating(productId, container)
 /* ============================================================================================== */
 function submitRating(productId, rating, container)
 {
+    console.log("Submitting rating:", productId, rating);
+
     // Create form data
     const formData = new FormData();
     formData.append("product_id", productId);
@@ -88,105 +110,128 @@ function submitRating(productId, rating, container)
         headers: {
             "X-Requested-With": "XMLHttpRequest"
         },
-        success: function(data) 
+        success: function(response) 
         {
+            console.log("Rating response:", response);
+            let data;
+            
+            // Try to parse the response if it's a string
+            if (typeof response === 'string') {
+                try {
+                    data = JSON.parse(response);
+                } catch (e) {
+                    console.error("Failed to parse response:", response);
+                    showMessage("Invalid response from server", "error");
+                    return;
+                }
+            } else {
+                data = response;
+            }
+            
             if (data.success) {
                 loadProductRating(productId, container);
                 showMessage("Your rating has been saved!", "success");
             }
             else
             {
+                console.error("Rating failed:", data);
                 showMessage(data.message || "An error occurred while saving your rating", "error");
             }
         },
         error: function(xhr, status, error) 
         {
             console.error("Error submitting rating:", error);
+            console.error("Response text:", xhr.responseText);
             showMessage("Could not connect to the server.", "error");
         }
     });
 }
 
 /* ============================================================================================== */
-function updateRatingDisplay(container, ratingData)
+function updateRatingDisplay(container, ratingData) 
 {
-    const stars = container.find(".star");
     const avgRating = parseFloat(ratingData.average);
     const userRating = ratingData.userRating;
-
+    const starsOverlay = container.find('.stars-overlay');
+    
     const ratingText = container.find(".rating-text");
-    if (ratingText.length)
+    if (ratingText.length) 
     {
+        // Display the rating with one decimal place precision
         ratingText.text(`${avgRating.toFixed(1)} (${ratingData.count} reviews)`);
     }
-
-    if (userRating !== null)
+    
+    if (userRating !== null) 
     {
         container.data("userRating", userRating);
-        highlightStars(stars, userRating - 1);
-    }
-    else
+        const totalStars = 5;
+        const starWidth = starsOverlay.parent().width() / totalStars;
+        starsOverlay.css('width', (userRating * starWidth) + 'px');
+    } 
+    else 
     {
-        visualizeAverageRating(stars, avgRating);
+        visualizeAverageRating(starsOverlay, avgRating);
     }
 }
 
 /* ============================================================================================== */
-function highlightStars(stars, activeIndex)
+function highlightStars(starsOverlay, activeIndex) 
 {
-    stars.each(function(index) {
-        if (index <= activeIndex) {
-            $(this).addClass("active");
-        }
-        else
-        {
-            $(this).removeClass("active");
-        }
-    });
+    const container = starsOverlay.closest('.rating-container');
+    const starWidth = starsOverlay.width() / 5; // Assuming 5 stars
+    
+    // Set width to show the correct number of stars
+    starsOverlay.css('width', ((activeIndex + 1) * starWidth) + 'px');
 }
 
 /* ============================================================================================== */
-function resetStars(container)
+function resetStars(container) 
 {
-    const stars = container.find(".star");
     const userRating = container.data("userRating");
-
-    if (userRating)
+    const starsOverlay = container.find('.stars-overlay');
+    
+    if (userRating) 
     {
-        highlightStars(stars, parseInt(userRating) - 1);
-    }
-    else
+        const starWidth = starsOverlay.width() / 5; // Assuming 5 stars
+        starsOverlay.css('width', (parseInt(userRating) * starWidth) + 'px');
+    } 
+    else 
     {
         const avgElement = container.find(".rating-text");
-        if (avgElement.length)
+        if (avgElement.length) 
         {
-            const avgRating = parseFloat(avgElement.text());
-            visualizeAverageRating(stars, avgRating);
-        }
-        else
+            const text = avgElement.text();
+            const match = text.match(/(\d+\.\d+)/);
+            if (match && match[0]) 
+            {
+                const avgRating = parseFloat(match[0]);
+                visualizeAverageRating(starsOverlay, avgRating);
+            } 
+            else 
+            {
+                starsOverlay.css('width', '0px');
+            }
+        } 
+        else 
         {
-            stars.removeClass("active half-active");
+            starsOverlay.css('width', '0px');
         }
     }
 }
 
 /* ============================================================================================== */
-function visualizeAverageRating(stars, avgRating) 
+function visualizeAverageRating(starsOverlay, avgRating) 
 {
-    stars.each(function(index) {
-        const star = $(this);
-        if (index < Math.floor(avgRating)) {
-            star.addClass("active").removeClass("half-active");
-        }
-        else if (index === Math.floor(avgRating) && avgRating % 1 >= 0.5)
-        {
-            star.removeClass("active").addClass("half-active");
-        }
-        else
-        {
-            star.removeClass("active half-active");
-        }
-    });
+    const container = starsOverlay.closest('.rating-container');
+    const starRating = container.find('.star-rating');
+    
+    // Calculate width percentage based on rating (out of 5 stars)
+    const totalStars = 5; // Your HTML shows 5 stars
+    const fillPercent = (avgRating / totalStars) * 100;
+    
+    // Set the width as a percentage of the total width
+    container.find('.stars-overlay').css('width', fillPercent + '%');
+    container.find('.stars-overlay').show();
 }
 
 /* ============================================================================================== */

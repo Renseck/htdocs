@@ -58,7 +58,7 @@ class ajaxController
      */
     protected function requireLogin() : bool
     {
-        if (!sessionCOntroller::isLoggedIn())
+        if (!sessionController::isLoggedIn())
         {
             $this->sendResponse(false, "You must be logged in to perform this action");
             return false;
@@ -108,9 +108,13 @@ class ajaxController
 
         $result = $this->ratingModel->rateProduct($productId, $userId, $rating);
 
+        // Convert the boolean or integer result to the expected format
+        $success = $result !== false;
+        $message = $success ? "Rating saved successfully" : "Failed to save rating";
+
         $this->sendResponse(
-            $result["success"],
-            $result["message"],
+            $success,
+            $message,
             ["rating" => $rating]
         );
     }
@@ -122,12 +126,12 @@ class ajaxController
      */
     public function getAvgProductRating() : void
     {
-        if (!$this->validateRequiredParams(["product_id"], "GET"))
+        if (!$this->validateRequiredParams(["id"], "GET"))
         {
             return;
         }
 
-        $productId = (int)$_GET["product_id"];
+        $productId = (int)$_GET["id"];
         $rating = $this->ratingModel->getAverageRating($productId);
 
         // If the user is logged in, also get their individual rating
@@ -248,5 +252,45 @@ class ajaxController
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) 
         && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    }
+
+    // =============================================================================================
+    /**
+     * Clear the cart
+     * @return void
+     */
+    public function clearCart() : void
+    {
+        if (!$this->requireLogin())
+        {
+            return;
+        }
+        
+        $result = $this->cartController->clearCart();
+
+        $cartSummary = $this->cartController->getCartWithDetails();
+
+        $this->sendResponse(
+            $result["success"],
+            $result["message"],
+            ["cart" => $cartSummary]
+        );
+    }
+
+    // =============================================================================================
+    public function getCartContents() : void
+    {
+        if (!$this->requireLogin())
+        {
+            return;
+        }
+
+        $cartSummary = $this->cartController->getCartWithDetails();
+
+        $this->sendResponse(
+            true,
+            "Cart contents retrieved",
+            ["cart" => $cartSummary]
+        );
     }
 }

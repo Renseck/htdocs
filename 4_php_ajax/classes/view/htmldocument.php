@@ -134,7 +134,7 @@ class htmlDoc
 			elseif ($key === "cart" && sessionController::isLoggedIn())
 			{
 				$itemCount = $this->cartController->getItemCount();
-				echo '<li><a href="?page=' . $key . '">' . strtoupper($key) . ' [' . number_format($itemCount) . ']</a></li>'
+				echo '<li><a class="cart-indicator" href="?page=' . $key . '">' . strtoupper($key) . ' [' . number_format($itemCount) . ']</a></li>'
 				. PHP_EOL;
 			}
 			else

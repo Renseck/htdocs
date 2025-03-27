@@ -1,13 +1,19 @@
-# 3_PHP_OOP
+# 4_PHP_AJAX
 Works on my machine. ¯\\_(ツ)_/¯ 
 
-## Structuur
+## Installatie
 
-De bedoeling van deze opdracht was om de hele webshop om te zetten naar een OOP structuur, waarin iedere pagina zijn eigen class krijgt, `extend`ed uit een parent class `htmlDoc`. Daarbovenop heb ik geprobeerd te werken met een MVC architectuur. Die verschillende onderdelen staan in de map `classes/` ondergebracht, onder respectievelijk `model/`, `view/` en `control/`. Daarnaast vind je nog wat extra maps, namelijk `config/`, gebruikt voor het configureren van pagina's en de login info voor de database, `database/` welke classes bevat voor het aanleggen van de database connectie en CRUD operaties, en `utils/` voor wat overblijfseltjes die het algehele schrijven van het project wat vergemakkelijkt hebben. Onder `assets` vind je (in `db`) het .sql file waarmee de bijbehorende database gegenereerd kan worden, en in `images/` staat nog een placeholder plaatje die ik overal tegenaan heb gegooid.
+Bij dit project ben ik gebruik gaan maken van composer. Derhalve moet er eerst het commando `composer install` gerund worden vanuit de project root, zodat alle dependencies geinstalleerd kunnen worden.
 
-## Tests
+## Toevoegingen
 
-Alle tests kunnen individueel gerund worden iets in de richting van `php tests/pagetests/loginpagetest.php`, of alles kan in een stuk door gerund worden door een andere file te runnen; `php tests/runtests.php`. 
+Het project is gebruik gaan maken van AJAX. Deze JS scripts zijn te vinden in `assets/js`. Ze houden zich bezig met het reviewen van producten in de product info pages, en het muteren van de producten in de cart. Deze worden allemaal vanuit de `mainController` aangestuurd door een `ajaxController`. 
+
+### Product reviews
+Dit spreekt over de functies in `rating.js`. Ze besturen reviews op de product info pages die openenen bij het klikken op een van de producten in de webshop. De gemiddelde reviews worden weergegeven, zowel in het gemiddelde getal naast de sterren, alsmede door het aantal ingevulde sterren als de gebruiker nog geen review heeft geplaatst. Iedere gebruiker mag maar één review plaatsen.
+
+### Cart
+Er zijn verschillende "normale" page requests gespiegeld naar een AJAX method, zoals `addToCart`, `updateCart`, `removeFromCart` en `clearCart`. Dit maakt dat de cart direct gemuteerd kan worden zonder een volledige page reload. Ook zal het aantal items dat wordt aangegeven in het hyperlink menu bovenaan de pagina direct geüpdated worden.
 
 ## License
 
