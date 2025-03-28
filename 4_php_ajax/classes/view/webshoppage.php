@@ -7,10 +7,12 @@ require_once 'classes/model/productmodel.php';
 
 use controller\sessionController;
 use model\productModel;
+use model\ratingModel;
 
 class webshopPage extends \view\htmlDoc
 {
     private $productModel;
+    private $ratingModel;
     private $products;
 
     // =====================================================================
@@ -24,6 +26,7 @@ class webshopPage extends \view\htmlDoc
         $this->addJs("assets/js/cart.js");
 
         $this->productModel = new productModel();
+        $this->ratingModel = new ratingModel();
 
         // Check if we have a search query
         if (isset($_GET["search"]) && !empty($_GET["search"])) 
@@ -93,6 +96,9 @@ class webshopPage extends \view\htmlDoc
         $productPrice = htmlspecialchars($product["price"]);
         $productImage = htmlspecialchars($product["image"]);
 
+        // Get product ratging
+        $ratingInfo = $this->ratingModel->getAverageRating($productId);
+
         // If no image is provided, default to the placeholder image
         if (empty($productImage) || !file_exists('assets/images/' . $productImage . ''));
         {
@@ -105,6 +111,9 @@ class webshopPage extends \view\htmlDoc
             . '</a>' . PHP_EOL
             . '<h3><a href="index.php?page=product&id=' . $productId . '">' . $productName . '</a></h3>' . PHP_EOL
             . '<p class="price">€' . $productPrice . '</p>' . PHP_EOL;
+
+        // Display rating information 
+        $this->displayRatingStars($ratingInfo);
 
         // If the user is logged in, show the add to cart button - log in please otherwise
         if ($isLoggedIn)
@@ -123,5 +132,37 @@ class webshopPage extends \view\htmlDoc
         }
 
         echo '</div>' . PHP_EOL;
+    }
+
+    // =============================================================================================
+    /**
+     * Display a non-interactive version of the review stars
+     */
+    private function displayRatingStars($ratingInfo)
+    {
+        $average = $ratingInfo["average"];
+        $count = $ratingInfo["count"];
+        $width = ($average/5) * 100; // As percentage
+
+        // Stars
+        echo '<div class="rating-display">' . PHP_EOL
+            .'<div class="star-rating small">' . PHP_EOL
+            .'<div class="stars-backdrop">★★★★★</div>' . PHP_EOL
+            .'<div class="stars-overlay" style="width: ' . $width . '%">★★★★★</div>' . PHP_EOL
+            .'</div>' . PHP_EOL;
+
+        // Rating text
+        echo '<span class="rating-text">' . PHP_EOL;
+        if ($count > 0)
+        {
+            echo round($average, 1) . ' (' . $count . ' ' . ($count == 1 ? "review" : "reviews") . ')' . PHP_EOL;
+        }
+        else
+        {
+            echo "No reviews yet" . PHP_EOL;
+        }
+        echo '</span>' . PHP_EOL
+            .'</div>' . PHP_EOL;
+
     }
 }

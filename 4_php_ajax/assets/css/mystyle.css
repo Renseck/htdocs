@@ -135,6 +135,25 @@ ul.menu li > a {
   max-width: 240px;
 }
 
+.product .star-rating {
+  position: relative;
+  display: inline-block;
+  font-size: 1.2em; /* Smaller than the product page */
+  line-height: 1;
+  margin-right: 5px;
+}
+
+.product .rating-display {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.product .rating-text {
+  font-size: 0.8em;
+  color: #666;
+}
+
 .product h3 a {
   text-decoration: none;
   color: #333;
