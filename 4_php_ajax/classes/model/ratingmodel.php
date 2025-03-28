@@ -131,7 +131,8 @@ class ratingModel
                 ORDER BY pr.created_at DESC";
 
         $params = [":user_id" => $userId];
-        $result = $this->crud->customQuery($sql, $params);
+        $stmt = $this->crud->customQuery($sql, $params);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result ? $result : [];
     }
 
@@ -144,7 +145,8 @@ class ratingModel
      */
     public function deleteRating(int $productId, int $userId) : int|bool
     {
-        return $this->crud->delete(["product_id" => $productId, "user_id" => $userId]);
+        $result = $this->crud->delete(["product_id" => $productId, "user_id" => $userId]);
+        return $result > 0 ? $result : false;
     }
     
     // =============================================================================================

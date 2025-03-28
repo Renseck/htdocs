@@ -23,6 +23,7 @@ if ($runModelTests) {
     $modelTests = [
         'usermodeltest.php',
         'productmodeltest.php',
+        'ratingmodeltest.php',
         'ordermodeltest.php'
     ];
     
@@ -47,7 +48,7 @@ if ($runPageTests) {
     echo "\n=== Page Tests ===\n";
     
     // I've tried using an automatic scandir approach here, but that seems to generate a million 
-    // warnings that prohibit nothing but are still annoying to look at so i'll leave i like this
+    // warnings that prohibit nothing but are still annoying to look at so i'll leave it like this
     $pageTests = [
         'homepagetest.php',
         'loginpagetest.php',

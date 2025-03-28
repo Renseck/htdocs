@@ -16,7 +16,7 @@ class userModelTest
     // =============================================================================================
     public function __construct()
     {
-        $this->userModel = new \model\userModel();
+        $this->userModel = new userModel();
         $this->testResult = new testResult();
     }
 

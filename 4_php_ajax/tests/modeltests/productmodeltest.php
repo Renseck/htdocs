@@ -12,7 +12,7 @@ class productModelTest
     // =============================================================================================
     public function __construct()
     {
-        $this->productModel = new \model\productModel();
+        $this->productModel = new productModel();
         $this->testResult = new testResult();
     }
 
