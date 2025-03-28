@@ -3,5 +3,6 @@ img/
 xampp/
 xampp-training/
 favicon.ico
-*.md
+/ht_docs/*.md
+!*.md
 .env
