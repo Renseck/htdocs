@@ -163,7 +163,7 @@ class apiController
                 break;
 
             case "html":
-                echo "<html><body><h1>Error</h1><p>{$message}</p></body></html>";
+                echo $this->createHtmlDocument('<h1>Error</h1><p class="error">' . htmlspecialchars($message) . '</p>', 'API Error');
                 break;
 
             default:
@@ -227,6 +227,25 @@ class apiController
 
     // ====================================== HTML portion =========================================
     // =============================================================================================
+    private function createHtmlDocument(string $content, string $title = "API Response")
+    {
+        return '<!DOCTYPE html>' . PHP_EOL
+                .'<html>' . PHP_EOL
+                .'<head>' . PHP_EOL
+                    .'<title>' . $title . '</title>' . PHP_EOL
+                    .'<style>
+                        body { font-family: Arial, sans-serif; margin:20px; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        tr:nth-child(even) { background-color: #f9f9f9; }
+                     ' . PHP_EOL . '</style>' . PHP_EOL
+                .'</head>' . PHP_EOL
+                .'<body>' . $content . '</body>' . PHP_EOL;
+                    
+    }
+
+    // =============================================================================================
     /**
      * Add data to HTML response (paragraph or table)
      * @param array $data Array of data
@@ -235,21 +254,7 @@ class apiController
     private function arrayToHtml(array $data) : string
     {
         // HTML start
-        $html = '<!DOCTYPE html>
-                <html>
-                <head>
-                    <title>API Response</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin:20px; }
-                        table { border-collapse: collapse; width: 100%; }
-                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                        th { background-color: #f2f2f2; }
-                        tr:nth-child(even) { background-color: #f9f9f9; }
-                    </style>
-                </head>
-                <body>
-                    <h1>Product Information</h1>';
-
+        $html = '<h1>Product Information</h1>' . PHP_EOL;
         // Add x product(s)
         if ($this->isSingleProduct($data))
         {
@@ -261,10 +266,7 @@ class apiController
             $html .= $this->multipleProductsHtml($data);
         }
 
-        $html .= '</body>'. PHP_EOL
-                .'</html>' . PHP_EOL;
-
-        return $html;
+        return $this->createHtmlDocument($html);
     }
 
     // =============================================================================================
@@ -275,9 +277,9 @@ class apiController
      */
     private function singleProductHtml(array $product) : string
     {
-        $html = '<h2>Product #' . $product["product_id"] . '</h2>
-                <table>
-                <tr><th>Property</th><th>Value</th></tr>';
+        $html = '<h2>Product #' . $product["product_id"] . '</h2>' . PHP_EOL
+                .'<table>' . PHP_EOL
+                .'<tr><th>Property</th><th>Value</th></tr>' . PHP_EOL;
 
         foreach ($product as $key => $value)
         {
