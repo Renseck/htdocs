@@ -9,6 +9,12 @@ class apiController
 {
     private $productModel;
     public $validTypes = ["json", "xml", "html"];
+    private $contentTypes = [
+        "json" => "application/json",
+        "xml" => "text/xml",
+        "html" => "text/html",
+        "default" => "text/plain"
+    ];
 
     // =============================================================================================
     public function __construct()
@@ -61,6 +67,49 @@ class apiController
 
     // =============================================================================================
     /**
+     * Search product by keyword
+     * @param string $keyword Search term
+     * @param string $type Response type
+     * @return void
+     */
+    public function searchProducts(string $keyword, string $type) : void
+    {
+        if (empty($keyword) || strlen($keyword) < 2)
+        {
+            $this->sendErrorResponse("Search term be at least 2 characters", $type);
+        }
+
+        $products = $this->productModel->searchProducts($keyword);
+
+        if (empty($products)) 
+        {
+            $this->sendErrorResponse("No products found matching: " . htmlspecialchars($keyword), $type);
+            return;
+        }
+
+        $this->formatResponse($products, $type);
+    }
+
+    // =============================================================================================
+    /**
+     * Set content header type in format response
+     * @param string $type Response type
+     * @return void
+     */
+    private function setContentTypeHeader(string $type) : void
+    {
+        $contentType = $this->contentTypes[$type] ?? $this->contentTypes["default"];
+        header("Content-Type: {$contentType}");
+    }
+
+    // =============================================================================================
+    private function isSingleProduct(array $data) : bool
+    {
+        return isset($data["product_id"]);
+    }
+
+    // =============================================================================================
+    /**
      * Format response in requested type
      * @param array $data Data to be formatted
      * @param string $type Response type
@@ -68,10 +117,11 @@ class apiController
      */
     private function formatResponse(array $data, string $type) : void
     {
+        $this->setContentTypeHeader($type);
+
         switch ($type)
         {
             case "json":
-                header('Content-Type: application/json');
                 echo json_encode([
                     "success" => true,
                     "data" => $data
@@ -79,12 +129,10 @@ class apiController
                 break;
 
             case "xml":
-                header('Content-Type: text/xml');
                 echo $this->arrayToXml($data);
                 break;
 
             case "html":
-                header('Content-Type: text/html');
                 echo $this->arrayToHtml($data);
                 break;
         }
@@ -99,10 +147,11 @@ class apiController
      */
     public function sendErrorResponse(string $message, string $type) : void
     {
+        $this->setContentTypeHeader($type);
+
         switch ($type)
         {
             case "json":
-                header('Content-Type: application/json');
                 echo json_encode([
                     "success" => false,
                     "message" => $message
@@ -110,17 +159,14 @@ class apiController
                 break;
 
             case "xml":
-                header('Content-Type: text/xml');
                 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<response><success>false</success><message>{$message}</message></response>";
                 break;
 
             case "html":
-                header('Content-Type: text/html');
                 echo "<html><body><h1>Error</h1><p>{$message}</p></body></html>";
                 break;
 
             default:
-                header('Content-Type: text/plain');
                 echo "Error: {$message}";
                 break;
         }
@@ -141,7 +187,7 @@ class apiController
         $dataNode = $xml->addChild('data');
 
         // Add x product(s)
-        if (isset($data["product_id"]))
+        if ($this->isSingleProduct($data))
         {
             // Single product
             $this->addProductToXml($dataNode->addChild("product"), $data);
@@ -205,7 +251,7 @@ class apiController
                     <h1>Product Information</h1>';
 
         // Add x product(s)
-        if (isset($data["id"]))
+        if ($this->isSingleProduct($data))
         {
             // Single product
             $html .= $this->singleProductHtml($data);
@@ -215,7 +261,8 @@ class apiController
             $html .= $this->multipleProductsHtml($data);
         }
 
-        $html .= '</body></html>';
+        $html .= '</body>'. PHP_EOL
+                .'</html>' . PHP_EOL;
 
         return $html;
     }
@@ -228,16 +275,16 @@ class apiController
      */
     private function singleProductHtml(array $product) : string
     {
-        $html = '<h2>Product #' . $product["id"] . '</h2>
+        $html = '<h2>Product #' . $product["product_id"] . '</h2>
                 <table>
                 <tr><th>Property</th><th>Value</th></tr>';
 
         foreach ($product as $key => $value)
         {
-            $html .= '<tr><td>' . htmlspecialchars($key) . '</td><td>' . htmlspecialchars($value) . '</td>';
+            $html .= '<tr><td>' . htmlspecialchars($key) . '</td><td>' . htmlspecialchars($value) . '</td>' . PHP_EOL;
         }
 
-        $html .= '</table>';
+        $html .= '</table>' . PHP_EOL;
         return $html;
     }
 
@@ -286,11 +333,11 @@ class apiController
                 $value = $product[$key] ?? "";
                 $html .= '<td>' . htmlspecialchars($value) . '</td>';
             }
-            $html .= '</tr>';
+            $html .= '</tr>' . PHP_EOL;
 
         }
 
-        $html .= '</table>';
+        $html .= '</table>' . PHP_EOL;
         return $html;
 
     }

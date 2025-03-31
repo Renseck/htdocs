@@ -191,8 +191,21 @@ class mainController
                 break;
 
             case "item":
-                $id = $_GET["id"] ?? 0;
-                $apiController->getProductById($id, $type);
+                if (isset($_GET["id"]) && is_numeric($_GET["id"]))
+                {
+                    $id = (int)$_GET["id"];
+                    $apiController->getProductById($id, $type);
+                }
+                elseif (isset($_GET["search"]))
+                {
+                    $keyword = $_GET["search"];
+                    $apiController->searchProducts($keyword, $type);
+                }
+                else
+                {
+                    $apiController->sendErrorResponse("Missing required parameter: id or search", $type);
+                }
+                
                 break;
 
             default:

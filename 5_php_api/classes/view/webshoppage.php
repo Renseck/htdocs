@@ -159,7 +159,7 @@ class webshopPage extends \view\htmlDoc
         }
         else
         {
-            echo "No reviews yet" . PHP_EOL;
+            echo "(0)" . PHP_EOL;
         }
         echo '</span>' . PHP_EOL
             .'</div>' . PHP_EOL;

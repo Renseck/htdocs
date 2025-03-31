@@ -3,7 +3,7 @@
         'name' => 'rens/4_php_ajax',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c0a29e93c0d27dcf08244c1ca2c577388456d5f7',
+        'reference' => '1798422c2414600f648e989445aee67dc69a4c33',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'rens/4_php_ajax' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c0a29e93c0d27dcf08244c1ca2c577388456d5f7',
+            'reference' => '1798422c2414600f648e989445aee67dc69a4c33',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

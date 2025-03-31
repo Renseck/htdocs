@@ -39,7 +39,14 @@ function displayResponse($title, $url, $response)
     echo "<hr>";
 }
 
-// ===================== Not gonna worry about making this proper functions ========================
+// =================================================================================================
+function getHttpResponseCode($url)
+{
+    $headers = get_headers($url);
+    return substr($headers[0], 9, 3);
+}
+
+// =================== Not gonna worry about making this with proper functions =====================
 echo '<!DOCTYPE html>' . PHP_EOL
     .'<html>' . PHP_EOL
     .'<head>' . PHP_EOL
@@ -77,20 +84,25 @@ echo '<!DOCTYPE html>' . PHP_EOL
     $response = callApi($url);
     displayResponse("All Products (HTML)", $url, $response);
     
-    // Test 4: Get single product in JSON format (assuming product ID 1 exists)
-    $url = $baseUrl . '&type=json&function=item&id=1';
+    // Test 4: Get single product in JSON format
+    $url = $baseUrl . '&type=json&function=item&id=3';
     $response = callApi($url);
-    displayResponse("Single Product ID 1 (JSON)", $url, $response);
+    displayResponse("Single Product ID 3 (JSON)", $url, $response);
     
     // Test 5: Get single product in XML format
-    $url = $baseUrl . '&type=xml&function=item&id=1';
+    $url = $baseUrl . '&type=xml&function=item&id=3';
     $response = callApi($url);
-    displayResponse("Single Product ID 1 (XML)", $url, $response);
+    displayResponse("Single Product ID 3 (XML)", $url, $response);
+
+    // Test 6: Get single product in HTML format BY KEYWORD
+    $url = $baseUrl . '&type=html&function=item&search=stoel';
+    $response = callApi($url);
+    displayResponse("Single Product keyword 'stoel' (HTML)", $url, $response);
     
-    // Test 6: Error case - invalid product ID
+    // Test 7: Error case - invalid product ID
     $url = $baseUrl . '&type=json&function=item&id=999999';
     $response = callApi($url);
-    displayResponse("Invalid Product ID (JSON)", $url, $response);
+    displayResponse("Invalid Product ID 999999 (JSON)", $url, $response);
     
 echo '</body>' . PHP_EOL
     .'</html>' . PHP_EOL;
