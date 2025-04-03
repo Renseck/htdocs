@@ -2,7 +2,7 @@
 
 namespace controller;
 
-use model\userModel;
+use factories\factoryManager;
 use utils\validator;
 
 class authController 
@@ -12,7 +12,8 @@ class authController
     // =============================================================================================
     public function __construct()
     {
-        $this->userModel = new userModel();
+        $modelFactory = factoryManager::getInstance()->getFactory("model");
+        $this->userModel = $modelFactory->create("user");
         sessionController::startSession();
     }
 

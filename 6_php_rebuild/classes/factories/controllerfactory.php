@@ -17,8 +17,10 @@ class controllerFactory extends baseFactory
             "api" => \controller\apiController::class,
             "auth" => \controller\authController::class,
             "cart" => \controller\cartController::class,
+            "garble" => \controller\garbleController::class,
             "session" => \controller\sessionController::class,
-            "garble" => \controller\garbleController::class
+            "post" => \controller\postController::class,
+            "get" => \controller\getController::class
         ];
     }
 
@@ -38,4 +40,6 @@ class controllerFactory extends baseFactory
     {
         return isset($this->controllerMap[$type]);
     }
+
+    // =============================================================================================
 }

@@ -36,4 +36,6 @@ class modelFactory extends baseFactory
     {
         return isset($this->modelMap[$type]);
     }
+
+    // =============================================================================================
 }

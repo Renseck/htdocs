@@ -5,17 +5,18 @@ namespace controller;
 require_once 'classes/model/productmodel.php';
 
 use controller\sessionController;
-use model\productModel;
-use model\orderModel;
+use factories\factoryManager;
 
 class cartController
 {
     private $productModel;
+    private $modelFactory;
 
     // =============================================================================================
     public function __construct()
     {
-        $this->productModel = new productModel();
+        $this->modelFactory = factoryManager::getInstance()->getFactory("model");
+        $this->productModel = $this->modelFactory->create("product");
     }
 
     // =============================================================================================
@@ -201,7 +202,7 @@ class cartController
         $userId = $user["id"];
 
         // Create the order model and place the order
-        $orderModel = new orderModel();
+        $orderModel = $this->modelFactory->create("order");
         $result = $orderModel->createOrder($userId, $cartData["items"]);
 
         // Clear the cart

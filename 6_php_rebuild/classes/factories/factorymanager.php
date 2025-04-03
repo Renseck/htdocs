@@ -4,7 +4,7 @@ namespace factories;
 
 class factoryManager
 {
-    protected array $factories = [];
+    private array $factories = [];
     
     private static ?factoryManager $instance = null;
 
@@ -20,23 +20,22 @@ class factoryManager
     }
 
     // =============================================================================================
-    public function registerFactory($factory) : void
+    public function getFactory(string $type)
     {
-        $this->factories[] = $factory;
+        if (!isset($this->factories[$type]))
+        {
+            $this->factories[$type] = match ($type)
+            {
+                "controller" => new controllerFactory(),
+                "model" => new modelFactory(),
+                "view" => new viewFactory(),
+                "formatter" => new formatterFactory(),
+                default => throw new \InvalidArgumentException("Unknown factory type: $type")
+            };
+        }
+
+        return $this->factories[$type];
     }
 
     // =============================================================================================
-    public function create(string $type, array $params = [])
-    {
-        foreach ($this->factories as $factory)
-        {
-            if ($factory->canCreate($type))
-            {
-                return $factory->create($type, $params);
-            }
-        }
-
-        throw new \InvalidArgumentException("No factory found for type: $type");
-    }
-
 }

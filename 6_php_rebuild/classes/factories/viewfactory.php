@@ -3,20 +3,16 @@
 namespace factories;
 
 use factories\baseFactory;
+use config\pageConfig;
 
-class formatterFactory extends baseFactory
+class viewFactory extends baseFactory
 {
-    protected $formatterMap = [];
+    private $pages;
 
     // =============================================================================================
     public function __construct()
     {
-        $this->formatterMap = [
-            "html" => \formatters\htmlFormatter::class,
-            "json" => \formatters\jsonFormatter::class,
-            "xml" => \formatters\xmlFormatter::class,
-            "default" => \formatters\plaintextFormatter::class
-        ];     
+        $this->pages = pageConfig::getPages();
     }
 
     // =============================================================================================
@@ -24,16 +20,16 @@ class formatterFactory extends baseFactory
     {
         if (!$this->canCreate($type))
         {
-            throw new \InvalidArgumentException("Unsupported formatter type: $type");
+            throw new \InvalidArgumentException("Unsupported page type: $type");
         }
 
-        return new $this->formatterMap[$type](...$params);
+        return new $this->pages[$type](...$params);
     }
 
     // =============================================================================================
     public function canCreate(string $type)
     {
-        return isset($this->formatterMap[$type]);
+        return isset($this->pages[$type]);
     }
 
     // =============================================================================================

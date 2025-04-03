@@ -2,8 +2,7 @@
 
 namespace controller;
 
-use model\productModel;
-use factories\formatterFactory;
+use factories\factoryManager;
 
 class apiController
 {
@@ -14,8 +13,48 @@ class apiController
     // =============================================================================================
     public function __construct()
     {
-        $this->productModel = new productModel();
-        $this->formatterFactory = new formatterFactory();
+        $factoryManager = factoryManager::getInstance();
+        $this->productModel = $factoryManager->getFactory("model")->create("product");
+        $this->formatterFactory = $factoryManager->getFactory("formatter");
+    }
+
+    // =============================================================================================
+    public function handleRequest(array $data) : void
+    {
+        $function = $data["function"];
+        $type = $data["type"];
+
+        if (!in_array($type, $this->validTypes))
+        {
+            $this->sendErrorResponse("Invalid response type", $type);
+            return;
+        }
+
+        switch ($function)
+        {
+            case "all":
+                $this->getAllProducts($type);
+                break;
+
+            case "item":
+                if (isset($data["id"]) && is_numeric($data["id"]))
+                {
+                    $this->getProductById($data["id"], $type);
+                }
+                elseif (isset($data["search"]))
+                {
+                    $this->searchProducts($data["search"], $type);
+                }
+                else 
+                {
+                    $this->sendErrorResponse("Missing required parameter: 'id' or 'search'", $type);
+                }
+                break;
+
+            default:
+                $this->sendErrorResponse("Unknown function", $type);
+                break;
+        }
     }
 
     // =============================================================================================
@@ -25,7 +64,7 @@ class apiController
      * @param string $type Response type
      * @return void
      */
-    private function sendResponse(array $data, string $type) : void
+    public function sendResponse(array $data, string $type) : void
     {
         try {
             $formatter = $this->formatterFactory->create($type);
