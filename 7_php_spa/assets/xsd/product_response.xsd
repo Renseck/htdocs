@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Root response element -->
+  <xs:element name="response">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Success flag is always present -->
+        <xs:element name="success" type="xs:boolean"/>
+        
+        <!-- Response will contain either data or message element -->
+        <xs:choice>
+          <!-- Data element for successful responses -->
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <!-- Can have zero or more product elements -->
+                <xs:element name="product" type="ProductType" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          
+          <!-- Message element for error responses -->
+          <xs:element name="message" type="xs:string"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Product type definition -->
+  <xs:complexType name="ProductType">
+    <xs:all>
+      <!-- Common product fields (all optional to accommodate varying data) -->
+      <xs:element name="product_id" type="xs:integer" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="price" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="image" type="xs:string" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+</xs:schema>
