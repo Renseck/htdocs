@@ -1,10 +1,12 @@
 <?php
 
+namespace view;
+
 class aboutPage
 {
 	public function mainContent() : string
 	{
-		return '
+		return '<h1>About</h1>
 			<p>
 			Rens is a scientist with a background in physics and climate science.
 			With a passion for understanding complex system, he has worked on research ranging
