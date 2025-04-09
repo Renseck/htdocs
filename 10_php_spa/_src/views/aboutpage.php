@@ -1,6 +1,6 @@
 <?php
 
-namespace App\view;
+namespace App\views;
 
 class aboutPage
 {

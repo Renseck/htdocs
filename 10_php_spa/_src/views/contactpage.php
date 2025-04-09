@@ -1,8 +1,8 @@
 <?php
 
-namespace App\view;
+namespace App\views;
 
-use App\factories\formfactory\factory\formFactory;
+use App\factories\formfactory\formFactory;
 
 class contactPage
 {
@@ -20,11 +20,23 @@ class contactPage
         
         $content = '<h1>Contact Us</h1>' . $message;
 
+        // Using the formFactory with proper parameters
         $formFactory = new formFactory();
-        $contactForm = $formFactory->create(formFactory::TYPE_CONTACT);
-        $content .= $contactForm->render();
+        // Use createForm and capture the output with output buffering
+        ob_start();
+        
+        $formFactory->createForm(
+            page: 'contact',
+            action: 'index.php?page=contact',
+            method: 'POST',
+            submit_caption: 'Send Message',
+            attributes: ["class" => "ajax-form contact-form"]
+            );
+
+        $formHtml = ob_get_clean();
+        
+        $content .= $formHtml;
         
         return $content;
     }
-
 }
