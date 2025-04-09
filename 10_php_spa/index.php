@@ -1,28 +1,30 @@
 <?php
 
+require_once "vendor/autoload.php";
+
 session_start();
 
-require_once "_src/view/layout.php";
+use App\view\layout;
+use App\view\homePage;
+use App\view\aboutPage;
+use App\view\contactPage;
 
 function getContent($page) {
     $content = "";
     
     switch($page) {
         case "home":
-            include_once "_src/view/home.php";
-            $homepage = new view\homePage();
+            $homepage = new homePage();
             $content = $homepage->mainContent();
             break;
             
         case "about":
-            include_once "_src/view/about.php";
-            $aboutpage = new view\aboutPage();
+            $aboutpage = new aboutPage();
             $content = $aboutpage->mainContent();
             break;
 
 		case "contact":
-			include_once "_src/view/contact.php";
-			$contactpage = new view\contactPage();
+			$contactpage = new contactPage();
 			$content = $contactpage->mainContent();
 			break;
 
@@ -88,8 +90,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
 	switch($page)
 	{
 		case "contact":
-			include_once "_src/view/contact.php";
-			$contactpage = new view\contactPage();
+			$contactpage = new contactPage();
 			
 			$result = processContactForm($_POST);
 
@@ -118,6 +119,6 @@ if($_SERVER["REQUEST_METHOD"] === "GET")
 	}
 
 	$content = getContent($page);
-	echo view\layout::render($content, "My website");
+	echo layout::render($content, "My website");
 }
 

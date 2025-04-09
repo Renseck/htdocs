@@ -1,5 +1,7 @@
 <?php
 
+namespace App\factories\formfactory\fields;
+
 abstract class formElement
 {
     protected $attributes = [];

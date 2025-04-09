@@ -4,7 +4,7 @@
     "type" : "project",
     "autoload": {
         "psr-4": {
-            "Rens\\10PhpSpa\\": "_src/"
+            "App\\": "_src/"
         }
     },
     "authors": [

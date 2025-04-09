@@ -1,5 +1,9 @@
 <?php
 
+namespace App\factories\formfactory\forms;
+
+use App\factories\formfactory\factory\fieldFactory;
+
 class Form
 {
 
@@ -8,15 +12,15 @@ class Form
     private $elements = [];
 
     // =============================================================================================
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         $this->fieldFactory = new fieldFactory();
         
         // Set default form attributes
-        $this->attributes = [
+        $this->attributes = array_merge([
             'method' => 'post',
-            'action' => '',
-        ];
+            'action' => ''
+        ], $attributes);
     }
 
     // =============================================================================================
@@ -74,15 +78,19 @@ class Form
     // =============================================================================================
     public function render() : string
     {
-        $html = '<form>';
+        // Start with opening form tag including all attributes
+        $html = '<form';
 
+        // Add all attributes inside the opening tag
         foreach ($this->attributes as $name => $value)
         {
             $html .= ' ' . htmlspecialchars($name) . '="' . htmlspecialchars($value) . '"';
         }
 
+        // Close the opening tag
         $html .= '>' . PHP_EOL;
 
+        // Render form elements
         foreach ($this->elements as $wrapper)
         {
             if ($wrapper["type"] === "wrapper")

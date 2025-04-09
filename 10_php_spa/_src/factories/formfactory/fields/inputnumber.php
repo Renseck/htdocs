@@ -1,5 +1,9 @@
 <?php
 
+namespace App\factories\formfactory\fields;
+
+use App\factories\formfactory\fields\formElement;
+
 class inputNumber extends formElement
 {
     // =============================================================================================

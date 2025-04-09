@@ -1,5 +1,9 @@
 <?php
 
+namespace App\factories\formfactory\factory;
+
+use App\factories\formfactory\fields\formElement;
+
 class fieldFactory
 {
     protected $elements;
@@ -7,16 +11,16 @@ class fieldFactory
     public function __construct()
     {
         // Register default form elements
-        $this->setElement('text', 'inputText');
-        $this->setElement('password', 'inputPassword');
-        $this->setElement('email', 'inputEmail');
-        $this->setElement('number', 'inputNumber');
-        $this->setElement('checkbox', 'inputCheckbox');
-        $this->setElement('radio', 'inputRadio');
-        $this->setElement('select', 'select');
-        $this->setElement('textarea', 'textarea');
-        $this->setElement('button', 'button');
-        $this->setElement('submit', 'submitButton');
+        $this->setElement('text', \App\factories\formfactory\fields\inputText::class);
+        $this->setElement('password', \App\factories\formfactory\fields\inputPassword::class);
+        $this->setElement('email', \App\factories\formfactory\fields\inputEmail::class);
+        $this->setElement('number', \App\factories\formfactory\fields\inputNumber::class);
+        $this->setElement('checkbox', \App\factories\formfactory\fields\inputCheckbox::class);
+        $this->setElement('radio', \App\factories\formfactory\fields\inputRadio::class);
+        $this->setElement('select', \App\factories\formfactory\fields\select::class);
+        $this->setElement('textarea', \App\factories\formfactory\fields\textarea::class);
+        $this->setElement('button', \App\factories\formfactory\fields\button::class);
+        $this->setElement('submit', \App\factories\formfactory\fields\submitButton::class);
     }
 
     // =============================================================================================

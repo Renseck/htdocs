@@ -1,5 +1,9 @@
 <?php
 
+namespace App\factories\formfactory\fields;
+
+use App\factories\formfactory\fields\formElement;
+
 class textarea extends formElement
 {
     // =============================================================================================
@@ -9,7 +13,7 @@ class textarea extends formElement
 
         $html = '<textarea' . $this->renderAttributes(['type', 'value']) . '>';
         $html .= htmlspecialchars($value);
-        $html .= '</textrea>';
+        $html .= '</textarea>';
 
         return $html . PHP_EOL;
     }

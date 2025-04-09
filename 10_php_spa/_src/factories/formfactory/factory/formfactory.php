@@ -1,5 +1,9 @@
 <?php
 
+namespace App\factories\formfactory\factory;
+
+use App\factories\formfactory\forms\Form;
+
 class formFactory
 {
     const TYPE_LOGIN = "login";
@@ -7,208 +11,29 @@ class formFactory
     const TYPE_REGISTER = "register";
     const TYPE_CUSTOM = "custom";
 
+    protected $formTypes = [
+        self::TYPE_LOGIN => \App\factories\formfactory\forms\loginForm::class,
+        self::TYPE_CONTACT => \App\factories\formfactory\forms\contactForm::class,
+        self::TYPE_REGISTER => \App\factories\formfactory\forms\registerForm::class,
+        self::TYPE_CUSTOM => \App\factories\formfactory\forms\Form::class
+    ];
+
     // =============================================================================================
     public function create(string $type = self::TYPE_CUSTOM, array $attributes = []) : Form
     {
-        switch($type)
+        if (!$this->canCreate($type))
         {
-            case self::TYPE_LOGIN:
-                return $this->createLoginForm($attributes);
-                break;
-
-            case self::TYPE_CONTACT:
-                return $this->createContactForm($attributes);
-                break;
-
-            case self::TYPE_REGISTER:
-                return $this->createRegisterForm($attributes);
-                break;
-
-            case self::TYPE_CUSTOM:
-            default:
-                return $this->createForm($attributes);
+            throw new \InvalidArgumentException("Unsupported form type: $type");
         }
+
+        return new $this->formTypes[$type]($attributes);
     }
     
     // =============================================================================================
-    public function createForm(array $attributes = [])
+    public function canCreate(string $type) : bool
     {
-        $form = new Form();
-
-        foreach ($attributes as $name => $value)
-        {
-            $form->setAttribute($name, $value);
-        }
-
-        return $form;
-    }
-    
-    // =============================================================================================
-    protected function createLoginForm($attributes) : Form
-    {
-        $defaultAttributes = [
-            "id" => "login-form",
-            "class" => "form-login",
-            "method" => "post",
-            "action" => "index.php"
-        ];
-
-        $formAttributes = array_merge($defaultAttributes, $attributes);
-        $form = $this->createForm($formAttributes);
-
-        // Add email field
-        $form->addElement([
-            'type' => 'email',
-            'name' => 'email',
-            'id' => 'login-email',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your email',
-            'required' => 'required',
-            'label' => 'Email'
-        ]);
-        
-        // Add password field
-        $form->addElement([
-            'type' => 'password',
-            'name' => 'password',
-            'id' => 'login-password',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your password',
-            'required' => 'required',
-            'label' => 'Password'
-        ]);
-        
-        // Add submit button
-        $form->addElement([
-            'type' => 'submit',
-            'value' => 'Login',
-            'class' => 'btn btn-primary'
-        ]);
-        
-        return $form;
+        return isset($this->formTypes[$type]);
     }
 
     // =============================================================================================
-    protected function createRegisterForm($attributes)
-    {
-        $defaultAttributes = [
-            "id" => "register-form",
-            "class" => "form-register",
-            "method" => "post",
-            "action" => "index.php"
-        ];
-
-        $formAttributes = array_merge($defaultAttributes, $attributes);
-        $form = $this->createForm($formAttributes);
-
-        // Add name field
-        $form->addElement([
-            'type' => 'text',
-            'name' => 'name',
-            'id' => 'register-name',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your name',
-            'required' => 'required',
-            'label' => 'Name'
-        ]);
-
-        // Add email field
-        $form->addElement([
-            'type' => 'email',
-            'name' => 'email',
-            'id' => 'register-email',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your email',
-            'required' => 'required',
-            'label' => 'Email'
-        ]);
-        
-        // Add password field
-        $form->addElement([
-            'type' => 'password',
-            'name' => 'password',
-            'id' => 'register-password',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your password',
-            'required' => 'required',
-            'label' => 'Password'
-        ]);
-
-        // Add password repeat field
-        $form->addElement([
-            'type' => 'password',
-            'name' => 'password_repeat',
-            'id' => 'register-password',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your password',
-            'required' => 'required',
-            'label' => 'Repeat password'
-        ]);
-        
-        // Add submit button
-        $form->addElement([
-            'type' => 'submit',
-            'value' => 'Register',
-            'class' => 'btn btn-primary'
-        ]);
-        
-        return $form;
-    }
-
-    // =============================================================================================
-    protected function createContactForm($attributes)
-    {
-        $defaultAttributes = [
-            "id" => "register-form",
-            "class" => "form-register",
-            "method" => "post",
-            "action" => "index.php"
-        ];
-
-        $formAttributes = array_merge($defaultAttributes, $attributes);
-        $form = $this->createForm($formAttributes);
-
-        // Add name field
-        $form->addElement([
-            'type' => 'text',
-            'name' => 'name',
-            'id' => 'contact-name',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your name',
-            'required' => 'required',
-            'label' => 'Name'
-        ]);
-
-        // Add email field
-        $form->addElement([
-            'type' => 'email',
-            'name' => 'email',
-            'id' => 'contact-email',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your email',
-            'required' => 'required',
-            'label' => 'Email'
-        ]);
-
-        // Add message textarea
-        $form->addElement([
-            'type' => 'textarea',
-            'name' => 'message',
-            'id' => 'contact-message',
-            'class' => 'form-control',
-            'placeholder' => 'Enter your message',
-            'required' => 'required',
-            'rows' => '5',
-            'label' => 'Message'
-        ]);
-        
-        // Add submit button
-        $form->addElement([
-            'type' => 'submit',
-            'value' => 'Send message',
-            'class' => 'btn btn-primary'
-        ]);
-        
-        return $form;
-    }
 }
