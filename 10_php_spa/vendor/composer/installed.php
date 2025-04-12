@@ -3,7 +3,7 @@
         'name' => 'rens/10_php_spa',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'bfc2784d3d22a64f23a16833fdb54b72dae71f5b',
+        'reference' => 'e54290a9fb092bf78af620518a5aeadcbf9e3d9f',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'rens/10_php_spa' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'bfc2784d3d22a64f23a16833fdb54b72dae71f5b',
+            'reference' => 'e54290a9fb092bf78af620518a5aeadcbf9e3d9f',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

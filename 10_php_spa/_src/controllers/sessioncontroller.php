@@ -2,7 +2,7 @@
 
 namespace App\controllers;
 
-class sessionController
+class sessionController extends baseController
 {
     private static $initialized = false;
 

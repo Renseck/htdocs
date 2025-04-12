@@ -11,8 +11,8 @@ class layout
                 <html>
                 <head>
                     <title>' . $title . '</title>
-                    <link rel="stylesheet" type="text/css" href="_src/stylesheets/mystyle.css">
-                    <script src="_src/js/ajax.js"></script>
+                    <link rel="stylesheet" type="text/css" href="_src/assets/stylesheets/mystyle.css">
+                    <script src="_src/assets/js/ajax.js"></script>
                 </head>
                 <body>
                 <!-- Navigation container -->

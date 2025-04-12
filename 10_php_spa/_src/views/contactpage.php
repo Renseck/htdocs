@@ -7,18 +7,7 @@ use App\factories\formfactory\formFactory;
 class contactPage
 {
     public function mainContent() {
-        // Check for form submission result to show success/error message
-        $message = '';
-        if (isset($_SESSION['contact_result'])) {
-            $result = $_SESSION['contact_result'];
-            $message = '<div class="' . ($result['success'] ? 'success' : 'error') . '">' . 
-                      $result['message'] . '</div>';
-            
-            // Clear the session message after displaying it
-            unset($_SESSION['contact_result']);
-        }
-        
-        $content = '<h1>Contact Us</h1>' . $message;
+        $content = '<h1>Contact Us</h1>';
 
         // Using the formFactory with proper parameters
         $formFactory = new formFactory();
