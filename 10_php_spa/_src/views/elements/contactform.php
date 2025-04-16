@@ -1,31 +1,27 @@
 <?php
 
-namespace App\views;
+namespace App\views\elements;
 
+use App\views\elements\Element;
 use App\factories\formfactory\formFactory;
 
-class contactPage
+class ContactForm extends Element
 {
-    public function mainContent() {
-        $content = '<h1>Contact Us</h1>';
-
-        // Using the formFactory with proper parameters
+    public function getContent() : string
+    {
         $formFactory = new formFactory();
-        // Use createForm and capture the output with output buffering
         ob_start();
         
         $formFactory->createForm(
             page: 'contact',
             action: 'index.php?page=contact',
             method: 'POST',
-            submit_caption: 'Send Message',
+            submit_caption: 'Send message',
             attributes: ["class" => "ajax-form contact-form"]
             );
 
         $formHtml = ob_get_clean();
-        
-        $content .= $formHtml;
-        
-        return $content;
+
+        return $formHtml;
     }
 }

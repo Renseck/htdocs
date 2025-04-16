@@ -2,93 +2,68 @@
 
 namespace App\controllers;
 
+use App\controllers\baseController;
 use App\controllers\pageController;
-use App\utils\validator;
 
 class ajaxController extends baseController
 {
     // =============================================================================================
-    public function handleRequest(array $requestData)
+    protected function processRequest(): bool
     {
-        switch ($requestData['method'])
+        $function = $this->_getVar("function", $default = "NOTFOUND");
+
+        switch ($function) 
         {
-            case "GET":
-                $this->handleGetRequest($requestData);
-                break;
-            
-            case "POST":
-                $this->handlePostRequest($requestData);
-                break;
+            case "page":
+                // Delegate to pageController - buffer output and return it in json_encode
+                try 
+                {
+                    ob_start();
+                    $pageController = new pageController();
+                    
+                    // Set a flag to indicate we only want the body content for AJAX
+                    $_GET['ajax'] = true;
+                    
+                    $success = $pageController->handleRequest();
+                    $content = ob_get_clean();
+                    
+                    $this->sendResponse([
+                        "error" => false,
+                        "success" => $success,
+                        "content" => $content
+                    ]);
+                    return true;
+
+                } catch (\Throwable $ex) 
+                {
+                    ob_end_clean();
+                    $this->reportError($ex);
+                    return false;
+                }
 
             default:
-                $this->jsonResponse(["success" => "false", "message" => "Method handling not implemented"], $status = 404);
-                break;
+                $this->sendResponse([
+                    "error" => true,
+                    "message" => "No action defined for function [" . $function . "]"
+                ]);
+                return false;
         }
     }
 
     // =============================================================================================
-    private function handleGetRequest(array $requestData) : void
+    protected function reportError(\Throwable $ex): void
     {
-        $pageController = new pageController();
-        $content = $pageController->getContent($requestData["query"]["page"]);
-        echo $content;
+        $this->sendResponse([
+            "error" => true,
+            "message" => $ex->getMessage(),
+            "code" => $ex->getCode()
+        ]);
     }
-    
+
     // =============================================================================================
-    private function handlePostRequest(array $requestData) : void
+    protected function sendResponse($response) : void
     {
-        $page = $requestData["query"]["page"];
-        $data = $requestData["data"];
-
-        switch($page) 
-        {
-            case "contact":
-                $result = $this->processContactForm($data);
-                $_SESSION["contact_result"] = $result;
-                
-                $this->jsonResponse($result, 200);
-                break;
-            
-            default:
-                $result = ["success" => false, "message" => "Unknown AJAX request"];
-                $this->jsonResponse($result, 404);
-                break;
-        }
-    }
-    
-    // =============================================================================================
-    private function processContactForm(array $data) : array
-    {
-        // Validate form data using validator class
-        // In principle, the form itself knows what the required fields are... Geert may have a point here
-        $requiredFields = [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required'
-        ];
-        
-        $isValid = validator::validateRequired($data, $requiredFields);
-        
-        // Return errors if validation failed
-        if (!$isValid) return ['success' => false, 'message' => implode("<br>", validator::getErrors())];
-
-        // Process the form (e.g., send email, save to database)
-        // Do nothing here for now
-        $success = true; // Assume success for this example
-
-        if ($success) 
-        {
-            return [
-                'success' => true,
-                'message' => "Thank you for your message! We'll get back to you soon."
-            ];
-        } 
-        else 
-        {
-            return [
-                'success' => false,
-                'message' => "Sorry, there was a problem sending your message. Please try again."
-            ];
-        }
+        header("Content-Type: application/json");
+        echo json_encode($response);
     }
 }

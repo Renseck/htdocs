@@ -7,6 +7,7 @@ use App\factories\formfactory\Form;
 class formFactory
 {
     // =============================================================================================
+    // ? Make this static?
     public function createForm(string $page, string $action, string $method, string $submit_caption, array $attributes = [])
     {
         $form = new Form();

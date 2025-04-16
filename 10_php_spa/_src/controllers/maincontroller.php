@@ -2,85 +2,33 @@
 
 namespace App\controllers;
 
-use App\controllers\sessionController;
-use App\controllers\ajaxController;
-use App\controllers\webController;
+use App\interfaces\iController;
 
-class mainController extends baseController
+class mainController implements iController
 {
-    public function __construct()
-    {
-        sessionController::startSession();
-    }
-
     // =============================================================================================
-    public function handleRequest()
+    public function handleRequest(): bool
     {
-        $requestData = $this->getRequestData();
+        $action = $this->_getVar("action", $default = "page");
 
-        switch($requestData["type"])
+        switch ($action)
         {
             case "ajax":
-                $ajaxController = new ajaxController();
-                $ajaxController->handleRequest($requestData);
-                break;
+                $controller = new ajaxController();
+                return $controller->handleRequest();
 
-            case "api":
-                $apiController = new apiController();
-                $apiController->handleRequest($requestData);
-                break;
+            case "page":
+                $controller = new pageController();
+                return $controller->handleRequest();
 
-            case "web":
-                $webController = new webController();
-                $webController->handleRequest($requestData);
-                break;
-
+            default:
+                return false;
         }
     }
 
     // =============================================================================================
-    public function getRequestData() : array
+    protected function _getVar($name, $default = "NOTFOUND") : string
     {
-        $type = $this->determineRequestType();
-
-        return [
-            'type' => $type,
-            'method' => $_SERVER["REQUEST_METHOD"],
-            'data' => $_POST,
-            'query' => $_GET
-        ];
+        return $_GET[$name] ?? $default;
     }
-
-    // =============================================================================================
-    private function determineRequestType() : string
-    {
-        if ($this->isAjaxRequest())
-        {
-            return "ajax";
-        } 
-
-        if ($this->isApiRequest())
-        {
-            return "api";
-        }
-        else
-        {
-            return "web";
-        }
-    }
-
-    // =============================================================================================
-    private function isAjaxRequest() : bool
-    {
-        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-        strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-    }
-
-    // =============================================================================================
-    private function isApiRequest() : bool
-    {
-        return (isset($_GET["action"]) && $_GET["action"] === "api");
-    }
-        
-    // =============================================================================================
 }
