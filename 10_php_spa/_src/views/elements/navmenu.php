@@ -13,7 +13,8 @@ class NavMenu extends Element
             'home' => 'HOME',
             'about' => 'ABOUT',
             'contact' => 'CONTACT',
-            'login' => "LOGIN"
+            'login' => "LOGIN",
+            'register' => "REGISTER"
         ];
         
         $menu = '<ul class="menu">' . PHP_EOL;

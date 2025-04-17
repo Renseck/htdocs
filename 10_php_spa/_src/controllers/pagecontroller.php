@@ -10,6 +10,7 @@ use App\views\elements\LoginForm;
 use App\views\elements\ContactForm;
 use App\views\elements\NavMenu;
 use App\views\elements\PageNotFound;
+use App\views\elements\RegistrationForm;
 
 class pageController extends baseController
 {
@@ -86,6 +87,10 @@ class pageController extends baseController
 
             case "login":
                 $bodyContent[] = new LoginForm(true);
+                break;
+
+            case "register":
+                $bodyContent[] = new RegistrationForm(true);
                 break;
 
             default:
