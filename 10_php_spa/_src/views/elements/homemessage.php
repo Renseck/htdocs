@@ -4,7 +4,7 @@ namespace App\views\elements;
 
 use App\views\elements\Element;
 
-class WelcomeMessage extends Element
+class HomeMessage extends Element
 {
     public function getContent() : string
     {

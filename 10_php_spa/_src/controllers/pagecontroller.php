@@ -4,16 +4,18 @@ namespace App\controllers;
 
 use App\controllers\baseController;
 use App\views\pages\BasePage;
-use App\views\elements\DefaultHeader;
-use App\views\elements\WelcomeMessage;
-use App\views\elements\LoginForm;
-use App\views\elements\ContactForm;
-use App\views\elements\NavMenu;
-use App\views\elements\PageNotFound;
-use App\views\elements\RegistrationForm;
+use App\views\elements\ElementFactory;
 
 class pageController extends baseController
 {
+    private $elementFactory;
+
+    // =============================================================================================
+    public function __construct()
+    {
+        $this->elementFactory = new ElementFactory();   
+    }
+
     // =============================================================================================
     protected function processRequest(): bool
     {
@@ -38,7 +40,7 @@ class pageController extends baseController
         // ? How uhhh do we load specific files for specific pages like this
         $basePage->addCss("_src/assets/css/mystyle.css");
         $basePage->addJs("_src/assets/js/ajax.js");
-        $headerContent = [new DefaultHeader(true)];
+        $headerContent = [$this->elementFactory->createElement("defaultHeader", true)];
         $basePage->addHeaderElements($headerContent);
         
         $basePage->showHeader();
@@ -69,12 +71,12 @@ class pageController extends baseController
     protected function getBodyContent(string $page) : array
     {
         $bodyContent = [];
-        $bodyContent[] = new NavMenu(true);
+        $bodyContent[] = $this->elementFactory->createElement("navmenu", true);
 
         switch ($page)
         {
             case "home":
-                $bodyContent[] = new WelcomeMessage(true);
+                $bodyContent[] = $this->elementFactory->createElement("homemsg", true);
                 break;
 
             case "about":
@@ -82,19 +84,19 @@ class pageController extends baseController
                 break;
 
             case "contact":
-                $bodyContent[] = new ContactForm(true);
+                $bodyContent[] = $this->elementFactory->createElement("contactform", true);
                 break;
 
             case "login":
-                $bodyContent[] = new LoginForm(true);
+                $bodyContent[] = $this->elementFactory->createElement("loginform", true);
                 break;
 
             case "register":
-                $bodyContent[] = new RegistrationForm(true);
+                $bodyContent[] = $this->elementFactory->createElement("registerform", true);
                 break;
 
             default:
-                $bodyContent[] = new PageNotFound(true);
+            $bodyContent[] = $this->elementFactory->createElement("404", true);
                 break;
         }
 

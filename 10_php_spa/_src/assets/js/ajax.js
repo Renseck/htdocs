@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (submitButton)
         {
             submitButton.disabled = true;
-            submitButton.innerText = 'Sending...';
+            submitButton.innerText = 'Processing...';
         }
 
         // Clear previous messages
@@ -148,14 +148,29 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create new request
         activeRequest = new XMLHttpRequest();
-        activeRequest.open('GET', 'index.php?page=' + page, true);
+        // Update URL to include action=api and function=page for the ajaxController
+        activeRequest.open('GET', 'index.php?action=ajax&function=page&page=' + page, true);
         activeRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         
         activeRequest.onload = function() 
         {
             if (this.status === 200) 
             {
-                container.innerHTML = this.responseText;
+                try {
+                    const response = JSON.parse(this.responseText);
+                    
+                    if (!response.error && response.content) {
+                        container.innerHTML = response.content;
+                    } else {
+                        // Handle error case
+                        container.innerHTML = '<div class="error">Error loading content: ' + 
+                            (response.message || 'Unknown error') + '</div>';
+                    }
+                } catch(e) {
+                    // Fallback if response isn't JSON
+                    container.innerHTML = this.responseText;
+                }
+                
                 container.classList.remove('loading');
                 activeRequest = null;
             }
@@ -163,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         activeRequest.onerror = function() 
         {
+            container.innerHTML = '<div class="error">Network error while loading content</div>';
             container.classList.remove('loading');
             activeRequest = null;
         };
