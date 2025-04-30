@@ -6,3 +6,4 @@ favicon.ico
 /ht_docs/*.md
 !*.md
 .env
+js_testing/
