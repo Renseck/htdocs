@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flipcard testing</title>
+        <link rel="stylesheet" type="text/css" href="../css/flipcard.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- Existing fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+        
+        <!-- Additional theme fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+        
+        <!-- Alternative options -->
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+        <script src="../js/flipcard.js"></script>
+    </head>
+
+    <body>
+        <h1>Testing Solari-style flipcard</h1>
+        <div class="container">
+
+            <h3 style="font-family: 'Courier New', 'Monaco', 'Consolas', monospace;">Classic theme (default)</h3>
+            <pre class="dark"><code>&lt;flip-card type="text"&gt;ABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;/flip-card&gt;
+&lt;flip-card type="number"&gt;123456789-987654321&lt;/flip-card&gt;</code></pre>
+            <flip-card type="text">ABCDEFGHIJKLMNOPQRSTUVWXYZ</flip-card>
+            <flip-card type="number">123456789-987654321</flip-card>
+
+            <div class="divider"></div>
+            <h3 style="font-family: 'Roboto', sans-serif;">Material theme</h3>
+            <pre class="dark"><code>&lt;flip-card type="number" theme="material"&gt;123456789-987654321&lt;/flip-card&gt;</code></pre>
+            <flip-card type="number" theme="material">123456789-987654321</flip-card>
+
+            <div class="divider"></div>
+            <h3 style="font-family: 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif;">Retro theme</h3>
+            <pre class="dark"><code>&lt;flip-card type="number" theme="retro"&gt;123456789-987654321&lt;/flip-card&gt;</code></pre>
+            <flip-card type="number" theme="retro">123456789-987654321</flip-card>
+
+            <div class="divider"></div>
+            <h3 style="font-family: 'Fredoka One', 'Bungee', 'Righteous', cursive;">Neon theme</h3>
+            <pre class="dark"><code>&lt;flip-card type="number" theme="neon"&gt;123456789-987654321&lt;/flip-card&gt;</code></pre>
+            <flip-card type="number" theme="neon">123456789-987654321</flip-card>
+        </div>
+    </body>
+</html>

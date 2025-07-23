@@ -1,0 +1,326 @@
+/* ============================================================================================== */
+/*                                         General styling                                        */
+/* ============================================================================================== */
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+    width: 1200px;
+}   
+
+h1 {
+    text-align: center;
+}
+
+.divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #aaa, transparent);
+    margin: 30px 0;
+    border: none;
+}
+
+/* ============================================================================================== */
+/*                                        Base Flipcard                                          */
+/* ============================================================================================== */
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.flip-card-container {
+    display: inline-flex;
+    gap: 2px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.flip-card-char {
+    width: 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    position: relative;
+    perspective: 200px;
+    overflow: hidden;
+}
+
+.flip-top, .flip-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    overflow: hidden;
+}
+
+.flip-top {
+    top: 0;
+    height: 50%;
+}
+
+.flip-bottom {
+    bottom: 0;
+    height: 50%;
+}
+
+.flip-top-flip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    transform-origin: bottom;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-in-out;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.flip-top .char-display {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 60px;
+}
+
+.flip-bottom .char-display {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 60px;
+    height: 60px;
+}
+
+.flip-top-flip .char-display {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 60px;
+    height: 60px;
+}
+
+/* ============================================================================================== */
+/*                                        Theme: Classic                                          */
+/* ============================================================================================== */
+.theme-classic .flip-card-char {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+}
+
+.theme-classic .flip-card-char::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #333;
+    z-index: 10;
+}
+
+.theme-classic .flip-top, 
+.theme-classic .flip-bottom, 
+.theme-classic .flip-top-flip {
+    color: #ffffff;
+    background-color: #1a1a1a;
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+}
+
+.theme-classic .flip-card-char.space {
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================================================== */
+/*                                        Theme: Material                                         */
+/* ============================================================================================== */
+.theme-material .flip-card-char {
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    font-family: 'Roboto', sans-serif;
+}
+
+.theme-material .flip-card-char::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ccc, transparent);
+    z-index: 10;
+}
+
+.theme-material .flip-top, 
+.theme-material .flip-bottom, 
+.theme-material .flip-top-flip {
+    color: #333;
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+    font-family: 'Roboto', sans-serif;
+}
+
+.theme-material .flip-card-char.space {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+/* ============================================================================================== */
+/*                                        Theme: Neon                                            */
+/* ============================================================================================== */
+.theme-neon .flip-card-char {
+    background-color: #0a0a0a;
+    color: #00ffff;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.1);
+    border: 1px solid #00ffff;
+    font-family: 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif;
+}
+
+.theme-neon .flip-card-char::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #00ffff;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    z-index: 10;
+}
+
+.theme-neon .flip-top, 
+.theme-neon .flip-bottom, 
+.theme-neon .flip-top-flip {
+    color: #00ffff;
+    background-color: #0a0a0a;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    font-family: 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif;
+}
+
+.theme-neon .flip-card-char.space {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+/* ============================================================================================== */
+/*                                        Theme: Retro                                           */
+/* ============================================================================================== */
+.theme-retro .flip-card-char {
+    background-color: #8B4513;
+    color: #FFD700;
+    border-radius: 2px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid #654321;
+    font-family: 'Fredoka One', 'Bungee', 'Righteous', cursive;
+}
+
+.theme-retro .flip-card-char::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #654321;
+    z-index: 10;
+}
+
+.theme-retro .flip-top, 
+.theme-retro .flip-bottom, 
+.theme-retro .flip-top-flip {
+    color: #FFD700;
+    background-color: #8B4513;
+    font-weight: bold;
+    font-family: 'Fredoka One', 'Bungee', 'Righteous', cursive;
+}
+
+.theme-retro .flip-card-char.space {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+/* ============================================================================================== */
+/*                                        Code Blocks                                            */
+/* ============================================================================================== */
+pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 10px 0 20px 0;
+    overflow-x: auto;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+code {
+    background-color: inherit;
+    color: #d73a49;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Dark theme code block alternative */
+pre.dark {
+    background-color: #2d3748;
+    border: 1px solid #4a5568;
+    color: #e2e8f0;
+}
+
+pre.dark code {
+    color: #68d391;
+}
+
+/* Syntax highlighting for HTML tags */
+pre code {
+    color: #333;
+}
+
+pre code .tag {
+    color: #22863a;
+}
+
+pre code .attr {
+    color: #6f42c1;
+}
+
+pre code .string {
+    color: #032f62;
+}
