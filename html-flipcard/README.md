@@ -16,10 +16,10 @@ Usage is simple as a reusable custom tag. Specifying the `type` of the message c
 ## Styles
 All styles come with fitting fonts. The available styles are:
 - Classic (default)
-  <img src="images/classictheme.png" alt="Classic theme example">
+  <img src="html-flipcard/images/classictheme.png" alt="Classic theme example">
 - Material
-  <img src="images/materialtheme.png" alt="Classic theme example">
+  <img src="html-flipcard/images/materialtheme.png" alt="Material theme example">
 - Retro
-  <img src="images/retrotheme.png" alt="Classic theme example">
+  <img src="html-flipcard/images/retrotheme.png" alt="Retro theme example">
 - Neon
-  <img src="images/neontheme.png" alt="Classic theme example">
+  <img src="html-flipcard/images/neontheme.png" alt="Neon theme example">
